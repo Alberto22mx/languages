@@ -1,0 +1,28 @@
+<mat-toolbar>
+    <button mat-icon-button (click)="toggleSidenav.emit()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span class="spacer"></span>
+
+    <div class="user-info">
+      <span class="username">{{username}}</span>
+      <!-- Cambio en esta línea: [matMenuTriggerFor] en lugar de [matMenuTrigger] -->
+      <button mat-button [matMenuTriggerFor]="profileMenu" class="profile-button">
+        <mat-icon>account_circle</mat-icon>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+    </div>
+
+    <mat-menu #profileMenu="matMenu">
+      <button mat-menu-item routerLink="/profile">
+        <mat-icon>person</mat-icon>
+        <span>Mi Perfil</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Cerrar Sesión</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>

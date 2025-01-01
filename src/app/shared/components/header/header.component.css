@@ -1,0 +1,19 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-info .username {
+    font-weight: 500;
+}
+
+.profile-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
