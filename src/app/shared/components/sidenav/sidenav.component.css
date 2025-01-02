@@ -2,17 +2,19 @@
     padding: 16px;
     text-align: center;
     
-    .logo {
-      width: 64px;
-      height: 64px;
-      margin-bottom: 8px;
-    }
+    
+  }
 
-    h2 {
-      margin: 0;
-      font-size: 1.2rem;
-      color: #3f51b5;
-    }
+  .logo {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #3f51b5;
   }
 
   .active {
@@ -22,4 +24,9 @@
 
   mat-nav-list {
     width: 250px;
+    color: white;
+  }
+
+  a {
+    color: white;
   }
