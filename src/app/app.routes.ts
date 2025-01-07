@@ -8,19 +8,21 @@ import { GamesComponent } from './features/games/games.component';
 import { ProgressComponent } from './features/progress/progress.component';
 import { VocabularyComponent } from './features/vocabulary/vocabulary.component';
 import { SettingsComponent } from './features/settings/settings.component';
+import { AbcComponent } from './features/games/components/abc/abc.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
-    
     {path: 'login', component: LoginComponent},
     {path: 'about', component: AboutComponent},
     {path: 'modulos', component: ForeverComponent, children: [ 
         { path: 'dashboard', component: DashboardComponent }, 
         { path: 'lessons', component: LessonsComponent},
-        { path: 'games', component: GamesComponent},
-        { path: 'progres', component: ProgressComponent},
+        { path: 'games', component: GamesComponent, children: [
+            {path: 'abc', component: AbcComponent }
+        ]},
+        { path: 'progress', component: ProgressComponent},
         { path: 'vocabulary', component: VocabularyComponent},
-        { path: 'progres', component: ProgressComponent},
+        { path: 'exam', component: SettingsComponent},
         { path: 'settings', component: SettingsComponent},
     ]}
 ];

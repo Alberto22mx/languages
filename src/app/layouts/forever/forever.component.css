@@ -6,11 +6,9 @@ mat-sidenav-container {
   mat-sidenav {
     border-right: 1px solid rgba(0, 0, 0, 0.12);
     background-color: #002058;
-    
+    color: white;
   }
 
   .content {
     padding: 20px;
   }
-
-  

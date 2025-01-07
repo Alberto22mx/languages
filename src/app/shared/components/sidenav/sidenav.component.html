@@ -1,7 +1,7 @@
 <mat-nav-list>
     <div class="logo-container">
-      <!-- <img src="assets/logo.png" alt="Logo" class="logo"> -->
-      <h2 style="color: white;">English Learning</h2>
+      <img src="assets/logoef3.png" alt="Logo" class="logo" width="100px">
+      <!-- <h2 style="color: white;">English Learning</h2> -->
     </div>
     
     <mat-divider></mat-divider>
@@ -31,10 +31,16 @@
       <span matListItemTitle style="color: white;">Vocabulario</span>
     </a>
 
+    <a mat-list-item routerLink="/modulos/settings" routerLinkActive="active">
+      <mat-icon matListItemIcon style="color: white;">quiz</mat-icon>
+      <span matListItemTitle style="color: white;">Examenes</span>
+    </a>
+
     <mat-divider></mat-divider>
 
-    <a mat-list-item routerLink="/modulos/settings" routerLinkActive="active">
+    <a mat-list-item routerLink="/modulos/exam" routerLinkActive="active">
       <mat-icon matListItemIcon style="color: white;">settings</mat-icon>
       <span matListItemTitle style="color: white;">Configuración</span>
     </a>
+    
   </mat-nav-list>
