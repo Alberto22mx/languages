@@ -8,7 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -49,7 +50,9 @@ export class LoginComponent {
             this.router.navigate(['/modulos/dashboard']);
                 localStorage.setItem('token', res.accessToken);
             },
-          error: (err) => console.error('Login failed:', err),
+          error: (err) => {
+            this.errorMessage = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
+          },
         });
       }
     }

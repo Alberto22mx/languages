@@ -9,20 +9,31 @@ import { ProgressComponent } from './features/progress/progress.component';
 import { VocabularyComponent } from './features/vocabulary/vocabulary.component';
 import { SettingsComponent } from './features/settings/settings.component';
 import { AbcComponent } from './features/games/components/abc/abc.component';
+import { loginGuard } from './shared/guard/login.guard';
+import { authGuard } from './shared/guard/auth.guard';
+import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
-    {path: 'login', component: LoginComponent},
+    {
+        path: 'login',
+        component: LoginComponent,
+        canActivate: [loginGuard]
+    },
     {path: 'about', component: AboutComponent},
-    {path: 'modulos', component: ForeverComponent, children: [ 
-        { path: 'dashboard', component: DashboardComponent }, 
-        { path: 'lessons', component: LessonsComponent},
-        { path: 'games', component: GamesComponent, children: [
-            {path: 'abc', component: AbcComponent }
-        ]},
-        { path: 'progress', component: ProgressComponent},
-        { path: 'vocabulary', component: VocabularyComponent},
-        { path: 'exam', component: SettingsComponent},
-        { path: 'settings', component: SettingsComponent},
-    ]}
+    {
+        path: 'modulos', component: ForeverComponent, children: [ 
+            { path: 'dashboard', component: DashboardComponent }, 
+            { path: 'lessons', component: LessonsComponent},
+            { path: 'games', component: GamesComponent, children: [
+                {path: 'abc', component: AbcComponent }
+            ]},
+            { path: 'progress', component: ProgressComponent},
+            { path: 'vocabulary', component: VocabularyComponent},
+            { path: 'exam', component: SettingsComponent},
+            { path: 'settings', component: SettingsComponent},
+        ],
+        canActivate: [authGuard]
+    },
+    { path: '**', component: PageNotFoundComponent },
 ];

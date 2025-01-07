@@ -1,35 +1,38 @@
 <div class="login-container">
-    <mat-card>
-      <img mat-card-image src="assets/logoef3.png" alt="Logo" class="logo" width="300px">
-      <mat-card-header>
-        <mat-card-title>Iniciar Sesión</mat-card-title>
-      </mat-card-header>
-      
-      <mat-card-content>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <mat-form-field appearance="outline">
-            <mat-label>Matricula</mat-label>
-            <input matInput type="matricula" formControlName="matricula" placeholder="Matricula">
-            <mat-error *ngIf="loginForm.get('matricula')?.invalid">
-              {{getErrorMessage('matricula')}}
-            </mat-error>
-          </mat-form-field>
-  
-          <mat-form-field appearance="outline">
-            <mat-label>Contraseña</mat-label>
-            <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
-            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
-              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-            <mat-error *ngIf="loginForm.get('password')?.invalid">
-              {{getErrorMessage('password')}}
-            </mat-error>
-          </mat-form-field>
-  
-          <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
-            Iniciar Sesión
+  <mat-card>
+    <img mat-card-image src="assets/logoef3.png" alt="Logo" class="logo" width="300px">
+    <mat-card-header>
+      <mat-card-title>Iniciar Sesión</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Matricula</mat-label>
+          <input matInput type="matricula" formControlName="matricula" placeholder="Matricula">
+          <mat-error *ngIf="loginForm.get('matricula')?.invalid">
+            {{getErrorMessage('matricula')}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
-        </form>
-      </mat-card-content>
-    </mat-card>
-  </div>
+          <mat-error *ngIf="loginForm.get('password')?.invalid">
+            {{getErrorMessage('password')}}
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+          Iniciar Sesión
+        </button>
+      </form>
+      <mat-error *ngIf="errorMessage">
+        {{errorMessage}}
+      </mat-error>
+    </mat-card-content>
+  </mat-card>
+</div>

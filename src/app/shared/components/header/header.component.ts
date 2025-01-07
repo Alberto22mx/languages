@@ -32,6 +32,7 @@ export class HeaderComponent {
 
   logout() {
     // Implementar lógica de logout
+    localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 }
