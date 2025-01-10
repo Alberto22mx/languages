@@ -1,0 +1,28 @@
+#contenedor-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+
+  .titulo h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #333333;
+  }
+
+  .boton {
+    button {
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 0 1.5rem;
+    }
+  }
+}
+
+.w-100 {
+  width: 100%;
+}

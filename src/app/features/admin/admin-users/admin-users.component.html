@@ -1,0 +1,47 @@
+<div id="contenedor">
+  <div id="contenedor-title">
+    <div>
+      <h3>ADMINISTRACION DE USUARIOS</h3>
+    </div>
+    <div>
+      <button mat-flat-button color="primary" (click)="openDialog()">CREAR USUARIO</button>
+    </div>
+  </div>
+  <div>
+    <mat-form-field class="w-100">
+      <mat-label>Filtro</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Buscar..." #input>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+        <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+        <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+      </ng-container>
+
+      <!-- Role Column -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rol </th>
+        <td mat-cell *matCellDef="let row"> {{row.role}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleccionar página"></mat-paginator>
+  </div>
+</div>

@@ -9,14 +9,15 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     // Obtener el token del localStorage
-    const token = localStorage.getItem('token');
+    const token = this.authService.getToken();
 
     if (token) {
       // Clonar la request y añadir el header de autorización

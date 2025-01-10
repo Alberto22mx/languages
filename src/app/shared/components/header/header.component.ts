@@ -7,6 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -26,13 +27,22 @@ export class HeaderComponent {
   
   @Output() toggleSidenav = new EventEmitter<void>();
 
-  constructor(private router: Router){
-
-  }
+  constructor(private router: Router, private authService: AuthService){ }
 
   logout() {
     // Implementar lógica de logout
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
+  }
+
+  getProfileRoute(): string {
+    const userType = this.authService.getUserType();
+    if (userType == 'user') {
+      return '/modulos/i/profil';
+    } else if(userType == 'teacher') {
+      return '/modulos/ii/profil';
+    } else {
+      return '/modulos/iii/profil';
+    }
   }
 }

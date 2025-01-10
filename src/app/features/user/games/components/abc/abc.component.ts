@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Phaser from 'phaser';
-import { UsersService } from '../../../../core/services/users/users.service';
+import { UsersService } from '../../../../../core/services/users/users.service';
 
 @Component({
   selector: 'app-abc',

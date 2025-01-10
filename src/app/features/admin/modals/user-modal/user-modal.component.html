@@ -1,0 +1,56 @@
+<h2 mat-dialog-title style="text-align: center;">Crear Usuario</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div style="display: flex; gap: 20px;">
+      <mat-form-field style="flex: 1;">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="firstName" cdkFocusInitial>
+      </mat-form-field>
+      <mat-form-field style="flex: 1;">
+        <mat-label>Apellido Paterno</mat-label>
+        <input matInput formControlName="lastNameFather">
+      </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 20px;">
+      <mat-form-field style="flex: 1;">
+        <mat-label>Apellido Materno</mat-label>
+        <input matInput formControlName="lastNameMother">
+      </mat-form-field>
+      <mat-form-field style="flex: 1;">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="phone">
+      </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 20px;">
+      <mat-form-field style="flex: 1;">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email">
+      </mat-form-field>
+      
+      <mat-form-field style="flex: 1;">
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="birthDate">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 20px;">
+      <mat-form-field style="flex: 1;">
+        <mat-label>Tipo de Usuario</mat-label>
+        <mat-select formControlName="userType">
+          <mat-option *ngFor="let type of userTypes" [value]="type">{{ type }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="flex: 1;">
+        <mat-label>Curso</mat-label>
+        <mat-select formControlName="course">
+          <mat-option *ngFor="let course of courses" [value]="course">{{ course }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()">Crear</button>
+</mat-dialog-actions>

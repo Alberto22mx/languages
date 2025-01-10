@@ -6,41 +6,119 @@
     
     <mat-divider></mat-divider>
 
-    <a mat-list-item routerLink="/modulos/dashboard" routerLinkActive="active">
-      <mat-icon matListItemIcon style="color: white;">dashboard</mat-icon>
-      <span matListItemTitle style="color: white;">Dashboard</span>
-    </a>
-
-    <a mat-list-item routerLink="/modulos/lessons" routerLinkActive="active">
-      <mat-icon matListItemIcon style="color: white;">school</mat-icon>
-      <span matListItemTitle style="color: white;">Lecciones</span>
-    </a>
-
-    <a mat-list-item routerLink="/modulos/games" routerLinkActive="active">
-      <mat-icon matListItemIcon style="color: white;">games</mat-icon>
-      <span matListItemTitle style="color: white;">Juegos</span>
-    </a>
-
-    <a mat-list-item routerLink="/modulos/progress" routerLinkActive="active">
-      <mat-icon matListItemIcon style="color: white;">trending_up</mat-icon>
-      <span matListItemTitle style="color: white;">Progreso</span>
-    </a>
-
-    <a mat-list-item routerLink="/modulos/vocabulary" routerLinkActive="active">
-      <mat-icon matListItemIcon style="color: white;">library_books</mat-icon>
-      <span matListItemTitle style="color: white;">Vocabulario</span>
-    </a>
-
-    <a mat-list-item routerLink="/modulos/settings" routerLinkActive="active">
-      <mat-icon matListItemIcon style="color: white;">quiz</mat-icon>
-      <span matListItemTitle style="color: white;">Examenes</span>
-    </a>
+    @if (isUser) {
+      <a mat-list-item routerLink="/modulos/i/dashboard" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">dashboard</mat-icon>
+        <span matListItemTitle style="color: white;">Dashboard</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/i/lessons" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">school</mat-icon>
+        <span matListItemTitle style="color: white;">Lecciones</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/i/games" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">games</mat-icon>
+        <span matListItemTitle style="color: white;">Juegos</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/i/progress" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">trending_up</mat-icon>
+        <span matListItemTitle style="color: white;">Progreso</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/i/vocabulary" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">library_books</mat-icon>
+        <span matListItemTitle style="color: white;">Vocabulario</span>
+      </a>
+    }
 
     <mat-divider></mat-divider>
 
-    <a mat-list-item routerLink="/modulos/exam" routerLinkActive="active">
-      <mat-icon matListItemIcon style="color: white;">settings</mat-icon>
-      <span matListItemTitle style="color: white;">Configuración</span>
-    </a>
-    
+    @if (isTeacher) {
+      <a mat-list-item routerLink="/modulos/ii/dashboard" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">dashboard</mat-icon>
+        <span matListItemTitle style="color: white;">Dashboard</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/iii/admin-groups" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">groups</mat-icon>
+        <span matListItemTitle style="color: white;">Grupos</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/ii/admin-users" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">person</mat-icon>
+        <span matListItemTitle style="color: white;">Usuarios</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/ii/admin-lessons" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">school</mat-icon>
+        <span matListItemTitle style="color: white;">Lecciones</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/ii/admin-games" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">games</mat-icon>
+        <span matListItemTitle style="color: white;">Juegos</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/ii/admin-progress" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">trending_up</mat-icon>
+        <span matListItemTitle style="color: white;">Progreso</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/ii/admin-vocabulary" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">library_books</mat-icon>
+        <span matListItemTitle style="color: white;">Vocabulario</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/ii/admin-exam" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">quiz</mat-icon>
+        <span matListItemTitle style="color: white;">Examenes</span>
+      </a>
+    }
+
+    <mat-divider></mat-divider>
+
+    @if (isAdmin) {
+      <a mat-list-item routerLink="/modulos/iii/dashboard" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">dashboard</mat-icon>
+        <span matListItemTitle style="color: white;">Dashboard</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/iii/admin-groups" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">groups</mat-icon>
+        <span matListItemTitle style="color: white;">Grupos</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/iii/admin-users" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">person</mat-icon>
+        <span matListItemTitle style="color: white;">Usuarios</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/iii/admin-lessons" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">school</mat-icon>
+        <span matListItemTitle style="color: white;">Lecciones</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/iii/admin-games" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">games</mat-icon>
+        <span matListItemTitle style="color: white;">Juegos</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/iii/admin-progress" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">trending_up</mat-icon>
+        <span matListItemTitle style="color: white;">Progreso</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/iii/admin-vocabulary" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">library_books</mat-icon>
+        <span matListItemTitle style="color: white;">Vocabulario</span>
+      </a>
+  
+      <a mat-list-item routerLink="/modulos/iii/admin-exam" routerLinkActive="active">
+        <mat-icon matListItemIcon style="color: white;">quiz</mat-icon>
+        <span matListItemTitle style="color: white;">Examenes</span>
+      </a>
+    }
+
   </mat-nav-list>

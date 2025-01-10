@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-page-not-found',
@@ -9,10 +11,10 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './page-not-found.component.html',
   styleUrl: './page-not-found.component.css'
 })
-export class PageNotFoundComponent {
-  constructor(private location: Location) {}
+export class PageNotFoundComponent implements OnInit {
 
-  goBack(): void {
-    this.location.back();
+  constructor(private location: Location, private authService: AuthService, private router: Router) {}
+  ngOnInit(): void {
+    this.router.navigate(['/modulos/i/dashboard']);
   }
 }

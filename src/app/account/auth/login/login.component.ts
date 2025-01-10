@@ -44,12 +44,18 @@ export class LoginComponent {
         // Aquí irá la lógica de autenticación
         this.authService.login(emailValue, passwordValue).subscribe({
           next: (res) => {
+            this.authService.setAuthData(res);
             this.snackBar.open('Iniciando sesión...', 'Cerrar', {
               duration: 3000
             });
-            this.router.navigate(['/modulos/dashboard']);
-                localStorage.setItem('token', res.accessToken);
-            },
+            if (res.userType == 'user') {
+              this.router.navigate(['/modulos/i/dashboard']);
+            } else if(res.userType == 'teacher') {
+              this.router.navigate(['/modulos/ii/dashboard']);
+            } else if(res.userType == 'admin') {
+              this.router.navigate(['/modulos/iii/dashboard']);
+            }
+          },
           error: (err) => {
             this.errorMessage = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
           },
