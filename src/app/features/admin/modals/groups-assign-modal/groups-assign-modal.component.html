@@ -1,0 +1,26 @@
+<h2 style="text-align: center;">CONFIGURACIÓN DEL GRUPO</h2>
+<mat-tab-group animationDuration="1000ms">
+  <mat-tab label="Maestro">
+    <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
+     (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+  </mat-tab>
+  <!-- <mat-tab label="Alumnos">
+    <app-assign [datos1]="datosGropups" [datos2]="datosUsers"></app-assign>
+  </mat-tab>
+  <mat-tab label="Lecciones">
+    <app-assign [datos1]="datosGropups" [datos2]="datosLessons"></app-assign>
+  </mat-tab>
+  <mat-tab label="Juegos">
+    <app-assign [datos1]="datosGropups" [datos2]="datosGames"></app-assign>
+  </mat-tab> -->
+  <!-- <mat-tab label="Vocabulario">
+    <app-assign [datos1]="datosGropups" [datos2]="datosExams" (messageEvent)="receiveMessage($event)"></app-assign>
+  </mat-tab> -->
+  <!-- <mat-tab label="Examenes">
+    <app-assign [datos1]="datosGropups" [datos2]="datosExams"></app-assign>
+  </mat-tab> -->
+</mat-tab-group>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()">Crear</button>
+</mat-dialog-actions>

@@ -31,7 +31,7 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
-        // canActivate: [loginGuard]
+        canActivate: [loginGuard]
     },
     {path: 'about', component: AboutComponent},
     {
@@ -48,7 +48,7 @@ export const routes: Routes = [
               { path: 'exam', component: ExamComponent },
               { path: 'profil', component: ProfileComponent },
             ],
-            // canActivate: [authGuard, roleGuard(['user'])]
+            canActivate: [authGuard, roleGuard(['user'])]
           },
           {
             path: 'ii', children: [
@@ -59,7 +59,7 @@ export const routes: Routes = [
               { path: 'teacher-exam', component: TeacherExamComponent },
               { path: 'profil', component: ProfileComponent },
             ],
-            // canActivate: [authGuard, roleGuard(['teacher'])]
+            canActivate: [authGuard, roleGuard(['teacher'])]
           },
           {
             path: 'iii', children: [
@@ -73,7 +73,7 @@ export const routes: Routes = [
               { path: 'admin-groups', component: AdminGroupsComponent },
               { path: 'profil', component: ProfileComponent },
             ],
-            // canActivate: [authGuard, roleGuard(['admin'])]
+            canActivate: [authGuard, roleGuard(['admin'])]
           }
         ]
       },

@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="list-container">
+    <h2>ASIGNADOS</h2>
+    <div
+      cdkDropList
+      #listaUno="cdkDropList"
+      [cdkDropListData]="items1"
+      [cdkDropListConnectedTo]="[listaDos]"
+      class="list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="list-item" *ngFor="let item of items1" cdkDrag>
+        {{item.name}}
+      </div>
+    </div>
+  </div>
+
+  <div class="list-container">
+    <h2>POR ASIGNAR</h2>
+    <div
+      cdkDropList
+      #listaDos="cdkDropList"
+      [cdkDropListData]="items2"
+      [cdkDropListConnectedTo]="[listaUno]"
+      class="list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="list-item" *ngFor="let item of items2" cdkDrag>
+        {{item.name}}
+      </div>
+    </div>
+  </div>
+</div>

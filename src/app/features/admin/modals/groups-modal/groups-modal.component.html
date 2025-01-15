@@ -1,0 +1,42 @@
+<h2 mat-dialog-title style="text-align: center;">Crear Grupo</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
+    <div style="display: flex; gap: 20px;">
+      <mat-form-field style="flex: 1;">
+        <mat-label>Grupo</mat-label>
+        <input matInput formControlName="nameGroup" cdkFocusInitial>
+      </mat-form-field>
+      <mat-form-field style="flex: 1;">
+        <mat-label>Nivel</mat-label>
+        <mat-select formControlName="level" (selectionChange)="onLevelChange($event)">
+          <mat-option *ngFor="let level of levelGroup" [value]="level.level">
+            {{ level.level }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 20px;">
+      <mat-form-field style="flex: 1;">
+        <mat-label>Descripción</mat-label>
+        <mat-select formControlName="description">
+          <mat-option *ngFor="let level of levelGroup" [value]="level.description">
+            {{ level.code }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="flex: 1;">
+        <mat-label>Hora</mat-label>
+        <mat-select formControlName="schedule">
+          <mat-option *ngFor="let schedule of scheduleGroup" [value]="schedule.time">
+            {{ schedule.time }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()">Crear</button>
+</mat-dialog-actions>

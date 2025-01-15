@@ -7,11 +7,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'
 import {MatDialogModule} from '@angular/material/dialog';
-import { User } from '../../../../core/interfaces/user.interface';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { UsersService } from '../../../../core/services/users/users.service';
+import { User } from '../../../../core/interfaces/user.interface';
 
 @Component({
   selector: 'app-user-modal',
@@ -36,6 +36,7 @@ export class UserModalComponent {
   userTypes: string[] = ['admin', 'student', 'teacher'];
   courses: string[] = ['Ingles', 'Chino'];
   selectedDate: Date | null = null;
+  isStudent = false;
 
   constructor(
     private fb: FormBuilder,
@@ -51,7 +52,6 @@ export class UserModalComponent {
       email: ['', [Validators.required, Validators.email]],
       birthDate: ['', Validators.required],
       userType: ['', Validators.required],
-      course: ['', Validators.required],
     });
   }
 

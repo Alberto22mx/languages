@@ -17,6 +17,10 @@ export class UsersService {
     return this.http.get<User[]>(this.API_URL);
   }
 
+  getUsersPaginated(page: number, limit: number): Observable<{ data: User[], total: number }> {
+    return this.http.get<{ data: User[], total: number }>(`${this.API_URL}?page=${page}&limit=${limit}`);
+  }
+
   // Obtener un usuario por ID
   getUserById(id: string): Observable<User> {
     return this.http.get<User>(`${this.API_URL}/${id}`);

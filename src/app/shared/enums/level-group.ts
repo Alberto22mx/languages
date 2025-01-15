@@ -1,0 +1,5 @@
+export const LevelGroup = [
+  { code: 'BASIC', level: 'Basic', description: 'En este nivel, los estudiantes aprenderán los fundamentos del inglés, incluyendo gramática básica (tiempos verbales simples, artículos, preposiciones), vocabulario esencial (saludos, números, colores, familia), y habilidades de conversación simples (presentaciones, preguntas y respuestas básicas).' },
+  { code: 'INTERMEDIATE', level: 'Intermediate', description: 'Este nivel se enfoca en mejorar las habilidades existentes de los estudiantes. Se enseñará gramática intermedia (tiempos verbales compuestos, voz pasiva, condicionales), vocabulario ampliado (temas como viajes, trabajo, salud), y habilidades de conversación más complejas (discusiones, narración de eventos, expresar opiniones).' },
+  { code: 'ADVANCED', level: 'Advanced', description: 'En el nivel avanzado, los estudiantes perfeccionarán su dominio del inglés. Se cubrirá gramática avanzada (subjuntivo, modales perfectos, estructuras complejas), vocabulario especializado (temas académicos y profesionales), y habilidades de comunicación avanzada (presentaciones, debates, redacción de informes).' }
+];

@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginCredentials } from '../../../core/interfaces/login.interface';
 
 @Component({
   selector: 'app-login',
@@ -38,11 +39,14 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const emailValue = this.loginForm.get('matricula')?.value;
+      const matriculalValue = this.loginForm.get('matricula')?.value;
       const passwordValue = this.loginForm.get('password')?.value;
-      if (emailValue && passwordValue) {
-        // Aquí irá la lógica de autenticación
-        this.authService.login(emailValue, passwordValue).subscribe({
+      if (matriculalValue && passwordValue) {
+        const credentials: LoginCredentials = {
+          registrationNumber: matriculalValue,
+          password: passwordValue,
+        }
+        this.authService.login(credentials).subscribe({
           next: (res) => {
             this.authService.setAuthData(res);
             this.snackBar.open('Iniciando sesión...', 'Cerrar', {

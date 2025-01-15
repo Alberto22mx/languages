@@ -41,12 +41,6 @@
           <mat-option *ngFor="let type of userTypes" [value]="type">{{ type }}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field style="flex: 1;">
-        <mat-label>Curso</mat-label>
-        <mat-select formControlName="course">
-          <mat-option *ngFor="let course of courses" [value]="course">{{ course }}</mat-option>
-        </mat-select>
-      </mat-form-field>
     </div>
   </form>
 </mat-dialog-content>
