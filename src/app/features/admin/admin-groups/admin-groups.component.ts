@@ -85,7 +85,7 @@ export class AdminGroupsComponent implements OnInit {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
     const dialogRef = this.dialog.open(GroupsAssignModalComponent, {
-      width: '730px',
+      width: '750px',
     });
 
     dialogRef.afterClosed().subscribe(result => {

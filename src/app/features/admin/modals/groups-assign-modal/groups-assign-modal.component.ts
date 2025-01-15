@@ -70,6 +70,21 @@ export class GroupsAssignModalComponent implements OnInit {
         id: 'e0aa8526-422f-4c75-8c82-8feb37bea4e6',
         name: 'Jose Alberto Serrrano Serrano',
         registrationNumber: 'REG000002'
+      },
+      {
+        id: '41476d83-97ac-42ee-8ec2-b326cc4b',
+        name: 'Jose Alberto Pérez García',
+        registrationNumber: 'REG001'
+      },
+      {
+        id: '777',
+        name: 'Jose Alberto Pérez García',
+        registrationNumber: 'REG002'
+      },
+      {
+        id: 'e0aa8526-422f-4c75-8c82-8feb37bea477',
+        name: 'Jose Alberto Serrrano Serrano',
+        registrationNumber: 'REG000002'
       }
     ]
     this.getGroups();
