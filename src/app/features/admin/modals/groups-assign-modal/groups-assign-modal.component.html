@@ -4,6 +4,10 @@
     <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
      (updateAssigned)="onUpdateAssigned($event)"></app-assign>
   </mat-tab>
+  <mat-tab label="Alumnos">
+    <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
+     (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+  </mat-tab>
   <!-- <mat-tab label="Alumnos">
     <app-assign [datos1]="datosGropups" [datos2]="datosUsers"></app-assign>
   </mat-tab>
