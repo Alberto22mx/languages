@@ -107,4 +107,9 @@ export class GroupsAssignModalComponent implements OnInit {
     this.assignedUsersTeacher = updatedItems;
     console.log('Lista asignada actualizada:', this.assignedUsersTeacher);
   }
+
+  isDataAvailable(assigned: AssignableItem[], unassigned: AssignableItem[]): boolean {
+    return (assigned && assigned.length > 0) || (unassigned && unassigned.length > 0);
+  }
+  
 }

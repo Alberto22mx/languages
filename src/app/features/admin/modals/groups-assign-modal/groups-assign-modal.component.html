@@ -1,12 +1,12 @@
 <h3 style="text-align: center;">CONFIGURACIÓN DEL GRUPO</h3>
 <mat-tab-group animationDuration="1000ms">
-  <div *ngIf="unassignedUsersTeacher.length > 0">
+  <div *ngIf="isDataAvailable(assignedUsersTeacher, unassignedUsersTeacher)">
     <mat-tab label="Maestro">
       <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
        (updateAssigned)="onUpdateAssigned($event)"></app-assign>
     </mat-tab>
   </div>
-  <div *ngIf="unassignedUsersTeacher.length > 0">
+  <div *ngIf="isDataAvailable(assignedUsersTeacher, unassignedUsersTeacher)">
     <mat-tab label="Alumnos">
       <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
        (updateAssigned)="onUpdateAssigned($event)"></app-assign>
