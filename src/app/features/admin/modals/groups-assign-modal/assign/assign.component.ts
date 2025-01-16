@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { AssignableItem } from '../../../../../core/interfaces/assignable-item.interce';
 import { CommonModule } from '@angular/common';
@@ -23,7 +23,7 @@ import { MatPaginatorModule, PageEvent  } from '@angular/material/paginator';
   templateUrl: './assign.component.html',
   styleUrls: ['./assign.component.css']
 })
-export class AssignComponent implements OnInit {
+export class AssignComponent implements OnInit, OnChanges {
   @Input() items1: AssignableItem[] = []; // Usuarios asignados
   @Input() items2: AssignableItem[] = []; // Usuarios no asignados
   @Output() updateAssigned = new EventEmitter<AssignableItem[]>();
@@ -38,10 +38,21 @@ export class AssignComponent implements OnInit {
   pageIndex2: number = 0;
 
   ngOnInit(): void {
+    console.log("items1" + this.items1);
+    console.log(this.items2);
     this.filteredItems1 = [...this.items1];
     this.filteredItems2 = [...this.items2];
     this.updatePagination('items1');
     this.updatePagination('items2');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['items1']) {
+      console.log('items1 actualizado:', changes['items1'].currentValue);
+    }
+    if (changes['items2']) {
+      console.log('items2 actualizado:', changes['items2'].currentValue);
+    }
   }
 
   // Filtro dinámico

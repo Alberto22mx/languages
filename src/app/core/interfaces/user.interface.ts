@@ -14,3 +14,9 @@ export interface User {
   image?: string;
   custom: string;
 }
+
+export enum UserType {
+  ADMIN = 'admin',
+  STUDENT = 'student',
+  TEACHER = 'teacher',
+}

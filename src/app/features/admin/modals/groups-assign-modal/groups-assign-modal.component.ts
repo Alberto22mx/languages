@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AssignComponent } from "./assign/assign.component";
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,11 +6,13 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { GroupsService } from '../../../../core/services/groups/groups.service';
 import { UsersService } from '../../../../core/services/users/users.service';
 import { AssignableItem } from '../../../../core/interfaces/assignable-item.interce';
+import { CommonModule } from '@angular/common';
+import { UserType } from '../../../../core/interfaces/user.interface';
 
 @Component({
   selector: 'app-groups-assign-modal',
   standalone: true,
-  imports: [AssignComponent, MatDialogModule, MatButtonModule, MatTabsModule],
+  imports: [CommonModule, AssignComponent, MatDialogModule, MatButtonModule, MatTabsModule],
   templateUrl: './groups-assign-modal.component.html',
   styleUrl: './groups-assign-modal.component.css',
 })
@@ -35,60 +37,12 @@ export class GroupsAssignModalComponent implements OnInit {
     public dialogRef: MatDialogRef<GroupsAssignModalComponent>,
     private groupsService: GroupsService,
     private usersService: UsersService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    // this.assignedUsersTeacher = [
-    //   {
-    //     id: '41476d83-97ac-42ee-8ec2-b326cc4b2418',
-    //     name: 'Jose Alberto Pérez García',
-    //     registrationNumber: 'REG001'
-    //   },
-    //   {
-    //     id: '',
-    //     name: 'Jose Alberto Pérez García',
-    //     registrationNumber: 'REG002'
-    //   },
-    //   {
-    //     id: 'e0aa8526-422f-4c75-8c82-8feb37bea4e6',
-    //     name: 'Jose Alberto Serrrano Serrano',
-    //     registrationNumber: 'REG000002'
-    //   }
-    // ]
-    this.unassignedUsersTeacher = [
-      {
-        id: '41476d83-97ac-42ee-8ec2-b326cc4b2418',
-        name: 'Jose Alberto Pérez García',
-        registrationNumber: 'REG001'
-      },
-      {
-        id: '',
-        name: 'Jose Alberto Pérez García',
-        registrationNumber: 'REG002'
-      },
-      {
-        id: 'e0aa8526-422f-4c75-8c82-8feb37bea4e6',
-        name: 'Jose Alberto Serrrano Serrano',
-        registrationNumber: 'REG000002'
-      },
-      {
-        id: '41476d83-97ac-42ee-8ec2-b326cc4b',
-        name: 'Jose Alberto Pérez García',
-        registrationNumber: 'REG001'
-      },
-      {
-        id: '777',
-        name: 'Jose Alberto Pérez García',
-        registrationNumber: 'REG002'
-      },
-      {
-        id: 'e0aa8526-422f-4c75-8c82-8feb37bea477',
-        name: 'Jose Alberto Serrrano Serrano',
-        registrationNumber: 'REG000002'
-      }
-    ]
     this.getGroups();
-    // this.getUsers();
+    this.getUsers();
   }
 
   getGroups() {
@@ -98,15 +52,11 @@ export class GroupsAssignModalComponent implements OnInit {
   }
 
   getUsers() {
-    this.usersService.getUsers().subscribe((response: any) => {
+    this.usersService.getActiveUsersByType(UserType.ADMIN).subscribe((response: any) => {
       console.log(response);
       this.unassignedUsersTeacher = this.transformUsersToAssignableItems(response);
     });
   }
-
-  // receiveMessage($event: string) {
-  //   this.message = $event;
-  // }
 
   saveGroup() {
     const updatedGroup = {
@@ -144,6 +94,7 @@ export class GroupsAssignModalComponent implements OnInit {
   }
 
   transformUsersToAssignableItems(users: any[]): AssignableItem[] {
+    console.log("users", users);
     return users.map(user => ({
       id: user.id || '', // Usar el ID o un valor vacío si no existe
       name: `${user.firstName || ''} ${user.lastNameFather || ''} ${user.lastNameMother || ''}`.trim(), // Construir el nombre completo

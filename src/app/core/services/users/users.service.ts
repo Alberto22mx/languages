@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../../interfaces/user.interface';
+import { User, UserType } from '../../interfaces/user.interface';
 import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
@@ -19,6 +19,10 @@ export class UsersService {
 
   getUsersPaginated(page: number, limit: number): Observable<{ data: User[], total: number }> {
     return this.http.get<{ data: User[], total: number }>(`${this.API_URL}?page=${page}&limit=${limit}`);
+  }
+
+  getActiveUsersByType(type: UserType): Observable<User[]> {
+    return this.http.get<User[]>(`${this.API_URL}/active-by-type?userType=${type}`);
   }
 
   // Obtener un usuario por ID

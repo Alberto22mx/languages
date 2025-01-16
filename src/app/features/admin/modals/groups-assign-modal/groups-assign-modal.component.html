@@ -1,13 +1,18 @@
 <h3 style="text-align: center;">CONFIGURACIÓN DEL GRUPO</h3>
 <mat-tab-group animationDuration="1000ms">
-  <mat-tab label="Maestro">
-    <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
-     (updateAssigned)="onUpdateAssigned($event)"></app-assign>
-  </mat-tab>
-  <mat-tab label="Alumnos">
-    <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
-     (updateAssigned)="onUpdateAssigned($event)"></app-assign>
-  </mat-tab>
+  <div *ngIf="unassignedUsersTeacher.length > 0">
+    <mat-tab label="Maestro">
+      <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
+       (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+    </mat-tab>
+  </div>
+  <div *ngIf="unassignedUsersTeacher.length > 0">
+    <mat-tab label="Alumnos">
+      <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
+       (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+    </mat-tab>
+  </div>
+  
   <!-- <mat-tab label="Alumnos">
     <app-assign [datos1]="datosGropups" [datos2]="datosUsers"></app-assign>
   </mat-tab>
