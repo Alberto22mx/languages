@@ -43,7 +43,6 @@ readonly dialog = inject(MatDialog);
 
   getUsers() {
     this.usersService.getUsersPaginated(this.currentPage, this.pageSize).subscribe((response: any) => {
-      console.log(response);
       this.users = response.data;
       this.totalUsers = response.total;
       this.dataSource = new MatTableDataSource(this.users);

@@ -1,12 +1,25 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import {
+  CdkDragDrop,
+  DragDropModule,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { AssignableItem } from '../../../../../core/interfaces/assignable-item.interce';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { MatPaginatorModule, PageEvent  } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-assign',
@@ -21,7 +34,7 @@ import { MatPaginatorModule, PageEvent  } from '@angular/material/paginator';
     MatPaginatorModule,
   ],
   templateUrl: './assign.component.html',
-  styleUrls: ['./assign.component.css']
+  styleUrls: ['./assign.component.css'],
 })
 export class AssignComponent implements OnInit, OnChanges {
   @Input() items1: AssignableItem[] = []; // Usuarios asignados
@@ -38,47 +51,44 @@ export class AssignComponent implements OnInit, OnChanges {
   pageIndex2: number = 0;
 
   ngOnInit(): void {
-    console.log("items1" + this.items1);
-    console.log(this.items2);
+    this.initializeFiltersAndPagination();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['items1'] || changes['items2']) {
+      this.initializeFiltersAndPagination();
+    }
+  }
+
+  // Inicializar filtros y paginación
+  private initializeFiltersAndPagination(): void {
     this.filteredItems1 = [...this.items1];
     this.filteredItems2 = [...this.items2];
     this.updatePagination('items1');
     this.updatePagination('items2');
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['items1']) {
-      console.log('items1 actualizado:', changes['items1'].currentValue);
-    }
-    if (changes['items2']) {
-      console.log('items2 actualizado:', changes['items2'].currentValue);
-    }
-  }
-
   // Filtro dinámico
   applyFilter(event: Event, list: 'items1' | 'items2'): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     if (list === 'items1') {
-      this.filteredItems1 = this.items1.filter(item =>
-        this.matchesFilter(item, filterValue)
-      );
+      this.filteredItems1 = this.items1.filter((item) => this.matchesFilter(item, filterValue));
       this.pageIndex1 = 0;
       this.updatePagination('items1');
     } else {
-      this.filteredItems2 = this.items2.filter(item =>
-        this.matchesFilter(item, filterValue)
-      );
+      this.filteredItems2 = this.items2.filter((item) => this.matchesFilter(item, filterValue));
       this.pageIndex2 = 0;
       this.updatePagination('items2');
     }
   }
 
   private matchesFilter(item: AssignableItem, filter: string): boolean {
+    const lowerFilter = filter.toLowerCase();
     return (
-      item.id.toLowerCase().includes(filter) ||
-      (item.name?.toLowerCase().includes(filter) ?? false) ||
-      (item.title?.toLowerCase().includes(filter) ?? false) ||
-      (item.registrationNumber?.toLowerCase().includes(filter) ?? false)
+      (item.id?.toLowerCase().includes(lowerFilter) ?? false) ||
+      (item.name?.toLowerCase().includes(lowerFilter) ?? false) ||
+      (item.title?.toLowerCase().includes(lowerFilter) ?? false) ||
+      (item.registrationNumber?.toLowerCase().includes(lowerFilter) ?? false)
     );
   }
 
@@ -110,11 +120,7 @@ export class AssignComponent implements OnInit, OnChanges {
   // Manejar el evento de arrastrar y soltar
   drop(event: CdkDragDrop<AssignableItem[]>) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(
         event.previousContainer.data,
@@ -124,10 +130,7 @@ export class AssignComponent implements OnInit, OnChanges {
       );
 
       // Sincronizar las listas filtradas
-      this.filteredItems1 = [...this.items1];
-      this.filteredItems2 = [...this.items2];
-      this.updatePagination('items1');
-      this.updatePagination('items2');
+      this.initializeFiltersAndPagination();
       this.updateAssigned.emit(this.items1);
     }
   }

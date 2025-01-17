@@ -62,7 +62,6 @@ export class UserModalComponent {
   onSubmit(): void {
     if (this.userForm.valid) {
       // Lógica para enviar el formulario
-      console.log(this.userForm.value);
       this.usersService.createUser(this.userForm.value).subscribe();
       this.dialogRef.close(this.userForm.value);
     }

@@ -89,8 +89,6 @@ export class AdminGroupsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('El modal se ha cerrado');
-      console.log('Resultado:', result);
       if (result.status === 'success') {
         this.getUsers();
       } 
@@ -117,8 +115,6 @@ export class AdminGroupsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('El modal se ha cerrado');
-      console.log('Resultado:', result);
       if (result.status === 'success') {
         this.getUsers();
       } 

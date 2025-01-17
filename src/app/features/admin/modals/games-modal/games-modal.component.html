@@ -1,1 +1,26 @@
-<p>games-modal works!</p>
+<h2 mat-dialog-title style="text-align: center;">Crear Juego</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
+    <div style="display: flex; gap: 20px;">
+      <mat-form-field style="flex: 1;">
+        <mat-label>Título</mat-label>
+        <input matInput formControlName="title" cdkFocusInitial>
+      </mat-form-field>
+      <mat-form-field style="flex: 1;">
+        <mat-label>Instrucciones</mat-label>
+        <input matInput formControlName="instructions" cdkFocusInitial>
+      </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 20px;">
+      <mat-form-field style="flex: 1;">
+        <mat-label>Imagen</mat-label>
+        <input matInput formControlName="image" cdkFocusInitial>
+      </mat-form-field>
+    </div>
+    
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()">Crear</button>
+</mat-dialog-actions>

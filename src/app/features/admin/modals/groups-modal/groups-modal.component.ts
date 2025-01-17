@@ -64,7 +64,6 @@ export class GroupsModalComponent implements OnInit {
   onSubmit(): void {
     if (this.groupForm.valid) {
       // Lógica para enviar el formulario
-      console.log(this.groupForm.value);
       this.groupsService.createGroup(this.groupForm.value).subscribe({
         next: (response) => {
           this.dialogRef.close({ status: 'success', data: response });
@@ -78,7 +77,7 @@ export class GroupsModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.groupsService.getGroups().subscribe((results) => {
-      console.log(results);
+      // console.log(results);
     });
   }
 

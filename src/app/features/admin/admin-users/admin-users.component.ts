@@ -45,7 +45,6 @@ export class AdminUsersComponent implements OnInit {
 
   getUsers() {
     this.usersService.getUsersPaginated(this.currentPage, this.pageSize).subscribe((response: any) => {
-      console.log(response);
       this.users = response.data;
       this.totalUsers = response.total;
       this.dataSource = new MatTableDataSource(this.users);

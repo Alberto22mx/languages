@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UsersService } from '../../../core/services/users/users.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { UserModalComponent } from '../modals/user-modal/user-modal.component';
+import { LessonsModalComponent } from '../modals/lessons-modal/lessons-modal.component';
 
 @Component({
   selector: 'app-admin-lessons',
@@ -43,7 +44,6 @@ export class AdminLessonsComponent {
 
   getUsers() {
     this.usersService.getUsersPaginated(this.currentPage, this.pageSize).subscribe((response: any) => {
-      console.log(response);
       this.users = response.data;
       this.totalUsers = response.total;
       this.dataSource = new MatTableDataSource(this.users);
@@ -75,7 +75,7 @@ export class AdminLessonsComponent {
   openDialog(): void {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
-    this.dialog.open(UserModalComponent, {
+    this.dialog.open(LessonsModalComponent, {
       width: '700px',
     });
   }

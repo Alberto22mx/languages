@@ -9,7 +9,7 @@ import { User } from '../../../core/interfaces/user.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { UsersService } from '../../../core/services/users/users.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
-import { UserModalComponent } from '../modals/user-modal/user-modal.component';
+import { GamesModalComponent } from '../modals/games-modal/games-modal.component';
 
 @Component({
   selector: 'app-admin-games',
@@ -75,7 +75,7 @@ export class AdminGamesComponent {
   openDialog(): void {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
-    this.dialog.open(UserModalComponent, {
+    this.dialog.open(GamesModalComponent, {
       width: '700px',
     });
   }

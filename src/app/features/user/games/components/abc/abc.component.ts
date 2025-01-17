@@ -19,7 +19,7 @@ export class AbcComponent extends Phaser.Scene implements OnInit {
   ngOnInit(): void {
     this.userService.getUsers()
           .subscribe((result) => {
-            console.log(result);
+            // console.log(result);
           });
     this.clickedLetters = ['E','K','L','R'];
     const config: Phaser.Types.Core.GameConfig = {

@@ -71,36 +71,31 @@ export class GroupsAssignModalComponent implements OnInit {
   // Usuarios Maestros
   getUsersTeachers() {
     this.usersService.getActiveUsersByType(UserType.TEACHER).subscribe((response: any) => {
-      console.log("Maestros", response);
       this.unassignedUsersTeacher = this.transformUsersToAssignableItems(response);
     });
   }
   // Usuarios Estudiantes
   getUsersStudent() {
     this.usersService.getActiveUsersByType(UserType.STUDENT).subscribe((response: any) => {
-      console.log("Estudiantes", response);
       this.unassignedUsers = this.transformUsersToAssignableItems(response);
     });
   }
   // Lecciones
   getLessons() {
     this.lessonsService.findAll().subscribe((response: any) => {
-      console.log("Lecciones", response);
-      this.unassignedLessons = this.transformUsersToAssignableItems(response);
+      this.unassignedLessons = this.transformDataToAssignableItems(response);
     });
   }
   // Juegos
   getGames() {
     this.gamesService.findAll().subscribe((response: any) => {
-      console.log("Juegos", response);
-      this.unassignedGames = this.transformUsersToAssignableItems(response);
+      this.unassignedGames = this.transformDataToAssignableItems(response);
     });
   }
   // Exámenes
   getExams() {
     this.examsService.findAll().subscribe((response: any) => {
-      console.log("Exámenes", response);
-      this.unassignedExams = this.transformUsersToAssignableItems(response);
+      this.unassignedExams = this.transformDataToAssignableItems(response);
     });
   }
 
@@ -112,7 +107,7 @@ export class GroupsAssignModalComponent implements OnInit {
       exams: this.assignedExams.map(exam => exam.id),
     };
 
-    console.log('Datos a guardar:', updatedGroup);
+    // console.log('Datos a guardar:', updatedGroup);
 
     // Envía los datos al backend
   }
@@ -130,7 +125,6 @@ export class GroupsAssignModalComponent implements OnInit {
       games: this.assignedGames.map((game) => game.id),
       exams: this.assignedExams.map((exam) => exam.id),
     };
-    console.log('Datos a guardar:', updatedGroup);
     // if (this.userForm.valid) {
     //   // Lógica para enviar el formulario
     //   console.log(this.userForm.value);
@@ -140,7 +134,6 @@ export class GroupsAssignModalComponent implements OnInit {
   }
 
   transformUsersToAssignableItems(users: any[]): AssignableItem[] {
-    console.log("users", users);
     return users.map(user => ({
       id: user.id || '', // Usar el ID o un valor vacío si no existe
       name: `${user.firstName || ''} ${user.lastNameFather || ''} ${user.lastNameMother || ''}`.trim(), // Construir el nombre completo
@@ -148,10 +141,19 @@ export class GroupsAssignModalComponent implements OnInit {
     }));
   }
 
+  transformDataToAssignableItems(data: any[]): AssignableItem[] {
+    return data.map(item => ({
+      id: item.id || '', // Usar el ID o un valor vacío si no existe
+      title: item.title || '', // Usar el título o un valor vacío si no existe
+      name: '', // Campo vacío porque no aplica en este caso
+      registrationNumber: '' // Campo vacío porque no aplica en este caso
+    }));
+  }
+  
+
   // Maneja la actualización de la lista asignada
   onUpdateAssigned(updatedItems: AssignableItem[]) {
     this.assignedUsersTeacher = updatedItems;
-    console.log('Lista asignada actualizada:', this.assignedUsersTeacher);
   }
 
   isDataAvailable(assigned: AssignableItem[], unassigned: AssignableItem[]): boolean {
