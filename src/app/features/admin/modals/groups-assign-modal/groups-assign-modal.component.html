@@ -6,28 +6,30 @@
        (updateAssigned)="onUpdateAssigned($event)"></app-assign>
     </mat-tab>
   </div>
-  <div *ngIf="isDataAvailable(assignedUsersTeacher, unassignedUsersTeacher)">
+  <div *ngIf="isDataAvailable(assignedUsers, unassignedUsers)">
     <mat-tab label="Alumnos">
-      <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
+      <app-assign [items1]="assignedUsers" [items2]="unassignedUsers"
        (updateAssigned)="onUpdateAssigned($event)"></app-assign>
     </mat-tab>
   </div>
-  
-  <!-- <mat-tab label="Alumnos">
-    <app-assign [datos1]="datosGropups" [datos2]="datosUsers"></app-assign>
-  </mat-tab>
-  <mat-tab label="Lecciones">
-    <app-assign [datos1]="datosGropups" [datos2]="datosLessons"></app-assign>
-  </mat-tab>
-  <mat-tab label="Juegos">
-    <app-assign [datos1]="datosGropups" [datos2]="datosGames"></app-assign>
-  </mat-tab> -->
-  <!-- <mat-tab label="Vocabulario">
-    <app-assign [datos1]="datosGropups" [datos2]="datosExams" (messageEvent)="receiveMessage($event)"></app-assign>
-  </mat-tab> -->
-  <!-- <mat-tab label="Examenes">
-    <app-assign [datos1]="datosGropups" [datos2]="datosExams"></app-assign>
-  </mat-tab> -->
+  <div *ngIf="isDataAvailable(assignedLessons, unassignedLessons)">
+    <mat-tab label="Lecciones">
+      <app-assign [items1]="assignedLessons" [items2]="unassignedLessons"
+       (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+    </mat-tab>
+  </div>
+  <div *ngIf="isDataAvailable(assignedGames, unassignedGames)">
+    <mat-tab label="Juegos">
+      <app-assign [items1]="assignedGames" [items2]="unassignedGames"
+       (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+    </mat-tab>
+  </div>
+  <div *ngIf="isDataAvailable(assignedExams, unassignedExams)">
+    <mat-tab label="Exámenes">
+      <app-assign [items1]="assignedExams" [items2]="unassignedExams"
+       (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+    </mat-tab>
+  </div>
 </mat-tab-group>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close (click)="onCancel()">Cancelar</button>

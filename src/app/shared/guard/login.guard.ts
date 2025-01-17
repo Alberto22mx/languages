@@ -15,7 +15,7 @@ export const loginGuard: CanActivateFn = (route, state) => {
   const userType = authService.getUserType()?.toLowerCase();
   
   // Si ya está autenticado, redirigir al dashboard
-  if (userType == 'user') {
+  if (userType == 'student') {
     router.navigate(['/modulos/i/dashboard']);
   } else if(userType == 'teacher') {
     router.navigate(['/modulos/ii/dashboard']);

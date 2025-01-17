@@ -4,7 +4,7 @@
       <h3>ADMINISTRACION DE GRUPOS</h3>
     </div>
     <div>
-      <button mat-flat-button color="primary" (click)="openDialog()">CREAR GRUPO</button>
+      <button mat-flat-button color="primary" (click)="openDialogCreate()">CREAR GRUPO</button>
     </div>
   </div>
   <div>
@@ -53,9 +53,9 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
-              <mat-icon>dialpad</mat-icon>
-              <span>Redial</span>
+            <button mat-menu-item (click)="openDialogAssign(group.id)">
+              <mat-icon>edit</mat-icon>
+              <span>Asignación</span>
             </button>
             <button mat-menu-item disabled>
               <mat-icon>voicemail</mat-icon>

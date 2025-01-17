@@ -9,7 +9,7 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
     const userType = authService.getUserType()?.toLowerCase();
 
     if (!authService.isAuthenticated()) {
-      if (userType == 'user') {
+      if (userType == 'student') {
         router.navigate(['/modulos/i/dashboard']);
       } else if(userType == 'teacher') {
         router.navigate(['/modulos/ii/dashboard']);
@@ -23,7 +23,7 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
       return true;
     }
 
-    if (userType == 'user') {
+    if (userType == 'student') {
       router.navigate(['/modulos/i/dashboard']);
     } else if(userType == 'teacher') {
       router.navigate(['/modulos/ii/dashboard']);

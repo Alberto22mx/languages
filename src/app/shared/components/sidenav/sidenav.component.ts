@@ -25,7 +25,7 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit(): void {
     const userType = this.authService.getUserType();
-    if (userType == 'user') {
+    if (userType == 'student') {
       this.isUser = true;
     } else if(userType == 'teacher') {
       this.isTeacher = true;

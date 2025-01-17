@@ -48,7 +48,7 @@ export const routes: Routes = [
               { path: 'exam', component: ExamComponent },
               { path: 'profil', component: ProfileComponent },
             ],
-            canActivate: [authGuard, roleGuard(['user'])]
+            canActivate: [authGuard, roleGuard(['student'])]
           },
           {
             path: 'ii', children: [

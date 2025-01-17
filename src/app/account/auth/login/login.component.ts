@@ -52,7 +52,7 @@ export class LoginComponent {
             this.snackBar.open('Iniciando sesión...', 'Cerrar', {
               duration: 3000
             });
-            if (res.userType == 'user') {
+            if (res.userType == 'student') {
               this.router.navigate(['/modulos/i/dashboard']);
             } else if(res.userType == 'teacher') {
               this.router.navigate(['/modulos/ii/dashboard']);

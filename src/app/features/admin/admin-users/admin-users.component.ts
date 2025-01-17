@@ -77,10 +77,11 @@ export class AdminUsersComponent implements OnInit {
   openDialog(): void {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
-    this.dialog.open(UserModalComponent, {
-      width: '700px',
+    const dialogRef = this.dialog.open(UserModalComponent, {
+      width: '750px',
     });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getUsers();
+    });  
   }
-
-  
 }

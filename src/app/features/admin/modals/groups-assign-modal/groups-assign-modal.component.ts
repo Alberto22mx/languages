@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AssignComponent } from "./assign/assign.component";
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import { GroupsService } from '../../../../core/services/groups/groups.service';
@@ -8,6 +8,9 @@ import { UsersService } from '../../../../core/services/users/users.service';
 import { AssignableItem } from '../../../../core/interfaces/assignable-item.interce';
 import { CommonModule } from '@angular/common';
 import { UserType } from '../../../../core/interfaces/user.interface';
+import { ExamsService } from '../../../../core/services/exams/exams.service';
+import { LessonsService } from '../../../../core/services/lessons/lessons.service';
+import { GamesService } from '../../../../core/services/games/games.service';
 
 @Component({
   selector: 'app-groups-assign-modal',
@@ -32,29 +35,72 @@ export class GroupsAssignModalComponent implements OnInit {
   // Exámenes
   assignedExams: AssignableItem[] = [];
   unassignedExams: AssignableItem[] = [];
+  id: string = '';
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<GroupsAssignModalComponent>,
     private groupsService: GroupsService,
     private usersService: UsersService,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private examsService: ExamsService,
+    private lessonsService: LessonsService,
+    private gamesService: GamesService
+  ) {
+    this.id = data.id;
+  }
 
   ngOnInit(): void {
     this.getGroups();
-    this.getUsers();
+    this.getUsersTeachers();
+    this.getUsersStudent();
+    this.getLessons();
+    this.getGames();
+    this.getExams();
   }
 
   getGroups() {
-    this.groupsService.getGroup('79e96417-23d9-4c6b-9654-ae700cb23010').subscribe((response: any) => {
+    this.groupsService.getGroup(this.id).subscribe((response: any) => {
       this.assignedUsersTeacher = response.users;
+      this.assignedUsers = response.users;
+      this.assignedLessons = response.lessons;
+      this.assignedGames = response.games;
+      this.assignedExams = response.exams;
     });
   }
 
-  getUsers() {
-    this.usersService.getActiveUsersByType(UserType.ADMIN).subscribe((response: any) => {
-      console.log(response);
+  // Usuarios Maestros
+  getUsersTeachers() {
+    this.usersService.getActiveUsersByType(UserType.TEACHER).subscribe((response: any) => {
+      console.log("Maestros", response);
       this.unassignedUsersTeacher = this.transformUsersToAssignableItems(response);
+    });
+  }
+  // Usuarios Estudiantes
+  getUsersStudent() {
+    this.usersService.getActiveUsersByType(UserType.STUDENT).subscribe((response: any) => {
+      console.log("Estudiantes", response);
+      this.unassignedUsers = this.transformUsersToAssignableItems(response);
+    });
+  }
+  // Lecciones
+  getLessons() {
+    this.lessonsService.findAll().subscribe((response: any) => {
+      console.log("Lecciones", response);
+      this.unassignedLessons = this.transformUsersToAssignableItems(response);
+    });
+  }
+  // Juegos
+  getGames() {
+    this.gamesService.findAll().subscribe((response: any) => {
+      console.log("Juegos", response);
+      this.unassignedGames = this.transformUsersToAssignableItems(response);
+    });
+  }
+  // Exámenes
+  getExams() {
+    this.examsService.findAll().subscribe((response: any) => {
+      console.log("Exámenes", response);
+      this.unassignedExams = this.transformUsersToAssignableItems(response);
     });
   }
 

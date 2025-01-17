@@ -81,11 +81,39 @@ export class AdminGroupsComponent implements OnInit {
     this.getUsers();
   }
 
-  openDialog(): void {
+  openDialogCreate(): void {
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
+    const dialogRef = this.dialog.open(GroupsModalComponent, {
+      width: '750px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('El modal se ha cerrado');
+      console.log('Resultado:', result);
+      if (result.status === 'success') {
+        this.getUsers();
+      } 
+      // if (result) {
+      //   if (result.status === 'success') {
+      //     console.log('Datos guardados:', result.data);
+      //   } else if (result.status === 'cancel') {
+      //     console.log('El usuario canceló la operación');
+      //   } else if (result.status === 'error') {
+      //     console.log('Error:', result.message);
+      //   }
+      // } else {
+      //   console.log('El modal se cerró sin acción específica');
+      // }
+    });
+  }
+
+  openDialogAssign(id: string): void {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
     const dialogRef = this.dialog.open(GroupsAssignModalComponent, {
       width: '750px',
+      data: { id },
     });
 
     dialogRef.afterClosed().subscribe(result => {
