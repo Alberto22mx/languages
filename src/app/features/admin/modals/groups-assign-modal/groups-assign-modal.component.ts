@@ -11,6 +11,7 @@ import { UserType } from '../../../../core/interfaces/user.interface';
 import { ExamsService } from '../../../../core/services/exams/exams.service';
 import { LessonsService } from '../../../../core/services/lessons/lessons.service';
 import { GamesService } from '../../../../core/services/games/games.service';
+import { forkJoin, map } from 'rxjs';
 
 @Component({
   selector: 'app-groups-assign-modal',
@@ -50,53 +51,80 @@ export class GroupsAssignModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getGroups();
-    this.getUsersTeachers();
-    this.getUsersStudent();
-    this.getLessons();
-    this.getGames();
-    this.getExams();
+    this.initializeData();
   }
-
-  getGroups() {
-    this.groupsService.getGroup(this.id).subscribe((response: any) => {
-      this.assignedUsersTeacher = response.users;
-      this.assignedUsers = response.users;
-      this.assignedLessons = response.lessons;
-      this.assignedGames = response.games;
-      this.assignedExams = response.exams;
+  
+  initializeData() {
+    this.getGroups().subscribe((groupData) => {
+      forkJoin({
+        teachers: this.getUsersTeachers(),
+        students: this.getUsersStudent(),
+        lessons: this.getLessons(),
+        games: this.getGames(),
+        exams: this.getExams(),
+      }).subscribe(({ teachers, students, lessons, games, exams }) => {
+        // Aplicar el filtrado con los datos transformados
+        this.unassignedUsersTeacher = this.filterUnassignedItems(teachers, groupData.users);
+        this.unassignedUsers = this.filterUnassignedItems(students, groupData.users);
+        this.unassignedLessons = this.filterUnassignedItems(lessons, groupData.lessons);
+        this.unassignedGames = this.filterUnassignedItems(games, groupData.games);
+        this.unassignedExams = this.filterUnassignedItems(exams, groupData.exams);
+      });
     });
   }
-
+  
+  getGroups() {
+    return this.groupsService.getGroup(this.id).pipe(
+      map((response: any) => {
+        // Asignar datos del grupo
+        this.assignedUsersTeacher = response.users;
+        this.assignedUsers = response.users;
+        this.assignedLessons = response.lessons;
+        this.assignedGames = response.games;
+        this.assignedExams = response.exams;
+        return response; // Retornar para el siguiente paso
+      })
+    );
+  }
+  
   // Usuarios Maestros
   getUsersTeachers() {
-    this.usersService.getActiveUsersByType(UserType.TEACHER).subscribe((response: any) => {
-      this.unassignedUsersTeacher = this.transformUsersToAssignableItems(response);
-    });
+    return this.usersService.getActiveUsersByType(UserType.TEACHER).pipe(
+      map((response: any) => this.transformUsersToAssignableItems(response))
+    );
   }
+  
   // Usuarios Estudiantes
   getUsersStudent() {
-    this.usersService.getActiveUsersByType(UserType.STUDENT).subscribe((response: any) => {
-      this.unassignedUsers = this.transformUsersToAssignableItems(response);
-    });
+    return this.usersService.getActiveUsersByType(UserType.STUDENT).pipe(
+      map((response: any) => this.transformUsersToAssignableItems(response))
+    );
   }
+  
   // Lecciones
   getLessons() {
-    this.lessonsService.findAll().subscribe((response: any) => {
-      this.unassignedLessons = this.transformDataToAssignableItems(response);
-    });
+    return this.lessonsService.findAll().pipe(
+      map((response: any) => this.transformDataToAssignableItems(response))
+    );
   }
+  
   // Juegos
   getGames() {
-    this.gamesService.findAll().subscribe((response: any) => {
-      this.unassignedGames = this.transformDataToAssignableItems(response);
-    });
+    return this.gamesService.findAll().pipe(
+      map((response: any) => this.transformDataToAssignableItems(response))
+    );
   }
+  
   // Exámenes
   getExams() {
-    this.examsService.findAll().subscribe((response: any) => {
-      this.unassignedExams = this.transformDataToAssignableItems(response);
-    });
+    return this.examsService.findAll().pipe(
+      map((response: any) => this.transformDataToAssignableItems(response))
+    );
+  }
+  
+  // Filtrar elementos no asignados
+  filterUnassignedItems(items: AssignableItem[], assignedItems: AssignableItem[]): AssignableItem[] {
+    return items.filter(item => !assignedItems.some(assigned => assigned.id === item.id));
   }
 
   saveGroup() {
@@ -107,7 +135,7 @@ export class GroupsAssignModalComponent implements OnInit {
       exams: this.assignedExams.map(exam => exam.id),
     };
 
-    // console.log('Datos a guardar:', updatedGroup);
+    console.log('Datos a guardar:', updatedGroup);
 
     // Envía los datos al backend
   }
@@ -150,7 +178,6 @@ export class GroupsAssignModalComponent implements OnInit {
     }));
   }
   
-
   // Maneja la actualización de la lista asignada
   onUpdateAssigned(updatedItems: AssignableItem[]) {
     this.assignedUsersTeacher = updatedItems;
