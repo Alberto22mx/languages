@@ -5,22 +5,24 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { User } from '../../../core/interfaces/user.interface';
 import { MatDialog } from '@angular/material/dialog';
-import { UsersService } from '../../../core/services/users/users.service';
-import { AuthService } from '../../../core/services/auth/auth.service';
 import { GamesModalComponent } from '../modals/games-modal/games-modal.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { GamesService } from '../../../core/services/games/games.service';
+import { Games } from '../../../core/interfaces/games.interface';
+import { AlertsService } from '../../../core/services/alerts/alerts.service';
 
 @Component({
   selector: 'app-admin-games',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule,],
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatMenuModule, MatIconModule],
   templateUrl: './admin-games.component.html',
   styleUrl: './admin-games.component.css'
 })
 export class AdminGamesComponent {
   readonly dialog = inject(MatDialog);
-  users: User[] = [];
+  games: Games[] = [];
 
   totalUsers = 0;
   pageSize = 10;
@@ -29,24 +31,23 @@ export class AdminGamesComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['name', 'registrationNumber', 'phone', 'email', 'state', 'userType'];
-  dataSource!: MatTableDataSource<User>;
+  displayedColumns: string[] = ['title', 'instructions', 'actions'];
+  dataSource!: MatTableDataSource<Games>;
 
   constructor(
-    private usersService: UsersService,
-    private authService: AuthService
+    private gamesService: GamesService,
+    private alertsService: AlertsService,
   ) {}
 
   ngOnInit() {
-    this.getUsers();
+    this.getGames();
   }
 
-  getUsers() {
-    this.usersService.getUsersPaginated(this.currentPage, this.pageSize).subscribe((response: any) => {
-      console.log(response);
-      this.users = response.data;
+  getGames() {
+    this.gamesService.findAll().subscribe((response: any) => {
+      this.games = response;
       this.totalUsers = response.total;
-      this.dataSource = new MatTableDataSource(this.users);
+      this.dataSource = new MatTableDataSource(this.games);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -69,7 +70,7 @@ export class AdminGamesComponent {
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    this.getUsers();
+    this.getGames();
   }
 
   openDialog(): void {
@@ -78,5 +79,23 @@ export class AdminGamesComponent {
     this.dialog.open(GamesModalComponent, {
       width: '700px',
     });
+  }
+
+  async confirmDelete(id: string) {
+    const confirmed = await this.alertsService.confirm(
+      '¿Seguro que deseas eliminar este elemento?',
+      'Confirmación de Eliminación'
+    );
+    if (confirmed) {
+      this.gamesService.delete(id).subscribe({
+        next: (res) => {
+          this.getGames();
+          this.alertsService.success('Elemento eliminado con éxito.');
+        },
+        error: (err) => {
+          this.alertsService.warning('Eliminación cancelada.');
+        },
+      });
+    }
   }
 }

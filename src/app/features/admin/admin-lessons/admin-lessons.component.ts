@@ -5,23 +5,24 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { User } from '../../../core/interfaces/user.interface';
 import { MatDialog } from '@angular/material/dialog';
-import { UsersService } from '../../../core/services/users/users.service';
-import { AuthService } from '../../../core/services/auth/auth.service';
-import { UserModalComponent } from '../modals/user-modal/user-modal.component';
 import { LessonsModalComponent } from '../modals/lessons-modal/lessons-modal.component';
+import { LessonsService } from '../../../core/services/lessons/lessons.service';
+import { Lessons } from '../../../core/interfaces/lessons.interface';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { AlertsService } from '../../../core/services/alerts/alerts.service';
 
 @Component({
   selector: 'app-admin-lessons',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule,],
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatMenuModule, MatIconModule],
   templateUrl: './admin-lessons.component.html',
   styleUrl: './admin-lessons.component.css'
 })
 export class AdminLessonsComponent {
   readonly dialog = inject(MatDialog);
-  users: User[] = [];
+  lessons: Lessons[] = [];
 
   totalUsers = 0;
   pageSize = 10;
@@ -30,23 +31,23 @@ export class AdminLessonsComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['name', 'registrationNumber', 'phone', 'email', 'state', 'userType'];
-  dataSource!: MatTableDataSource<User>;
+  displayedColumns: string[] = ['title', 'instructions', 'actions'];
+  dataSource!: MatTableDataSource<Lessons>;
 
   constructor(
-    private usersService: UsersService,
-    private authService: AuthService
+    private lessonsService: LessonsService,
+    private alertsService: AlertsService,
   ) {}
 
   ngOnInit() {
-    this.getUsers();
+    this.getLessons();
   }
 
-  getUsers() {
-    this.usersService.getUsersPaginated(this.currentPage, this.pageSize).subscribe((response: any) => {
-      this.users = response.data;
+  getLessons() {
+    this.lessonsService.findAll().subscribe((response: any) => {
+      this.lessons = response;
       this.totalUsers = response.total;
-      this.dataSource = new MatTableDataSource(this.users);
+      this.dataSource = new MatTableDataSource(this.lessons);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -69,7 +70,7 @@ export class AdminLessonsComponent {
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    this.getUsers();
+    this.getLessons();
   }
 
   openDialog(): void {
@@ -78,5 +79,23 @@ export class AdminLessonsComponent {
     this.dialog.open(LessonsModalComponent, {
       width: '700px',
     });
+  }
+
+  async confirmDelete(id: string) {
+    const confirmed = await this.alertsService.confirm(
+      '¿Seguro que deseas eliminar este elemento?',
+      'Confirmación de Eliminación'
+    );
+    if (confirmed) {
+      this.lessonsService.delete(id).subscribe({
+        next: (res) => {
+          this.getLessons();
+          this.alertsService.success('Elemento eliminado con éxito.');
+        },
+        error: (err) => {
+          this.alertsService.warning('Eliminación cancelada.');
+        },
+      });
+    }
   }
 }

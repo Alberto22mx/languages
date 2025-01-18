@@ -6,22 +6,22 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { User } from '../../../core/interfaces/user.interface';
-import { UsersService } from '../../../core/services/users/users.service';
-import { AuthService } from '../../../core/services/auth/auth.service';
-import { UserModalComponent } from '../modals/user-modal/user-modal.component';
 import { ExamModalComponent } from '../modals/exam-modal/exam-modal.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { ExamsService } from '../../../core/services/exams/exams.service';
+import { Exams } from '../../../core/interfaces/exams.interface';
 
 @Component({
   selector: 'app-admin-exam',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule,],
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatMenuModule, MatIconModule],
   templateUrl: './admin-exam.component.html',
   styleUrl: './admin-exam.component.css'
 })
 export class AdminExamComponent {
   readonly dialog = inject(MatDialog);
-  users: User[] = [];
+  exams: Exams[] = [];
 
   totalUsers = 0;
   pageSize = 10;
@@ -30,23 +30,20 @@ export class AdminExamComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['name', 'registrationNumber', 'phone', 'email', 'state', 'userType'];
-  dataSource!: MatTableDataSource<User>;
+  displayedColumns: string[] = ['title', 'instructions', 'actions'];
+  dataSource!: MatTableDataSource<Exams>;
 
-  constructor(
-    private usersService: UsersService,
-    private authService: AuthService
-  ) {}
+  constructor(private examsService: ExamsService) {}
 
   ngOnInit() {
     this.getUsers();
   }
 
   getUsers() {
-    this.usersService.getUsersPaginated(this.currentPage, this.pageSize).subscribe((response: any) => {
-      this.users = response.data;
+    this.examsService.findAll().subscribe((response: any) => {
+      this.exams = response;
       this.totalUsers = response.total;
-      this.dataSource = new MatTableDataSource(this.users);
+      this.dataSource = new MatTableDataSource(this.exams);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
