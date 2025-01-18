@@ -57,7 +57,7 @@
               <mat-icon>edit</mat-icon>
               <span>Asignación</span>
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="confirmDelete(group.id)">
               <mat-icon>delete_forever</mat-icon>
               <span>Eliminar</span>
             </button>

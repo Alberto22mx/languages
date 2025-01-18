@@ -1,0 +1,27 @@
+<div class="contenedor">
+  <div class="header-profile">
+    <div id="contenedor-image">
+    </div>
+    <div class="profile-picture">
+      <ng-container *ngIf="user.image; else defaultIcon">
+        <img [src]="user.image" alt="Foto de perfil" />
+      </ng-container>
+      <ng-template #defaultIcon>
+        <mat-icon>account_circle</mat-icon>
+      </ng-template>
+    </div>
+  </div>
+  <div id="contenedor-title" class="contenedor-title">
+    <div>
+      <h2>{{ user.firstName }} {{ user.lastNameFather }} {{ user.lastNameMother }}</h2>
+    </div>
+    <div>
+      <button mat-flat-button color="primary">EDITAR PERFIL</button>
+    </div>
+  </div>
+  <div>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Teléfono:</strong> {{ user.phone }}</p>
+    <p><strong>Fecha de Nacimiento:</strong> {{ user.birthDate | date }}</p>
+  </div>
+</div>

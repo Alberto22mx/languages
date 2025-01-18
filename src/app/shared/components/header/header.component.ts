@@ -23,11 +23,15 @@ import { AuthService } from '../../../core/services/auth/auth.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  username = 'John Doe'; // Ejemplo
+  username: string | null;
+  matricula: string | null;
   
   @Output() toggleSidenav = new EventEmitter<void>();
 
-  constructor(private router: Router, private authService: AuthService){ }
+  constructor(private router: Router, private authService: AuthService) {
+    this.username = authService.getUserName();
+    this.matricula = authService.getRegistrationNumber();
+  }
 
   logout() {
     // Implementar lógica de logout

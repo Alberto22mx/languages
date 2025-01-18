@@ -6,16 +6,16 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../../core/services/auth/auth.service';
 import { GroupsModalComponent } from '../modals/groups-modal/groups-modal.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import {MatCardModule} from '@angular/material/card';
-import {MatIconModule} from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { GroupsService } from '../../../core/services/groups/groups.service';
 import { Group } from '../../../core/interfaces/groups.interface';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
 import { GroupsAssignModalComponent } from '../modals/groups-assign-modal/groups-assign-modal.component';
+import { AlertsService } from '../../../core/services/alerts/alerts.service';
 
 @Component({
   selector: 'app-admin-groups',
@@ -48,15 +48,15 @@ export class AdminGroupsComponent implements OnInit {
   expandedElement: any | null;
 
   constructor(
-    private authService: AuthService,
     private groupsService: GroupsService,
+    private alertsService: AlertsService,
   ) {}
 
   ngOnInit() {
-    this.getUsers();
+    this.getGroups();
   }
 
-  getUsers() {
+  getGroups() {
     this.groupsService.getGroups().subscribe((response: any) => {
       this.group = response;
       this.totalGroups = response.length;
@@ -78,7 +78,7 @@ export class AdminGroupsComponent implements OnInit {
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    this.getUsers();
+    this.getGroups();
   }
 
   openDialogCreate(): void {
@@ -90,7 +90,7 @@ export class AdminGroupsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.status === 'success') {
-        this.getUsers();
+        this.getGroups();
       } 
       // if (result) {
       //   if (result.status === 'success') {
@@ -116,7 +116,7 @@ export class AdminGroupsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.status === 'success') {
-        this.getUsers();
+        this.getGroups();
       } 
       // if (result) {
       //   if (result.status === 'success') {
@@ -130,5 +130,24 @@ export class AdminGroupsComponent implements OnInit {
       //   console.log('El modal se cerró sin acción específica');
       // }
     });
+  }
+
+  async confirmDelete(id: string) {
+    const confirmed = await this.alertsService.confirm(
+      '¿Seguro que deseas eliminar este elemento?',
+      'Confirmación de Eliminación'
+    );
+    if (confirmed) {
+      this.groupsService.deleteGroup(id).subscribe({
+        next: (res) => {
+          this.getGroups();
+          this.alertsService.success('Elemento eliminado con éxito.');
+        },
+        error: (err) => {
+          this.alertsService.warning('Eliminación cancelada.');
+        },
+      });
+      
+    }
   }
 }

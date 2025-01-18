@@ -18,7 +18,7 @@ import { AdminGroupsComponent } from './features/admin/admin-groups/admin-groups
 import { AdminLessonsComponent } from './features/admin/admin-lessons/admin-lessons.component';
 import { AdminUsersComponent } from './features/admin/admin-users/admin-users.component';
 import { AdminProgressComponent } from './features/admin/admin-progress/admin-progress.component';
-import { ProfileComponent } from './features/user/profile/profile.component';
+import { ProfileComponent } from './shared/components/profile/profile.component';
 import { AdminVocabularyComponent } from './features/admin/admin-vocabulary/admin-vocabulary.component';
 import { TeacherExamComponent } from './features/teacher/teacher-exam/teacher-exam.component';
 import { TeacherGroupsComponent } from './features/teacher/teacher-groups/teacher-groups.component';

@@ -1,14 +1,47 @@
 mat-sidenav-container {
-    height: 100vh;
-    
-  }
+  height: 100vh;
+}
 
-  mat-sidenav {
-    border-right: 1px solid rgba(0, 0, 0, 0.12);
-    background-color: #002058;
-    color: white;
-  }
+mat-sidenav {
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: #002058;
+  color: white;
+}
 
-  .content {
-    padding: 20px;
-  }
+.content {
+  padding: 20px;
+}
+
+/* Asegúrate de que el contenedor principal ocupe toda la altura de la página */
+mat-sidenav-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ocupa al menos toda la altura de la ventana */
+}
+
+/* Configura el contenedor de contenido principal */
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Permite que el contenido crezca */
+}
+
+/* Asegura que el contenedor principal (header + contenido + footer) ocupe todo el espacio */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 100%; /* Extiende a la altura total del sidenav */
+}
+
+/* Estilo para el contenido principal */
+.content {
+  flex-grow: 1; /* Permite que el contenido crezca y ocupe el espacio disponible */
+}
+
+/* Estilo para el pie de página */
+.footer {
+  background-color: #f8f9fa; /* Color de fondo del pie de página */
+  padding: 10px;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1); /* Sombra superior */
+}

@@ -16,7 +16,9 @@ export class AuthService {
   private token: string | null = null;
   private userType: string | null = null;
   private userId: string | null = null;
-  
+  private userName: string | null = null; // Nueva propiedad para el nombre del usuario
+  private registrationNumber: string | null = null;
+
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
@@ -29,8 +31,8 @@ export class AuthService {
 
   login(credentials: LoginCredentials): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(response => this.handleAuthResponse(response)),
-      catchError(error => {
+      tap((response) => this.handleAuthResponse(response)),
+      catchError((error) => {
         console.error('Error during login:', error);
         return throwError(() => new Error('Login failed'));
       })
@@ -42,13 +44,15 @@ export class AuthService {
   }
 
   setAuthData(response: AuthResponse): void {
-    if (!response.accessToken || !response.idUser || !response.userType) {
+    if (!response.accessToken || !response.idUser || !response.userType || !response.userName || !response.registrationNumber) {
       throw new Error('Invalid authentication response');
     }
 
     this.token = response.accessToken;
     this.userId = response.idUser;
     this.userType = response.userType;
+    this.userName = response.userName; // Guardar el nombre del usuario
+    this.registrationNumber = response.registrationNumber;
     this.isAuthenticatedSubject.next(true);
 
     if (DEVELOPMENT_MODE) {
@@ -69,6 +73,14 @@ export class AuthService {
     return this.userId;
   }
 
+  getUserName(): string | null {
+    return this.userName; // Nuevo getter para el nombre del usuario
+  }
+
+  getRegistrationNumber(): string | null {
+    return this.registrationNumber; // Nuevo getter para el nombre del usuario
+  }
+
   // Método para verificar autenticación
   isAuthenticated(): boolean {
     return this.token !== null;
@@ -84,8 +96,10 @@ export class AuthService {
     this.token = null;
     this.userId = null;
     this.userType = null;
+    this.userName = null; // Limpiar el nombre del usuario
+    this.registrationNumber = null;
     this.isAuthenticatedSubject.next(false);
-    
+
     if (DEVELOPMENT_MODE) {
       localStorage.removeItem('dev_auth_data');
     }
@@ -108,11 +122,16 @@ export class AuthService {
 
   private saveDevData(data: AuthResponse): void {
     try {
-      localStorage.setItem('dev_auth_data', JSON.stringify({
-        accessToken: data.accessToken,
-        idUser: data.idUser,
-        userType: data.userType
-      }));
+      localStorage.setItem(
+        'dev_auth_data',
+        JSON.stringify({
+          accessToken: data.accessToken,
+          idUser: data.idUser,
+          userType: data.userType,
+          userName: data.userName, // Guardar también el nombre del usuario en desarrollo
+          registrationNumber: data.registrationNumber,
+        })
+      );
     } catch (error) {
       console.error('Error saving development auth data:', error);
     }
@@ -123,14 +142,16 @@ export class AuthService {
       data &&
       typeof data.accessToken === 'string' &&
       typeof data.idUser === 'string' &&
-      typeof data.userType === 'string'
+      typeof data.userType === 'string' &&
+      typeof data.userName === 'string' &&
+      typeof data.registrationNumber === 'string'
     );
   }
 
   // Método para verificar si el token está expirado (opcional)
   private isTokenExpired(): boolean {
     if (!this.token) return true;
-    
+
     try {
       const token = this.token;
       const payload = JSON.parse(atob(token.split('.')[1]));

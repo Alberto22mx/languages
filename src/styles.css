@@ -2,3 +2,16 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+:root {
+  font-size: 100%; /* Nivel de zoom inicial */
+}
+
+.zoom-75 {
+  font-size: 75%;
+}
+
+.zoom-90 {
+  font-size: 90%;
+}
+
