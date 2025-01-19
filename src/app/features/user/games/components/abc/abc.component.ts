@@ -64,6 +64,6 @@ export class AbcComponent extends Phaser.Scene implements OnInit {
   }
 
   getClickedLetters() {
-    console.log(this.clickedLetters);
+    // console.log(this.clickedLetters);
   }
 }

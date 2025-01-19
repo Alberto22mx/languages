@@ -12,7 +12,6 @@ import { ExamsService } from '../../../../core/services/exams/exams.service';
 import { LessonsService } from '../../../../core/services/lessons/lessons.service';
 import { GamesService } from '../../../../core/services/games/games.service';
 import { forkJoin, map } from 'rxjs';
-import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
   selector: 'app-groups-assign-modal',
@@ -47,7 +46,6 @@ export class GroupsAssignModalComponent implements OnInit {
     private examsService: ExamsService,
     private lessonsService: LessonsService,
     private gamesService: GamesService,
-    private alertsService: AlertsService,
   ) {
     this.id = data.id;
   }
@@ -58,7 +56,6 @@ export class GroupsAssignModalComponent implements OnInit {
   
   initializeData() {
     this.getGroups().subscribe((groupData) => {
-      console.log(groupData);
       forkJoin({
         teachers: this.getUsersTeachers(),
         students: this.getUsersStudent(),
@@ -66,25 +63,52 @@ export class GroupsAssignModalComponent implements OnInit {
         games: this.getGames(),
         exams: this.getExams(),
       }).subscribe(({ teachers, students, lessons, games, exams }) => {
-        // Aplicar el filtrado con los datos transformados
-        this.unassignedUsersTeacher = this.filterUnassignedItems(teachers, groupData.users);
-        this.unassignedUsers = this.filterUnassignedItems(students, groupData.users);
-        this.unassignedLessons = this.filterUnassignedItems(lessons, groupData.lessons);
-        this.unassignedGames = this.filterUnassignedItems(games, groupData.games);
-        this.unassignedExams = this.filterUnassignedItems(exams, groupData.exams);
+        // Usuarios asignados y no asignados
+        this.assignedUsersTeacher = teachers.filter((teacher) =>
+          groupData.users.includes(teacher.id)
+        );
+        this.unassignedUsersTeacher = teachers.filter(
+          (teacher) => !groupData.users.includes(teacher.id)
+        );
+  
+        this.assignedUsers = students.filter((student) =>
+          groupData.users.includes(student.id)
+        );
+        this.unassignedUsers = students.filter(
+          (student) => !groupData.users.includes(student.id)
+        );
+  
+        // Lecciones
+        this.assignedLessons = lessons.filter((lesson) =>
+          groupData.lessons.includes(lesson.id)
+        );
+        this.unassignedLessons = lessons.filter(
+          (lesson) => !groupData.lessons.includes(lesson.id)
+        );
+  
+        // Juegos
+        this.assignedGames = games.filter((game) =>
+          groupData.games.includes(game.id)
+        );
+        this.unassignedGames = games.filter(
+          (game) => !groupData.games.includes(game.id)
+        );
+  
+        // Exámenes
+        this.assignedExams = exams.filter((exam) =>
+          groupData.exams.includes(exam.id)
+        );
+        this.unassignedExams = exams.filter(
+          (exam) => !groupData.exams.includes(exam.id)
+        );
       });
     });
-  }
+  }  
   
   getGroups() {
     return this.groupsService.getGroup(this.id).pipe(
       map((response: any) => {
-        const assignedTeachers = response.users.filter((user: any) => user.type === UserType.TEACHER);
-        const assignedStudents = response.users.filter((user: any) => user.type === UserType.STUDENT);
-
-        // Asignar datos del grupo
-        this.assignedUsersTeacher = assignedTeachers;
-        this.assignedUsers = assignedStudents;
+        console.log(response.lessons);
         this.assignedLessons = response.lessons;
         this.assignedGames = response.games;
         this.assignedExams = response.exams;
@@ -129,12 +153,12 @@ export class GroupsAssignModalComponent implements OnInit {
   }
   
   // Filtrar elementos no asignados
-  filterUnassignedItems(items: AssignableItem[], assignedItems: AssignableItem[]): AssignableItem[] {
-    return items.filter(item => !assignedItems.some(assigned => assigned.id === item.id));
-  }
+  filterUnassignedItems(items: AssignableItem[], assignedIds: string[]): AssignableItem[] {
+    return items.filter(item => !assignedIds.includes(item.id));
+  }  
 
   onCancel(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({ status: 'error' });
   }
 
   onSubmit(): void {
@@ -163,7 +187,8 @@ export class GroupsAssignModalComponent implements OnInit {
     return users.map(user => ({
       id: user.id || '', // Usar el ID o un valor vacío si no existe
       name: `${user.firstName || ''} ${user.lastNameFather || ''} ${user.lastNameMother || ''}`.trim(), // Construir el nombre completo
-      registrationNumber: user.registrationNumber || '' // Usar el número de registro o un valor vacío si no existe
+      registrationNumber: user.registrationNumber || '', // Usar el número de registro o un valor vacío si no existe
+      userType: user.userType || ''
     }));
   }
 
@@ -172,14 +197,46 @@ export class GroupsAssignModalComponent implements OnInit {
       id: item.id || '', // Usar el ID o un valor vacío si no existe
       title: item.title || '', // Usar el título o un valor vacío si no existe
       name: '', // Campo vacío porque no aplica en este caso
-      registrationNumber: '' // Campo vacío porque no aplica en este caso
+      registrationNumber: '', // Campo vacío porque no aplica en este caso
+      userType: ''
     }));
   }
   
   // Maneja la actualización de la lista asignada
-  onUpdateAssigned(updatedItems: AssignableItem[]) {
-    this.assignedUsersTeacher = updatedItems;
+  onUpdateAssigned(updatedItems: AssignableItem[]): void {
+    // Actualiza la lista de asignados según la pestaña activa
+    if (this.isCurrentTab('Maestro')) {
+      this.assignedUsersTeacher = updatedItems;
+      this.unassignedUsersTeacher = this.unassignedUsersTeacher.filter(
+        (item) => !updatedItems.some((assigned) => assigned.id === item.id)
+      );
+    } else if (this.isCurrentTab('Alumnos')) {
+      this.assignedUsers = updatedItems;
+      this.unassignedUsers = this.unassignedUsers.filter(
+        (item) => !updatedItems.some((assigned) => assigned.id === item.id)
+      );
+    } else if (this.isCurrentTab('Lecciones')) {
+      this.assignedLessons = updatedItems;
+      this.unassignedLessons = this.unassignedLessons.filter(
+        (item) => !updatedItems.some((assigned) => assigned.id === item.id)
+      );
+    } else if (this.isCurrentTab('Juegos')) {
+      this.assignedGames = updatedItems;
+      this.unassignedGames = this.unassignedGames.filter(
+        (item) => !updatedItems.some((assigned) => assigned.id === item.id)
+      );
+    } else if (this.isCurrentTab('Exámenes')) {
+      this.assignedExams = updatedItems;
+      this.unassignedExams = this.unassignedExams.filter(
+        (item) => !updatedItems.some((assigned) => assigned.id === item.id)
+      );
+    }
   }
+
+  isCurrentTab(tabName: string): boolean {
+    const activeTab = document.querySelector('.mat-tab-label-active')?.textContent?.trim();
+    return activeTab === tabName;
+  }  
 
   isDataAvailable(assigned: AssignableItem[], unassigned: AssignableItem[]): boolean {
     return (assigned && assigned.length > 0) || (unassigned && unassigned.length > 0);
