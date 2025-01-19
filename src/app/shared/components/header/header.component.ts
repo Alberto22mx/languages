@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { UserType } from '../../../core/interfaces/user.interface';
 
 @Component({
   selector: 'app-header',
@@ -25,12 +26,14 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 export class HeaderComponent {
   username: string | null;
   matricula: string | null;
+  userType: string;
   
   @Output() toggleSidenav = new EventEmitter<void>();
 
   constructor(private router: Router, private authService: AuthService) {
     this.username = authService.getUserName();
     this.matricula = authService.getRegistrationNumber();
+    this.userType = authService.getUserType() || '';
   }
 
   logout() {
@@ -47,6 +50,19 @@ export class HeaderComponent {
       return '/modulos/ii/profil';
     } else {
       return '/modulos/iii/profil';
+    }
+  }
+
+  getUserTypeLabel(type: string): string {
+    switch (type) {
+      case UserType.ADMIN:
+        return 'Administrador';
+      case UserType.STUDENT:
+        return 'Alumno';
+      case UserType.TEACHER:
+        return 'Maestro';
+      default:
+        return 'Desconocido';
     }
   }
 }

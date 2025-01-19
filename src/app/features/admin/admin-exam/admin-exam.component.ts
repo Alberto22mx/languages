@@ -11,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { ExamsService } from '../../../core/services/exams/exams.service';
 import { Exams } from '../../../core/interfaces/exams.interface';
+import { AlertsService } from '../../../core/services/alerts/alerts.service';
 
 @Component({
   selector: 'app-admin-exam',
@@ -33,13 +34,16 @@ export class AdminExamComponent {
   displayedColumns: string[] = ['title', 'instructions', 'actions'];
   dataSource!: MatTableDataSource<Exams>;
 
-  constructor(private examsService: ExamsService) {}
+  constructor(
+    private examsService: ExamsService,
+    private alertsService: AlertsService,
+  ) {}
 
   ngOnInit() {
-    this.getUsers();
+    this.getExams();
   }
 
-  getUsers() {
+  getExams() {
     this.examsService.findAll().subscribe((response: any) => {
       this.exams = response;
       this.totalUsers = response.total;
@@ -66,7 +70,7 @@ export class AdminExamComponent {
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    this.getUsers();
+    this.getExams();
   }
 
   openDialog(): void {
@@ -75,5 +79,36 @@ export class AdminExamComponent {
     this.dialog.open(ExamModalComponent, {
       width: '700px',
     });
+  }
+
+  openEditModal(exam: any): void {
+      const dialogRef = this.dialog.open(ExamModalComponent, {
+        width: '500px',
+        data: { exam }, // Pasamos los datos del juego a editar
+      });
+  
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result?.action === 'edit') {
+          this.getExams();
+        }
+      });
+    }
+
+  async confirmDelete(id: string) {
+    const confirmed = await this.alertsService.confirm(
+      '¿Seguro que deseas eliminar este elemento?',
+      'Confirmación de Eliminación'
+    );
+    if (confirmed) {
+      this.examsService.delete(id).subscribe({
+        next: (res) => {
+          this.getExams();
+          this.alertsService.success('Elemento eliminado con éxito.');
+        },
+        error: (err) => {
+          this.alertsService.warning('Eliminación cancelada.');
+        },
+      });
+    }
   }
 }

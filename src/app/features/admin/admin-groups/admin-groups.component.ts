@@ -91,18 +91,7 @@ export class AdminGroupsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.status === 'success') {
         this.getGroups();
-      } 
-      // if (result) {
-      //   if (result.status === 'success') {
-      //     console.log('Datos guardados:', result.data);
-      //   } else if (result.status === 'cancel') {
-      //     console.log('El usuario canceló la operación');
-      //   } else if (result.status === 'error') {
-      //     console.log('Error:', result.message);
-      //   }
-      // } else {
-      //   console.log('El modal se cerró sin acción específica');
-      // }
+      }
     });
   }
 
@@ -118,17 +107,6 @@ export class AdminGroupsComponent implements OnInit {
       if (result.status === 'success') {
         this.getGroups();
       } 
-      // if (result) {
-      //   if (result.status === 'success') {
-      //     console.log('Datos guardados:', result.data);
-      //   } else if (result.status === 'cancel') {
-      //     console.log('El usuario canceló la operación');
-      //   } else if (result.status === 'error') {
-      //     console.log('Error:', result.message);
-      //   }
-      // } else {
-      //   console.log('El modal se cerró sin acción específica');
-      // }
     });
   }
 
@@ -141,10 +119,10 @@ export class AdminGroupsComponent implements OnInit {
       this.groupsService.deleteGroup(id).subscribe({
         next: (res) => {
           this.getGroups();
-          this.alertsService.success('Elemento eliminado con éxito.');
+          this.alertsService.success('Elemento guardado con éxito.');
         },
         error: (err) => {
-          this.alertsService.warning('Eliminación cancelada.');
+          this.alertsService.warning('No se guardo el cambio cancelada.');
         },
       });
       

@@ -34,22 +34,27 @@ import { GamesService } from '../../../../core/services/games/games.service';
   styleUrl: './games-modal.component.css'
 })
 export class GamesModalComponent implements OnInit {
-  groupForm: FormGroup;
+  groupForm!: FormGroup;
+  isEdit: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<GamesModalComponent>,
-    // @Inject(MAT_DIALOG_DATA) public data: User,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private gamesService: GamesService,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
+    // Determina si el modal es para editar o crear
+    this.isEdit = !!this.data?.game;
+
+    // Inicializa el formulario
     this.groupForm = this.fb.group({
-      title: ['', Validators.required],
-      instructions: ['', Validators.required],
-      image: [''],
+      title: [this.data?.game?.title || '', Validators.required],
+      instructions: [this.data?.game?.instructions || '', Validators.required],
+      image: [this.data?.game?.image || ''],
     });
   }
-
-  ngOnInit(): void {}
 
   onCancel(): void {
     this.dialogRef.close();
@@ -58,14 +63,28 @@ export class GamesModalComponent implements OnInit {
   onSubmit(): void {
     if (this.groupForm.valid) {
       // Lógica para enviar el formulario
-      this.gamesService.create(this.groupForm.value).subscribe({
-        next: (response) => {
-          this.dialogRef.close({ status: 'success', data: response });
-        },
-        error: (error) => {
-          this.dialogRef.close({ status: 'error', message: error.message });
-        },
-      });
+      const formData = this.groupForm.value;
+      if (this.isEdit) {
+        // Enviar datos actualizados al componente padre
+        this.gamesService.update(this.data.game.id, this.groupForm.value).subscribe({
+          next: (response) => {
+            this.dialogRef.close({ status: 'success', data: response, action: 'edit' });
+          },
+          error: (error) => {
+            this.dialogRef.close({ status: 'error', message: error.message });
+          },
+        });
+      } else {
+        // Enviar nuevos datos al componente padre
+        this.gamesService.create(this.groupForm.value).subscribe({
+          next: (response) => {
+            this.dialogRef.close({ status: 'success', data: response, action: 'create' });
+          },
+          error: (error) => {
+            this.dialogRef.close({ status: 'error', message: error.message });
+          },
+        });
+      }
     }
   }
 

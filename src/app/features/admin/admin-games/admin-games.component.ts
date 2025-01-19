@@ -76,8 +76,27 @@ export class AdminGamesComponent {
   openDialog(): void {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
-    this.dialog.open(GamesModalComponent, {
+    const dialogRef = this.dialog.open(GamesModalComponent, {
       width: '700px',
+      data: null,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.action === 'create') {
+        this.getGames();
+      }
+    });
+  }
+
+  openEditModal(game: any): void {
+    const dialogRef = this.dialog.open(GamesModalComponent, {
+      width: '500px',
+      data: { game }, // Pasamos los datos del juego a editar
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.action === 'edit') {
+        this.getGames();
+      }
     });
   }
 

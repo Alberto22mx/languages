@@ -12,6 +12,7 @@ import { ExamsService } from '../../../../core/services/exams/exams.service';
 import { LessonsService } from '../../../../core/services/lessons/lessons.service';
 import { GamesService } from '../../../../core/services/games/games.service';
 import { forkJoin, map } from 'rxjs';
+import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
   selector: 'app-groups-assign-modal',
@@ -45,7 +46,8 @@ export class GroupsAssignModalComponent implements OnInit {
     private usersService: UsersService,
     private examsService: ExamsService,
     private lessonsService: LessonsService,
-    private gamesService: GamesService
+    private gamesService: GamesService,
+    private alertsService: AlertsService,
   ) {
     this.id = data.id;
   }
@@ -56,6 +58,7 @@ export class GroupsAssignModalComponent implements OnInit {
   
   initializeData() {
     this.getGroups().subscribe((groupData) => {
+      console.log(groupData);
       forkJoin({
         teachers: this.getUsersTeachers(),
         students: this.getUsersStudent(),
@@ -76,9 +79,12 @@ export class GroupsAssignModalComponent implements OnInit {
   getGroups() {
     return this.groupsService.getGroup(this.id).pipe(
       map((response: any) => {
+        const assignedTeachers = response.users.filter((user: any) => user.type === UserType.TEACHER);
+        const assignedStudents = response.users.filter((user: any) => user.type === UserType.STUDENT);
+
         // Asignar datos del grupo
-        this.assignedUsersTeacher = response.users;
-        this.assignedUsers = response.users;
+        this.assignedUsersTeacher = assignedTeachers;
+        this.assignedUsers = assignedStudents;
         this.assignedLessons = response.lessons;
         this.assignedGames = response.games;
         this.assignedExams = response.exams;
@@ -127,38 +133,30 @@ export class GroupsAssignModalComponent implements OnInit {
     return items.filter(item => !assignedItems.some(assigned => assigned.id === item.id));
   }
 
-  saveGroup() {
-    const updatedGroup = {
-      users: this.assignedUsers.map(user => user.id), // Solo los IDs
-      lessons: this.assignedLessons.map(lesson => lesson.id),
-      games: this.assignedGames.map(game => game.id),
-      exams: this.assignedExams.map(exam => exam.id),
-    };
-
-    console.log('Datos a guardar:', updatedGroup);
-
-    // Envía los datos al backend
-  }
-
   onCancel(): void {
     this.dialogRef.close();
   }
 
   onSubmit(): void {
-    this.dialogRef.close();
     const updatedGroup = {
-      users: this.assignedUsers.map((user) => user.id),
-      usersTeachers: this.assignedUsersTeacher.map((user) => user.id),
+      users: [
+        ...this.assignedUsers.map((user) => user.id), // Usuarios (students)
+        ...this.assignedUsersTeacher.map((user) => user.id), // Usuarios (teachers)
+      ],
       lessons: this.assignedLessons.map((lesson) => lesson.id),
       games: this.assignedGames.map((game) => game.id),
       exams: this.assignedExams.map((exam) => exam.id),
     };
-    // if (this.userForm.valid) {
-    //   // Lógica para enviar el formulario
-    //   console.log(this.userForm.value);
-    //   this.usersService.createUser(this.userForm.value).subscribe();
-      
-    // }
+    
+    this.groupsService.updateGroup(this.id, updatedGroup).subscribe({
+      next: (res) => {
+        this.dialogRef.close({ status: 'success' });
+      },
+      error: (err) => {
+        this.dialogRef.close({ status: 'error' });
+      },
+    });
+    
   }
 
   transformUsersToAssignableItems(users: any[]): AssignableItem[] {

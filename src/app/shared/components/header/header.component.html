@@ -1,13 +1,13 @@
 <mat-toolbar class="custom-toolbar">
     <button mat-icon-button (click)="toggleSidenav.emit()">
       <mat-icon>menu</mat-icon>
-      <span style="margin-left: 20px;">{{ ' Matricula | ' + matricula }}</span>
+      <span style="margin-left: 20px;">{{ 'MATRICULA | ' + matricula }}</span>
     </button>
 
     <span class="spacer"></span>
 
     <div class="user-info">
-      <span class="username">{{username}}</span>
+      <span class="username">{{ getUserTypeLabel(userType) + ' | ' + username}}</span>
       <!-- Cambio en esta línea: [matMenuTriggerFor] en lugar de [matMenuTrigger] -->
       <button mat-button [matMenuTriggerFor]="profileMenu" class="profile-button">
         <mat-icon>account_circle</mat-icon>
