@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,7 +20,7 @@ import { AlertsService } from '../../../core/services/alerts/alerts.service';
   templateUrl: './admin-lessons.component.html',
   styleUrl: './admin-lessons.component.css'
 })
-export class AdminLessonsComponent {
+export class AdminLessonsComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   lessons: Lessons[] = [];
 
@@ -78,6 +78,19 @@ export class AdminLessonsComponent {
     buttonElement.blur();
     this.dialog.open(LessonsModalComponent, {
       width: '700px',
+    });
+  }
+
+  openEditModal(lessons: any): void {
+    const dialogRef = this.dialog.open(LessonsModalComponent, {
+      width: '500px',
+      data: { lessons }, // Pasamos los datos del juego a editar
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.action === 'edit') {
+        this.getLessons();
+      }
     });
   }
 

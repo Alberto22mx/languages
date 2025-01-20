@@ -25,6 +25,9 @@ import { TeacherGroupsComponent } from './features/teacher/teacher-groups/teache
 import { TeacherProgressComponent } from './features/teacher/teacher-progress/teacher-progress.component';
 import { TeacherUsersComponent } from './features/teacher/teacher-users/teacher-users.component';
 import { ExamComponent } from './features/user/exam/exam.component';
+import { TeacherGamesComponent } from './features/teacher/teacher-games/teacher-games.component';
+import { TeacherLessonsComponent } from './features/teacher/teacher-lessons/teacher-lessons.component';
+import { TeacherVocabularyComponent } from './features/teacher/teacher-vocabulary/teacher-vocabulary.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -53,9 +56,12 @@ export const routes: Routes = [
           {
             path: 'ii', children: [
               { path: 'dashboard', component: DashboardComponent },
+              { path: 'teacher-lessons', component: TeacherLessonsComponent },
+              { path: 'teacher-games', component: TeacherGamesComponent },
               { path: 'teacher-groups', component: TeacherGroupsComponent },
               { path: 'teacher-users', component: TeacherUsersComponent },
               { path: 'teacher-progress', component: TeacherProgressComponent },
+              { path: 'teacher-vocabulary', component: TeacherVocabularyComponent },
               { path: 'teacher-exam', component: TeacherExamComponent },
               { path: 'profil', component: ProfileComponent },
             ],

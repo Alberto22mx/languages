@@ -7,6 +7,16 @@
         <input matInput formControlName="nameGroup" cdkFocusInitial>
       </mat-form-field>
       <mat-form-field style="flex: 1;">
+        <mat-label>Curso</mat-label>
+        <mat-select formControlName="course" (selectionChange)="onLevelChange($event)">
+          <mat-option *ngFor="let course of courses" [value]="course">
+            {{ course }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 20px;">
+      <mat-form-field style="flex: 1;">
         <mat-label>Nivel</mat-label>
         <mat-select formControlName="level" (selectionChange)="onLevelChange($event)">
           <mat-option *ngFor="let level of levelGroup" [value]="level.level">
@@ -14,8 +24,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </div>
-    <div style="display: flex; gap: 20px;">
       <mat-form-field style="flex: 1;">
         <mat-label>Descripción</mat-label>
         <mat-select formControlName="description">
@@ -24,6 +32,8 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 20px;">
       <mat-form-field style="flex: 1;">
         <mat-label>Hora</mat-label>
         <mat-select formControlName="schedule">
@@ -33,7 +43,6 @@
         </mat-select>
       </mat-form-field>
     </div>
-    
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

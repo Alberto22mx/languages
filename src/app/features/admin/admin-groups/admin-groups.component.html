@@ -26,6 +26,11 @@
       </ng-container>
     
       <!-- Columnas existentes -->
+      <ng-container matColumnDef="course">
+        <th mat-header-cell *matHeaderCellDef> Curso </th>
+        <td mat-cell *matCellDef="let group"> {{group.course}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Grupo </th>
         <td mat-cell *matCellDef="let group"> {{group.nameGroup}} </td>

@@ -21,6 +21,7 @@ import { forkJoin, map } from 'rxjs';
   styleUrl: './groups-assign-modal.component.css',
 })
 export class GroupsAssignModalComponent implements OnInit {
+  selectedTabIndex: number = 0; // Siempre abre la primera pestaña
   // Usuarios Maestros
   assignedUsersTeacher: AssignableItem[] = [];
   unassignedUsersTeacher: AssignableItem[] = [];
@@ -52,6 +53,11 @@ export class GroupsAssignModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeData();
+    this.resetTabIndex();
+  }
+
+  private resetTabIndex(): void {
+    this.selectedTabIndex = 0; // Asegura que se abra en la primera pestaña
   }
   
   initializeData() {

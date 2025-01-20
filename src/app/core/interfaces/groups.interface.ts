@@ -6,6 +6,7 @@ export interface Group {
   schedule?: string;
   state?: 'active' | 'inactive';
   image?: string;
+  course?: string;
   exams?: string[];
   lessons?: string[];
   games?: string[];

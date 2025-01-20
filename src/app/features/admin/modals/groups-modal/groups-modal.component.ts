@@ -51,6 +51,7 @@ export class GroupsModalComponent implements OnInit {
   ) {
     this.groupForm = this.fb.group({
       nameGroup: ['', Validators.required],
+      course: ['', Validators.required],
       level: ['', Validators.required],
       description: ['', Validators.required],
       schedule: ['', Validators.required],
@@ -75,11 +76,7 @@ export class GroupsModalComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.groupsService.getGroups().subscribe((results) => {
-      // console.log(results);
-    });
-  }
+  ngOnInit(): void {}
 
   onLevelChange(event: any) {
     const selectedLevel = event.value;

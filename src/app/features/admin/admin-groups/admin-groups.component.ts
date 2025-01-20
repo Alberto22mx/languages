@@ -42,7 +42,7 @@ export class AdminGroupsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['name', 'level', 'schedule', 'state', 'actions'];
+  displayedColumns: string[] = ['name', 'course', 'level', 'schedule', 'state', 'actions'];
   dataSource!: MatTableDataSource<Group>;
 
   expandedElement: any | null;
