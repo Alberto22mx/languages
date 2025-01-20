@@ -37,7 +37,6 @@
 }
 
 
-//
 .profile-picture {
   overflow: hidden; /* Evita que el contenido se salga del borde */
   display: flex;

@@ -21,9 +21,11 @@
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
     "@sweetalert2/ngx-sweetalert2": "^12.4.0",
+    "@tinymce/tinymce-angular": "^8.0.1",
     "phaser": "^3.87.0",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.15.10",
+    "tinymce": "^7.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
   },

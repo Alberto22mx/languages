@@ -1,0 +1,25 @@
+<div id="contenedor">
+  <div id="contenedor-title">
+    <div>
+      <h3>{{title}}</h3>
+    </div>
+    <div>
+      <button mat-flat-button color="primary" (click)="saveLesson()">GUARDAR CAMBIOS</button>
+    </div>
+  </div>
+  <div>
+    <editor
+    [(ngModel)]="editorContent"
+    [init]="{
+      height: 350,
+      menubar: true,
+      plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code media table',
+      toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table emoticons | code fullscreen preview',
+      toolbar_mode: 'floating',
+      content_style: 'body { font-family:Arial,Helvetica,sans-serif; font-size:14px }',
+      base_url: '/assets/tinymce',
+      suffix: '.min'
+    }"
+  ></editor>
+  </div>
+</div>
