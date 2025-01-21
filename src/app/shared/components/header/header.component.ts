@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { UserType } from '../../../core/interfaces/user.interface';
+import { GroupsService } from '../../../core/services/groups/groups.service';
 
 @Component({
   selector: 'app-header',
@@ -30,7 +31,7 @@ export class HeaderComponent {
   
   @Output() toggleSidenav = new EventEmitter<void>();
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private router: Router, private authService: AuthService, private groupsService: GroupsService) {
     this.username = authService.getUserName();
     this.matricula = authService.getRegistrationNumber();
     this.userType = authService.getUserType() || '';

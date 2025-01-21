@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
@@ -10,11 +10,16 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class ViewComponent {
   title = 'tinyMCE-angular';
-    editorContent = '<p><span style="font-size: 18pt; color: #e03e2d;"><strong>&iexcl;Hola! Este es un texto inicial.</strong></span></p>';
   
-    sanitizedContent: SafeHtml;
-  
-    constructor(private sanitizer: DomSanitizer) {
+  @Input() editorContent: string = 'CONTENIDO DE LA LECCIÓN';
+  sanitizedContent: SafeHtml | undefined;
+
+  constructor(private sanitizer: DomSanitizer) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Verifica si editorContent cambió y actualiza sanitizedContent
+    if (changes['editorContent']) {
       this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(this.editorContent);
     }
+  }
 }

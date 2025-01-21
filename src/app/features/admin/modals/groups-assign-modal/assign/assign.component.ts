@@ -62,7 +62,6 @@ export class AssignComponent implements OnInit, OnChanges {
 
   // Inicializar filtros y paginación
   private initializeFiltersAndPagination(): void {
-    console.log("filteredItems1", this.filteredItems1, "items1", this.items1);
     this.filteredItems1 = [...this.items1];
     this.filteredItems2 = [...this.items2];
     this.updatePagination('items1');

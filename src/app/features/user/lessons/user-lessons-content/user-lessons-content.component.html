@@ -1,0 +1,9 @@
+<div *ngIf="content">
+  <!-- Botón para regresar -->
+  <button mat-button color="primary" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon> Regresar
+  </button>
+
+  <!-- Contenido del componente app-view -->
+  <app-view [editorContent]="content"></app-view>
+</div>

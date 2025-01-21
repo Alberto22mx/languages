@@ -28,6 +28,8 @@ import { ExamComponent } from './features/user/exam/exam.component';
 import { TeacherGamesComponent } from './features/teacher/teacher-games/teacher-games.component';
 import { TeacherLessonsComponent } from './features/teacher/teacher-lessons/teacher-lessons.component';
 import { TeacherVocabularyComponent } from './features/teacher/teacher-vocabulary/teacher-vocabulary.component';
+import { LessonsContentComponent } from './features/teacher/teacher-lessons/lessons-content/lessons-content.component';
+import { UserLessonsContentComponent } from './features/user/lessons/user-lessons-content/user-lessons-content.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -43,6 +45,7 @@ export const routes: Routes = [
             path: 'i', children: [
               { path: 'dashboard', component: DashboardComponent },
               { path: 'lessons', component: LessonsComponent },
+              { path: 'lessons-content', component: UserLessonsContentComponent },
               { path: 'games', component: GamesComponent, children: [
                 { path: 'abc', component: AbcComponent }
               ]},
@@ -57,6 +60,7 @@ export const routes: Routes = [
             path: 'ii', children: [
               { path: 'dashboard', component: DashboardComponent },
               { path: 'teacher-lessons', component: TeacherLessonsComponent },
+              { path: 'teacher-lessons-content', component: LessonsContentComponent },
               { path: 'teacher-games', component: TeacherGamesComponent },
               { path: 'teacher-groups', component: TeacherGroupsComponent },
               { path: 'teacher-users', component: TeacherUsersComponent },

@@ -4,7 +4,10 @@
       <h3>{{title}}</h3>
     </div>
     <div>
-      <button mat-flat-button color="primary" (click)="saveLesson()">GUARDAR CAMBIOS</button>
+      <button mat-menu-item (click)="goBack()">
+        <mat-icon>keyboard_return</mat-icon>
+        <span>Regresar</span>
+      </button>
     </div>
   </div>
   <div>
@@ -21,5 +24,6 @@
       suffix: '.min'
     }"
   ></editor>
+  <button mat-flat-button color="primary" (click)="saveContent()">GUARDAR CAMBIOS</button>
   </div>
 </div>

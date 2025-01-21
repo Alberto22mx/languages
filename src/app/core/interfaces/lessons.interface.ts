@@ -1,8 +1,8 @@
 export interface Lessons {
-  id: string;
-  title: string;
-  instructions: string;
+  id?: string;
+  title?: string;
+  instructions?: string;
   content?: string;
-  active: string;
-  image: string;
+  active?: string;
+  image?: string;
 }

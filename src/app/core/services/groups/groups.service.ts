@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Group } from '../../interfaces/groups.interface';
+import { Group, GroupAllData } from '../../interfaces/groups.interface';
 import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
@@ -16,8 +16,12 @@ export class GroupsService {
     return this.http.get<Group[]>(this.apiUrl);
   }
 
-  getGroup(id: string): Observable<Group> {
-    return this.http.get<Group>(`${this.apiUrl}/${id}`);
+  getGroup(userId: string): Observable<Group> {
+    return this.http.get<Group>(`${this.apiUrl}/${userId}`);
+  }
+
+  getGroupWithRelations(id: string): Observable<GroupAllData[]> {
+    return this.http.get<GroupAllData[]>(`${this.apiUrl}/group-relation/${id}`);
   }
 
   createGroup(group: Group): Observable<Group> {

@@ -114,7 +114,6 @@ export class GroupsAssignModalComponent implements OnInit {
   getGroups() {
     return this.groupsService.getGroup(this.id).pipe(
       map((response: any) => {
-        console.log(response.lessons);
         this.assignedLessons = response.lessons;
         this.assignedGames = response.games;
         this.assignedExams = response.exams;

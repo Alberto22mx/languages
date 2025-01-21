@@ -1,6 +1,8 @@
+import { Lessons } from "./lessons.interface";
+
 export interface Group {
   id?: string;
-  name?: string;
+  nameGroup?: string;
   description?: string;
   level?: string;
   schedule?: string;
@@ -9,6 +11,21 @@ export interface Group {
   course?: string;
   exams?: string[];
   lessons?: string[];
+  games?: string[];
+  users?: string[];
+}
+
+export interface GroupAllData {
+  id?: string;
+  nameGroup?: string;
+  description?: string;
+  level?: string;
+  schedule?: string;
+  state?: 'active' | 'inactive';
+  image?: string;
+  course?: string;
+  exams?: string[];
+  lessons?: Lessons[];
   games?: string[];
   users?: string[];
 }

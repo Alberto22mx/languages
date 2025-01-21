@@ -22,6 +22,11 @@ export class LessonsService {
     return this.http.get<Lessons>(`${this.baseUrl}/${id}`);
   }
 
+  //
+  findByIds(ids: string[]): Observable<Lessons> {
+    return this.http.post<Lessons>(`${this.baseUrl}/find-many`, {ids});
+  }
+
   // Crear una nueva lección
   create(createLessonDto: Lessons): Observable<Lessons> {
     return this.http.post<Lessons>(this.baseUrl, createLessonDto);

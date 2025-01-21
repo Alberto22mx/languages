@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,7 +20,7 @@ import { AlertsService } from '../../../core/services/alerts/alerts.service';
   templateUrl: './admin-games.component.html',
   styleUrl: './admin-games.component.css'
 })
-export class AdminGamesComponent {
+export class AdminGamesComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   games: Games[] = [];
 
@@ -51,11 +51,6 @@ export class AdminGamesComponent {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   applyFilter(event: Event) {
