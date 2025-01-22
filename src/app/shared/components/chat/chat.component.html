@@ -1,0 +1,9 @@
+<div class="chat-container">
+  <h2>ChatGPT en Angular</h2>
+  <textarea [(ngModel)]="userMessage" placeholder="Escribe tu mensaje aquí"></textarea>
+  <button (click)="sendMessage()">Enviar</button>
+  <div *ngIf="chatResponse" class="response">
+    <h3>Respuesta:</h3>
+    <p>{{ chatResponse }}</p>
+  </div>
+</div>

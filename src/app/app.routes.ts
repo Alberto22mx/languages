@@ -30,6 +30,7 @@ import { TeacherLessonsComponent } from './features/teacher/teacher-lessons/teac
 import { TeacherVocabularyComponent } from './features/teacher/teacher-vocabulary/teacher-vocabulary.component';
 import { LessonsContentComponent } from './features/teacher/teacher-lessons/lessons-content/lessons-content.component';
 import { UserLessonsContentComponent } from './features/user/lessons/user-lessons-content/user-lessons-content.component';
+import { VirtualTutorComponent } from './features/user/virtual-tutor/virtual-tutor.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -53,6 +54,7 @@ export const routes: Routes = [
               { path: 'vocabulary', component: VocabularyComponent },
               { path: 'exam', component: ExamComponent },
               { path: 'profil', component: ProfileComponent },
+              { path: 'virtual', component: VirtualTutorComponent },
             ],
             canActivate: [authGuard, roleGuard(['student'])]
           },
