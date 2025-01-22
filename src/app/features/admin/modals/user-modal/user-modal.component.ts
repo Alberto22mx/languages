@@ -35,15 +35,15 @@ export class UserModalComponent {
   userForm: FormGroup;
   userTypes: string[] = ['admin', 'student', 'teacher'];
   courses: string[] = ['Ingles', 'Chino'];
-  selectedDate: Date | null = null;
-  isStudent = false;
+  isEditMode: boolean;
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<UserModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: User,
+    @Inject(MAT_DIALOG_DATA) public data: User | null,
     private usersService: UsersService,
   ) {
+    this.isEditMode = !!this.data; // Detectamos si estamos en modo edición
     this.userForm = this.fb.group({
       firstName: ['', Validators.required],
       lastNameFather: ['', Validators.required],
@@ -51,7 +51,24 @@ export class UserModalComponent {
       phone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       birthDate: ['', Validators.required],
-      userType: ['', Validators.required],
+      userType: ['', Validators.required], // Deshabilitado si es edición
+    });
+
+    if (this.isEditMode) {
+      this.populateForm();
+    }
+  }
+
+  // Llena el formulario con los datos del usuario en modo edición
+  private populateForm(): void {
+    this.userForm.patchValue({
+      firstName: this.data?.firstName,
+      lastNameFather: this.data?.lastNameFather,
+      lastNameMother: this.data?.lastNameMother,
+      phone: this.data?.phone,
+      email: this.data?.email,
+      birthDate: this.data?.birthDate,
+      userType: this.data?.userType,
     });
   }
 
@@ -61,9 +78,16 @@ export class UserModalComponent {
 
   onSubmit(): void {
     if (this.userForm.valid) {
-      // Lógica para enviar el formulario
-      this.usersService.createUser(this.userForm.value).subscribe();
-      this.dialogRef.close(this.userForm.value);
+      const formData = this.isEditMode
+        ? { ...this.data, ...this.userForm.getRawValue() } // Combinar datos en modo edición
+        : this.userForm.value;
+
+      if (this.isEditMode) {
+        this.usersService.updateUser(formData.id, formData).subscribe(); // Método para actualizar
+      } else {
+        this.usersService.createUser(formData).subscribe(); // Método para crear
+      }
+      this.dialogRef.close(formData);
     }
   }
 }

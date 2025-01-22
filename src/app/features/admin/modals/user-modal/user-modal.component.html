@@ -1,4 +1,6 @@
-<h2 mat-dialog-title style="text-align: center;">Crear Usuario</h2>
+<h2 mat-dialog-title style="text-align: center;">
+  {{ isEditMode ? 'Editar Usuario' : 'Crear Usuario' }}
+</h2>
 <mat-dialog-content class="mat-typography">
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <div style="display: flex; gap: 20px;">
@@ -26,7 +28,7 @@
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" type="email">
       </mat-form-field>
-      
+
       <mat-form-field style="flex: 1;">
         <mat-label>Fecha de Nacimiento</mat-label>
         <input matInput [matDatepicker]="picker" formControlName="birthDate">
@@ -46,5 +48,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close (click)="onCancel()">Cancelar</button>
-  <button mat-flat-button color="primary" (click)="onSubmit()">Crear</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()">
+    {{ isEditMode ? 'Guardar Cambios' : 'Crear' }}
+  </button>
 </mat-dialog-actions>

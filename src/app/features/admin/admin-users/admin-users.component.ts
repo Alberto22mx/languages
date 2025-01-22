@@ -10,12 +10,14 @@ import { UsersService } from '../../../core/services/users/users.service';
 import { UserModalComponent } from '../modals/user-modal/user-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { AlertsService } from '../../../core/services/alerts/alerts.service';
 
 @Component({
   selector: 'app-admin-users',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule,
-    
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatMenuModule
   ],
   templateUrl: './admin-users.component.html',
   styleUrl: './admin-users.component.css'
@@ -31,12 +33,13 @@ export class AdminUsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['name', 'registrationNumber', 'phone', 'email', 'state', 'userType'];
+  displayedColumns: string[] = ['name', 'registrationNumber', 'phone', 'email', 'state', 'userType', 'actions'];
   dataSource!: MatTableDataSource<User>;
 
   constructor(
     private usersService: UsersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertsService: AlertsService,
   ) {}
 
   ngOnInit() {
@@ -78,4 +81,33 @@ export class AdminUsersComponent implements OnInit {
       this.getUsers();
     });  
   }
+
+  openEditModal(data: any): void {
+      const dialogRef = this.dialog.open(UserModalComponent, {
+        width: '500px',
+        data, // Pasamos los datos del juego a editar
+      });
+  
+      dialogRef.afterClosed().subscribe((result) => {
+        this.getUsers();
+      });
+    }
+  
+    async confirmDelete(id: string) {
+      const confirmed = await this.alertsService.confirm(
+        '¿Seguro que deseas eliminar este elemento?',
+        'Confirmación de Eliminación'
+      );
+      if (confirmed) {
+        this.usersService.deleteUser(id).subscribe({
+          next: (res) => {
+            this.getUsers();
+            this.alertsService.success('Elemento eliminado con éxito.');
+          },
+          error: (err) => {
+            this.alertsService.warning('Eliminación cancelada.');
+          },
+        });
+      }
+    }
 }
