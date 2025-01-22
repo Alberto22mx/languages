@@ -16,7 +16,7 @@
       <h2>{{ user.firstName }} {{ user.lastNameFather }} {{ user.lastNameMother }}</h2>
     </div>
     <div>
-      <button mat-flat-button color="primary">EDITAR PERFIL</button>
+      <button mat-flat-button color="primary" (click)="openEditModal(user)">EDITAR PERFIL</button>
     </div>
   </div>
   <div>

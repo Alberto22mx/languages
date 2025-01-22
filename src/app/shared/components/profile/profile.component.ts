@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +9,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { User } from '../../../core/interfaces/user.interface';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { AlertsService } from '../../../core/services/alerts/alerts.service';
+import { UsersService } from '../../../core/services/users/users.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { EditComponent } from './modals/edit/edit.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-profile',
@@ -27,30 +32,38 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
+  readonly dialog = inject(MatDialog);
   isEditing: boolean = false;
+  user: User= {};
 
-  user: User = {
-    firstName: 'Juan',
-    lastNameFather: 'Pérez',
-    lastNameMother: 'Gómez',
-    password: '********',
-    phone: '1234567890',
-    email: 'juan.perez@example.com',
-    birthDate: new Date(1990, 1, 15),
-    image: '', // Placeholder image
-  };
+  constructor(
+      private usersService: UsersService,
+      private authService: AuthService,
+      private alertsService: AlertsService
+    ) {}
+  
+  ngOnInit(): void {
+    this.getPerfil();
+  }
 
-  tempUser: User = { ...this.user };
-
-  toggleEditMode() {
-    if (this.isEditing) {
-      // Guardar cambios
-      this.user = { ...this.tempUser };
-    } else {
-      // Cancelar cambios (restaurar tempUser)
-      this.tempUser = { ...this.user };
+  getPerfil() {
+    const userId = this.authService.getUserId();
+    if (userId) {
+      this.usersService.getUserById(userId).subscribe(res => {
+        this.user = res;
+      });
     }
-    this.isEditing = !this.isEditing;
+  }
+
+  openEditModal(data: any): void {
+    const dialogRef = this.dialog.open(EditComponent, {
+      width: '600px',
+      data, // Pasamos los datos del juego a editar
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getPerfil();
+    });
   }
 }

@@ -36,17 +36,6 @@
   width: 100%;
 }
 
-
-.profile-picture {
-  overflow: hidden; /* Evita que el contenido se salga del borde */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: red; /* Fondo claro */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para diseño */
-  position: relative;
-}
-
 .profile-picture mat-icon {
   font-size: 120px; /* Aumenta el tamaño del ícono */
   color: #9e9e9e; /* Color del ícono */

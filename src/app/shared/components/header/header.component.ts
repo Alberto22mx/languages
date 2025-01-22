@@ -45,7 +45,7 @@ export class HeaderComponent {
 
   getProfileRoute(): string {
     const userType = this.authService.getUserType();
-    if (userType == 'user') {
+    if (userType == 'student') {
       return '/modulos/i/profil';
     } else if(userType == 'teacher') {
       return '/modulos/ii/profil';

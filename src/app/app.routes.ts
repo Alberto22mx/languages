@@ -6,7 +6,6 @@ import { DashboardComponent } from './features/user/dashboard/dashboard.componen
 import { AboutComponent } from './features/user/about/about.component';
 import { GamesComponent } from './features/user/games/games.component';
 import { ProgressComponent } from './features/user/progress/progress.component';
-import { VocabularyComponent } from './features/user/vocabulary/vocabulary.component';
 import { AbcComponent } from './features/user/games/components/abc/abc.component';
 import { loginGuard } from './shared/guard/login.guard';
 import { authGuard } from './shared/guard/auth.guard';
@@ -19,7 +18,6 @@ import { AdminLessonsComponent } from './features/admin/admin-lessons/admin-less
 import { AdminUsersComponent } from './features/admin/admin-users/admin-users.component';
 import { AdminProgressComponent } from './features/admin/admin-progress/admin-progress.component';
 import { ProfileComponent } from './shared/components/profile/profile.component';
-import { AdminVocabularyComponent } from './features/admin/admin-vocabulary/admin-vocabulary.component';
 import { TeacherExamComponent } from './features/teacher/teacher-exam/teacher-exam.component';
 import { TeacherGroupsComponent } from './features/teacher/teacher-groups/teacher-groups.component';
 import { TeacherProgressComponent } from './features/teacher/teacher-progress/teacher-progress.component';
@@ -27,7 +25,6 @@ import { TeacherUsersComponent } from './features/teacher/teacher-users/teacher-
 import { ExamComponent } from './features/user/exam/exam.component';
 import { TeacherGamesComponent } from './features/teacher/teacher-games/teacher-games.component';
 import { TeacherLessonsComponent } from './features/teacher/teacher-lessons/teacher-lessons.component';
-import { TeacherVocabularyComponent } from './features/teacher/teacher-vocabulary/teacher-vocabulary.component';
 import { LessonsContentComponent } from './features/teacher/teacher-lessons/lessons-content/lessons-content.component';
 import { UserLessonsContentComponent } from './features/user/lessons/user-lessons-content/user-lessons-content.component';
 import { VirtualTutorComponent } from './features/user/virtual-tutor/virtual-tutor.component';
@@ -51,7 +48,6 @@ export const routes: Routes = [
                 { path: 'abc', component: AbcComponent }
               ]},
               { path: 'progress', component: ProgressComponent },
-              { path: 'vocabulary', component: VocabularyComponent },
               { path: 'exam', component: ExamComponent },
               { path: 'profil', component: ProfileComponent },
               { path: 'virtual', component: VirtualTutorComponent },
@@ -67,7 +63,6 @@ export const routes: Routes = [
               { path: 'teacher-groups', component: TeacherGroupsComponent },
               { path: 'teacher-users', component: TeacherUsersComponent },
               { path: 'teacher-progress', component: TeacherProgressComponent },
-              { path: 'teacher-vocabulary', component: TeacherVocabularyComponent },
               { path: 'teacher-exam', component: TeacherExamComponent },
               { path: 'profil', component: ProfileComponent },
             ],
@@ -80,7 +75,6 @@ export const routes: Routes = [
               { path: 'admin-lessons', component: AdminLessonsComponent },
               { path: 'admin-games', component: AdminGamesComponent },
               { path: 'admin-progress', component: AdminProgressComponent },
-              { path: 'admin-vocabulary', component: AdminVocabularyComponent },
               { path: 'admin-exam', component: AdminExamComponent },
               { path: 'admin-groups', component: AdminGroupsComponent },
               { path: 'profil', component: ProfileComponent },
