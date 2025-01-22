@@ -1,1 +1,53 @@
-<p>teacher-exam works!</p>
+<div id="contenedor">
+  <div id="contenedor-title">
+    <div>
+      <h1 class="mat-h1">EXAMENES | {{data.nameGroup + ' | ' + data.level + ' | ' + data.schedule}}</h1>
+    </div>
+    <div>
+      <button mat-menu-item (click)="goBack()">
+        <mat-icon>keyboard_return</mat-icon>
+        <span>Regresar</span>
+      </button>
+    </div>
+  </div>
+  <div>
+    <mat-form-field class="w-100">
+      <mat-label>Filtro</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Buscar..." #input>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- Define columns here -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let lessons"> {{lessons.title}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="instructions">
+        <th mat-header-cell *matHeaderCellDef> Instrucciones </th>
+        <td mat-cell *matCellDef="let lessons"> {{lessons.instructions}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let lessons">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openEdit(lessons)">
+              <mat-icon>edit</mat-icon>
+              <span>Editar Examen</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    
+    <mat-paginator [length]="totalUsers" [pageSize]="pageSize" (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+</div>

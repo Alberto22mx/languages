@@ -28,6 +28,8 @@ import { TeacherLessonsComponent } from './features/teacher/teacher-lessons/teac
 import { LessonsContentComponent } from './features/teacher/teacher-lessons/lessons-content/lessons-content.component';
 import { UserLessonsContentComponent } from './features/user/lessons/user-lessons-content/user-lessons-content.component';
 import { VirtualTutorComponent } from './features/user/virtual-tutor/virtual-tutor.component';
+import { UserExamComponent } from './features/user/exam/user-exam/user-exam.component';
+import { ExamContentComponent } from './features/teacher/teacher-exam/exam-content/exam-content.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -49,6 +51,7 @@ export const routes: Routes = [
               ]},
               { path: 'progress', component: ProgressComponent },
               { path: 'exam', component: ExamComponent },
+              { path: 'exam-content', component: UserExamComponent },
               { path: 'profil', component: ProfileComponent },
               { path: 'virtual', component: VirtualTutorComponent },
             ],
@@ -64,6 +67,7 @@ export const routes: Routes = [
               { path: 'teacher-users', component: TeacherUsersComponent },
               { path: 'teacher-progress', component: TeacherProgressComponent },
               { path: 'teacher-exam', component: TeacherExamComponent },
+              { path: 'teacher-exam-content', component: ExamContentComponent },
               { path: 'profil', component: ProfileComponent },
             ],
             canActivate: [authGuard, roleGuard(['teacher'])]

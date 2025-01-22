@@ -28,8 +28,8 @@ export class ExamsService {
   }
 
   // Actualizar un examen
-  update(id: string, updateExamDto: Exams): Observable<Exams> {
-    return this.http.patch<Exams>(`${this.baseUrl}/${id}`, updateExamDto);
+  update(id: string, updateExamDto: any): Observable<Exams> {
+    return this.http.patch<any>(`${this.baseUrl}/${id}`, updateExamDto);
   }
 
   // Eliminar un examen

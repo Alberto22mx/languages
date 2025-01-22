@@ -1,76 +1,53 @@
-import { Component, inject, ViewChild } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
-import { User } from '../../../core/interfaces/user.interface';
-import { UsersService } from '../../../core/services/users/users.service';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { GroupsService } from '../../../core/services/groups/groups.service';
+import { Group, GroupAllData } from '../../../core/interfaces/groups.interface';
+import { CommonModule } from '@angular/common';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 import { AuthService } from '../../../core/services/auth/auth.service';
-import { UserModalComponent } from '../../admin/modals/user-modal/user-modal.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatListModule} from '@angular/material/list';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-exam',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule,],
+  imports: [CommonModule, MatListModule, MatCardModule, MatStepperModule, MatButtonModule, MatIconModule],
   templateUrl: './exam.component.html',
-  styleUrl: './exam.component.css'
+  styleUrl: './exam.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExamComponent {
+export class ExamComponent implements OnInit {
 readonly dialog = inject(MatDialog);
-  users: User[] = [];
-
-  totalUsers = 0;
-  pageSize = 10;
-  currentPage = 1;
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
-  displayedColumns: string[] = ['name', 'registrationNumber', 'phone', 'email', 'state', 'userType'];
-  dataSource!: MatTableDataSource<User>;
-
-  constructor(
-    private usersService: UsersService,
-    private authService: AuthService
-  ) {}
-
-  ngOnInit() {
-    this.getUsers();
-  }
-
-  getUsers() {
-    this.usersService.getUsersPaginated(this.currentPage, this.pageSize).subscribe((response: any) => {
-      this.users = response.data;
-      this.totalUsers = response.total;
-      this.dataSource = new MatTableDataSource(this.users);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+  idUser: string | null;
+    grupos: GroupAllData[] = [];
+  
+    constructor(
+      private groupsService: GroupsService, 
+      private authService: AuthService,
+      private router: Router,
+    ) {
+      this.idUser = this.authService.getUserId();
     }
-  }
-
-  onPageChange(event: PageEvent) {
-    this.currentPage = event.pageIndex + 1;
-    this.pageSize = event.pageSize;
-    this.getUsers();
-  }
-
-  openDialog(): void {
-    const buttonElement = document.activeElement as HTMLElement;
-    buttonElement.blur();
-    this.dialog.open(UserModalComponent, {
-      width: '700px',
-    });
-  }
+  
+    ngOnInit(): void {
+      this.getLessons();
+    }
+  
+    getLessons() {
+      if (this.idUser) {
+        this.groupsService.getGroupWithRelations(this.idUser).subscribe(result => {
+          console.log(result);
+          this.grupos = result;
+        });
+      }
+    }
+  
+    openEdit(exam: any): void {
+      this.router.navigate(['/modulos/i/exam-content'], {
+        state: { ...exam },
+      });
+    }
 }

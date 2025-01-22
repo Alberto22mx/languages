@@ -10,13 +10,11 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { Games } from '../../../core/interfaces/games.interface';
-import { GamesService } from '../../../core/services/games/games.service';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
 import { GamesModalComponent } from '../../admin/modals/games-modal/games-modal.component';
 import { GroupsService } from '../../../core/services/groups/groups.service';
 import { Router } from '@angular/router';
-import { Lessons } from '../../../core/interfaces/lessons.interface';
+import { Group } from '../../../core/interfaces/groups.interface';
 
 @Component({
   selector: 'app-teacher-groups',
@@ -27,7 +25,7 @@ import { Lessons } from '../../../core/interfaces/lessons.interface';
 })
 export class TeacherGroupsComponent implements OnInit {
 readonly dialog = inject(MatDialog);
-  games: Games[] = [];
+  group: Group[] = [];
 
   totalUsers = 0;
   pageSize = 10;
@@ -37,7 +35,7 @@ readonly dialog = inject(MatDialog);
   @ViewChild(MatSort) sort!: MatSort;
 
   displayedColumns: string[] = ['course', 'name', 'level', 'schedule', 'state', 'actions'];
-  dataSource!: MatTableDataSource<Games>;
+  dataSource!: MatTableDataSource<Group>;
 
   constructor(
     private alertsService: AlertsService,
@@ -51,9 +49,10 @@ readonly dialog = inject(MatDialog);
 
   getGames() {
     this.groupsService.getGroups().subscribe((response: any) => {
-      this.games = response;
+      console.log(response);
+      this.group = response;
       this.totalUsers = response.total;
-      this.dataSource = new MatTableDataSource(this.games);
+      this.dataSource = new MatTableDataSource(this.group);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -90,6 +89,12 @@ readonly dialog = inject(MatDialog);
 
   openEdit(group: any): void {
     this.router.navigate(['/modulos/ii/teacher-lessons'], {
+      state: { ...group },
+    });
+  }
+
+  openEditExam(group: any): void {
+    this.router.navigate(['/modulos/ii/teacher-exam'], {
       state: { ...group },
     });
   }

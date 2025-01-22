@@ -1,7 +1,7 @@
 <div id="contenedor">
   <div id="contenedor-title">
     <div>
-      <h3>ADMINISTRACION DE GRUPOS</h3>
+      <h1 class="mat-h1">ADMINISTRACION DE GRUPOS</h1>
     </div>
     <div>
       <!-- <button mat-flat-button color="primary" (click)="openDialog()">CREAR JUEGO</button> -->
@@ -45,8 +45,12 @@
           </button>
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openEdit(group)">
-              <mat-icon>edit</mat-icon>
+              <mat-icon>school</mat-icon>
               <span>Editar Lecciones</span>
+            </button>
+            <button mat-menu-item (click)="openEditExam(group)">
+              <mat-icon>quiz</mat-icon>
+              <span>Editar Examenes</span>
             </button>
           </mat-menu>
         </td>

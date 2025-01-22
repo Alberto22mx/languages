@@ -1,0 +1,60 @@
+<div id="contenedor">
+  <div id="contenedor-title">
+    <div>
+      <h1 class="mat-h1">EXAMENES Dynamic Form</h1>
+    </div>
+    <div>
+    </div>
+  </div>
+  <div>
+    <div class="example-container">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div formArrayName="answers">
+          <div *ngFor="let question of questions; let i = index" [formGroupName]="i">
+            <p class="mat-body-1">{{ (i + 1) + '. ' + question.questionText }}</p>
+      
+            <!-- Pregunta de selección única -->
+            <div *ngIf="question.type === 'single'">
+              <mat-radio-group formControlName="answer">
+                <mat-radio-button *ngFor="let option of question.options" [value]="option">
+                  {{ option }}
+                </mat-radio-button>
+              </mat-radio-group>
+              <div *ngIf="answers.at(i).get('answer')?.invalid && answers.at(i).get('answer')?.touched">
+                <span style="color: red;">Selecciona una opción.</span>
+              </div>
+            </div>
+      
+            <!-- Pregunta de selección múltiple -->
+            <div *ngIf="question.type === 'multiple'">
+              <div *ngFor="let option of question.options">
+                <mat-checkbox [value]="option" (change)="onCheckboxChange($event, i)">
+                  {{ option }}
+                </mat-checkbox>
+              </div>
+              <div *ngIf="answers.at(i).get('answers')?.invalid && answers.at(i).get('answers')?.touched">
+                <span style="color: red;">Selecciona al menos una opción.</span>
+              </div>
+            </div>
+      
+            <!-- Pregunta abierta -->
+            <div *ngIf="question.type === 'open'">
+              <mat-form-field appearance="fill">
+                <mat-label>Response</mat-label>
+                <input matInput formControlName="answer" />
+              </mat-form-field>
+              <div *ngIf="answers.at(i).get('answer')?.invalid && answers.at(i).get('answer')?.touched">
+                <span style="color: red;">Esta pregunta es obligatoria.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <button mat-raised-button color="primary" type="submit">
+          Enviar
+        </button>
+      </form>
+      
+    </div>        
+  </div>
+</div>

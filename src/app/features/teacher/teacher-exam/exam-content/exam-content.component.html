@@ -1,0 +1,79 @@
+<h2>Crear Examen</h2>
+
+<!-- Selector para el tipo de pregunta -->
+<div class="question-controls">
+  <mat-form-field appearance="fill">
+    <mat-label>Tipo de Pregunta</mat-label>
+    <mat-select [formControl]="questionTypeControl">
+      <mat-option value="single">Selección única</mat-option>
+      <mat-option value="multiple">Selección múltiple</mat-option>
+      <mat-option value="open">Respuesta abierta</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="addQuestion()">Agregar Pregunta</button>
+</div>
+
+<form [formGroup]="examForm" (ngSubmit)="saveExam()">
+  <div formArrayName="questions">
+    <div *ngFor="let question of questions.controls; let i = index" [formGroupName]="i" class="question-container">
+      <div class="question-header">
+        <h3>Pregunta {{ i + 1 }}</h3>
+        <button mat-icon-button color="warn" (click)="removeQuestion(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
+      <!-- Campo para el texto de la pregunta -->
+      <mat-form-field appearance="fill">
+        <mat-label>Texto de la pregunta</mat-label>
+        <input matInput formControlName="questionText" />
+      </mat-form-field>
+
+      <!-- Opciones (solo para preguntas de selección única o múltiple) -->
+      <div *ngIf="questions.at(i).get('type')?.value !== 'open'">
+        <div style="display: flex;">
+          <h4>Opciones:</h4>
+          <button mat-icon-button color="warn" (click)="addOption(i)">
+            <mat-icon>add</mat-icon>
+          </button>
+          <!-- <button mat-raised-button color="accent" (click)="addOption(i)">Añadir Opción</button> -->
+        </div>
+        
+        <div formArrayName="options">
+          <div *ngFor="let option of getOptions(i).controls; let j = index" class="option-container">
+            <mat-form-field appearance="fill">
+              <mat-label>Opción {{ j + 1 }}</mat-label>
+              <input matInput [formControlName]="j" />
+            </mat-form-field>
+            <button mat-icon-button color="warn" (click)="removeOption(i, j)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        
+      </div>
+
+      <!-- Selección de respuestas correctas para Selección Única -->
+      <div *ngIf="questions.at(i).get('type')?.value === 'single'">
+        <h4>Seleccionar Respuesta Correcta:</h4>
+        <mat-radio-group formControlName="correctAnswers">
+          <mat-radio-button *ngFor="let option of getOptions(i).controls" [value]="option.value">
+            {{ option.value }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <!-- Selección de respuestas correctas para Selección Múltiple -->
+      <div *ngIf="questions.at(i).get('type')?.value === 'multiple'">
+        <h4>Seleccionar Respuestas Correctas:</h4>
+        <div *ngFor="let option of getOptions(i).controls" class="option-container">
+          <mat-checkbox (change)="toggleCorrectAnswer(i, option.value)">
+            {{ option.value }}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button mat-raised-button color="primary" type="submit">Guardar Examen</button>
+</form>

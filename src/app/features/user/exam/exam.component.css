@@ -2,8 +2,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  margin-bottom: 1rem;
   background-color: #ffffff;
   border-bottom: 1px solid #e0e0e0;
 
@@ -25,4 +23,13 @@
 
 .w-100 {
   width: 100%;
+}
+
+.hoverable {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.hoverable:hover {
+  background-color: rgba(0, 0, 0, 0.04); /* Efecto hover, ajusta el color si es necesario */
 }
