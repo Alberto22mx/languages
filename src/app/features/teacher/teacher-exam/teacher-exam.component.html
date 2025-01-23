@@ -20,22 +20,26 @@
       <!-- Define columns here -->
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let lessons"> {{lessons.title}} </td>
+        <td mat-cell *matCellDef="let exam"> {{exam.title}} </td>
       </ng-container>
 
       <ng-container matColumnDef="instructions">
         <th mat-header-cell *matHeaderCellDef> Instrucciones </th>
-        <td mat-cell *matCellDef="let lessons"> {{lessons.instructions}} </td>
+        <td mat-cell *matCellDef="let exam"> {{exam.instructions}} </td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
-        <td mat-cell *matCellDef="let lessons">
+        <td mat-cell *matCellDef="let exam">
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openEdit(lessons)">
+            <!-- <button mat-menu-item (click)="openCreate(exam)">
+              <mat-icon>quiz</mat-icon>
+              <span>Crear Examen</span>
+            </button> -->
+            <button mat-menu-item (click)="openEdit(exam)">
               <mat-icon>edit</mat-icon>
               <span>Editar Examen</span>
             </button>

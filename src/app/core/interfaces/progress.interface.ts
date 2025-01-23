@@ -2,7 +2,7 @@ export interface Progress {
   userId: string;
   type: ProgressType;
   referenceId: string;
-  data: LessonProgress | GameProgress | ExamProgress;
+  answers: LessonProgress | GameProgress | ExamProgress;
 }
 
 export enum ProgressType {

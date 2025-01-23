@@ -22,6 +22,10 @@ export class ExamsService {
     return this.http.get<Exams>(`${this.baseUrl}/${id}`);
   }
 
+  findByIds(ids: string[]): Observable<Exams[]> {
+    return this.http.post<Exams[]>(`${this.baseUrl}/find-many`, {ids});
+  }
+
   // Crear un nuevo examen
   create(createExamDto: Exams): Observable<Exams> {
     return this.http.post<Exams>(this.baseUrl, createExamDto);

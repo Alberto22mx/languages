@@ -6,6 +6,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
+import { AuthService } from '../../../../core/services/auth/auth.service';
+import { ProgressService } from '../../../../core/services/progress/progress.service';
 
 @Component({
   selector: 'app-user-exam',
@@ -16,33 +18,30 @@ import {MatButtonModule} from '@angular/material/button';
 })
 export class UserExamComponent implements OnInit {
   form!: FormGroup;
+  questions?: any[] = [];
 
-  // Preguntas de ejemplo
-  questions = [
-    {
-      id: 1,
-      questionText: 'What is your favorite color?',
-      type: 'single',
-      options: ['Red', 'Green', 'Blue']
-    },
-    {
-      id: 2,
-      questionText: 'Select your hobbies:',
-      type: 'multiple',
-      options: ['Reading', 'Gaming', 'Traveling']
-    },
-    {
-      id: 3,
-      questionText: 'Describe your experience:',
-      type: 'open'
-    }
-  ];
-
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private examsService: ExamsService, private authService: AuthService, private progressService: ProgressService) {}
 
   ngOnInit(): void {
+    // Obtener datos adicionales
+    const userId = this.authService.getUserId();
+    const userType = this.authService.getUserType();
+    const examId = history.state.id;
+
+    // Crear el formulario y agregar los datos adicionales
     this.form = this.fb.group({
-      answers: this.fb.array(this.questions.map((q) => this.createAnswerGroup(q)))
+      userId: [userId], // Agregar userId al formulario
+      type: ['exam'], // Agregar userType al formulario
+      referenceId: [examId], // Agregar examId al formulario
+      answers: this.fb.array([]), // Inicializar answers como un FormArray vacío
+    });
+    // Obtener las preguntas del examen
+    this.examsService.findOne(examId).subscribe((res) => {
+      this.questions = res.questions;
+      if (this.questions) {
+        const answersArray = this.questions.map((q) => this.createAnswerGroup(q));
+        this.form.setControl('answers', this.fb.array(answersArray)); // Reemplazar el FormArray de answers
+      }
     });
   }
 
@@ -51,17 +50,17 @@ export class UserExamComponent implements OnInit {
     if (question.type === 'single') {
       return this.fb.group({
         questionId: [question.id],
-        answer: ['', Validators.required] // Campo obligatorio
+        answer: ['', Validators.required], // Campo obligatorio
       });
     } else if (question.type === 'multiple') {
       return this.fb.group({
         questionId: [question.id],
-        answers: this.fb.array([], Validators.required) // Respuesta múltiple obligatoria
+        answers: this.fb.array([], Validators.required), // Respuesta múltiple obligatoria
       });
     } else if (question.type === 'open') {
       return this.fb.group({
         questionId: [question.id],
-        answer: ['', Validators.required] // Campo obligatorio
+        answer: ['', Validators.required], // Campo obligatorio
       });
     }
     throw new Error('Unknown question type');
@@ -89,6 +88,9 @@ export class UserExamComponent implements OnInit {
   onSubmit(): void {
     if (this.form.valid) {
       console.log('Formulario enviado:', this.form.value);
+      this.progressService.createProgress(this.form.value).subscribe(res=> {
+        console.log(res);
+      })
     } else {
       this.form.markAllAsTouched();
       console.error('Formulario inválido');

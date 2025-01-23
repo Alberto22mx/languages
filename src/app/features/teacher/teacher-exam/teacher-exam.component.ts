@@ -17,6 +17,8 @@ import { Group } from '../../../core/interfaces/groups.interface';
 import { LessonsService } from '../../../core/services/lessons/lessons.service';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
 import { LessonsModalComponent } from '../../admin/modals/lessons-modal/lessons-modal.component';
+import { ExamsService } from '../../../core/services/exams/exams.service';
+import { Exams } from '../../../core/interfaces/exams.interface';
 
 @Component({
   selector: 'app-teacher-exam',
@@ -28,6 +30,7 @@ import { LessonsModalComponent } from '../../admin/modals/lessons-modal/lessons-
 export class TeacherExamComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   lessons: Lessons[] = [];
+  exams: Exams[] = [];
   data!: Group;
   totalUsers = 0;
   pageSize = 10;
@@ -37,9 +40,10 @@ export class TeacherExamComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   displayedColumns: string[] = ['title', 'instructions', 'actions'];
-  dataSource!: MatTableDataSource<Lessons>;
+  dataSource!: MatTableDataSource<Exams>;
 
   constructor(
+    private examsService: ExamsService,
     private lessonsService: LessonsService,
     private alertsService: AlertsService,
     private location: Location,
@@ -52,14 +56,25 @@ export class TeacherExamComponent implements OnInit {
   }
 
   getLessons() {
-    if (this.data.lessons)
-    this.lessonsService.findByIds(this.data.lessons).subscribe((response: any) => {
-      this.lessons = response;
-      this.totalUsers = response.total;
-      this.dataSource = new MatTableDataSource(this.lessons);
+    // if (this.data.lessons)
+    // this.lessonsService.findByIds(this.data.lessons).subscribe((response: any) => {
+    //   console.log(response);
+    //   this.lessons = response;
+    //   this.totalUsers = response.total;
+    //   this.dataSource = new MatTableDataSource(this.lessons);
+    //   this.dataSource.paginator = this.paginator;
+    //   this.dataSource.sort = this.sort;
+    // });
+    if (this.data.exams)
+    this.examsService.findByIds(this.data.exams).subscribe(response => {
+  console.log(response);
+      this.exams = response;
+      this.totalUsers = response.length;
+      this.dataSource = new MatTableDataSource(this.exams);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    });
+    })
+    
   }
 
   applyFilter(event: Event) {
@@ -120,9 +135,15 @@ export class TeacherExamComponent implements OnInit {
     this.location.back(); // Regresa a la página anterior
   }
 
-  openEdit(lessons: any): void {
+  openCreate(exam: any): void {
     this.router.navigate(['/modulos/ii/teacher-exam-content'], {
-      state: { ...lessons },
+      state: { ...exam },
+    });
+  }
+
+  openEdit(exam: any): void {
+    this.router.navigate(['/modulos/ii/teacher-exam-content'], {
+      state: { ...exam },
     });
   }
 }

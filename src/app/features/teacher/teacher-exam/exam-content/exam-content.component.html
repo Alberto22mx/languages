@@ -1,4 +1,7 @@
-<h2>Crear Examen</h2>
+<button mat-button color="primary" (click)="goBack()">
+  <mat-icon>arrow_back</mat-icon> Regresar
+</button>
+<h2>Editar Examen</h2>
 
 <!-- Selector para el tipo de pregunta -->
 <div class="question-controls">
@@ -13,7 +16,7 @@
   <button mat-raised-button color="primary" (click)="addQuestion()">Agregar Pregunta</button>
 </div>
 
-<form [formGroup]="examForm" (ngSubmit)="saveExam()">
+<form [formGroup]="examForm">
   <div formArrayName="questions">
     <div *ngFor="let question of questions.controls; let i = index" [formGroupName]="i" class="question-container">
       <div class="question-header">
@@ -33,12 +36,11 @@
       <div *ngIf="questions.at(i).get('type')?.value !== 'open'">
         <div style="display: flex;">
           <h4>Opciones:</h4>
-          <button mat-icon-button color="warn" (click)="addOption(i)">
+          <button mat-icon-button color="primary" (click)="addOption(i)">
             <mat-icon>add</mat-icon>
           </button>
-          <!-- <button mat-raised-button color="accent" (click)="addOption(i)">Añadir Opción</button> -->
         </div>
-        
+
         <div formArrayName="options">
           <div *ngFor="let option of getOptions(i).controls; let j = index" class="option-container">
             <mat-form-field appearance="fill">
@@ -50,7 +52,6 @@
             </button>
           </div>
         </div>
-        
       </div>
 
       <!-- Selección de respuestas correctas para Selección Única -->
@@ -75,5 +76,7 @@
     </div>
   </div>
 
-  <button mat-raised-button color="primary" type="submit">Guardar Examen</button>
+  <button mat-raised-button color="primary" (click)="saveExam()">
+    Guardar Cambios
+  </button>
 </form>

@@ -4,4 +4,5 @@ export interface Exams {
   instructions?: string;
   active?: boolean;
   image?: string;
+  questions?: any[];
 }

@@ -38,6 +38,6 @@ export class UserLessonsContentComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/modulos/i/lessons']); // Redirige a la ruta anterior
+    this.router.navigate(['/modulos/ii/teacher-exam']); // Redirige a la ruta anterior
   }
 }
