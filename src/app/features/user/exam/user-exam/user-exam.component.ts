@@ -8,11 +8,13 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { ProgressService } from '../../../../core/services/progress/progress.service';
+import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-exam',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatRadioModule, MatInputModule, MatCheckboxModule, MatButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, MatRadioModule, MatInputModule, MatCheckboxModule, MatButtonModule, MatIconModule],
   templateUrl: './user-exam.component.html',
   styleUrl: './user-exam.component.css'
 })
@@ -20,7 +22,9 @@ export class UserExamComponent implements OnInit {
   form!: FormGroup;
   questions?: any[] = [];
 
-  constructor(private fb: FormBuilder, private examsService: ExamsService, private authService: AuthService, private progressService: ProgressService) {}
+  constructor(private fb: FormBuilder, private examsService: ExamsService, private authService: AuthService,
+    private progressService: ProgressService, private router: Router,
+  ) {}
 
   ngOnInit(): void {
     // Obtener datos adicionales
@@ -95,5 +99,9 @@ export class UserExamComponent implements OnInit {
       this.form.markAllAsTouched();
       console.error('Formulario inválido');
     }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/modulos/i/games']); // Redirige a la ruta anterior
   }
 }

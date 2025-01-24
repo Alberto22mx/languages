@@ -1,4 +1,5 @@
 import { Exams } from "./exams.interface";
+import { Games } from "./games.interface";
 import { Lessons } from "./lessons.interface";
 
 export interface Group {
@@ -27,6 +28,6 @@ export interface GroupAllData {
   course?: string;
   exams?: Exams[];
   lessons?: Lessons[];
-  games?: string[];
+  games?: Games[];
   users?: string[];
 }

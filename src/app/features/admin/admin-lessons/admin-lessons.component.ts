@@ -71,8 +71,12 @@ export class AdminLessonsComponent implements OnInit {
   openDialog(): void {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
-    this.dialog.open(LessonsModalComponent, {
+    const dialogRef = this.dialog.open(LessonsModalComponent, {
       width: '700px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getLessons();
     });
   }
 

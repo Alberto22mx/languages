@@ -1,0 +1,36 @@
+import { Component, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-games-scena',
+  standalone: true,
+  imports: [MatIconModule, MatButtonModule],
+  templateUrl: './games-scena.component.html',
+  styleUrl: './games-scena.component.css'
+})
+export class GamesScenaComponent extends Phaser.Scene implements OnInit {
+  constructor(private router: Router) {
+    super({ key: 'GamesScenaComponent' });
+  }
+
+  ngOnInit(): void {
+    const config: Phaser.Types.Core.GameConfig = {
+      type: Phaser.AUTO,
+      parent: 'game-container',
+      version: '1.0.0',
+      width: 640,
+      height: 360,
+      backgroundColor: '#002058',
+      scene: this,
+      pixelArt: true,
+    };
+
+    new Phaser.Game(config);
+  }
+
+  goBack(): void {
+    this.router.navigate(['/modulos/i/games']);
+  }
+}

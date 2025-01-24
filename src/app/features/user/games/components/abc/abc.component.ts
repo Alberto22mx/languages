@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import Phaser from 'phaser';
 import { UsersService } from '../../../../../core/services/users/users.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-abc',
   standalone: true,
-  imports: [],
+  imports: [MatIconModule, MatButtonModule],
   templateUrl: './abc.component.html',
   styleUrl: './abc.component.css'
 })
 export class AbcComponent extends Phaser.Scene implements OnInit {
   clickedLetters: string[] = [];
 
-  constructor(private userService: UsersService) {
+  constructor(private userService: UsersService, private router: Router) {
     super({ key: 'AbcComponent' });
   }
 
@@ -65,5 +68,9 @@ export class AbcComponent extends Phaser.Scene implements OnInit {
 
   getClickedLetters() {
     // console.log(this.clickedLetters);
+  }
+
+  goBack(): void {
+    this.router.navigate(['/modulos/i/games']); // Redirige a la ruta anterior
   }
 }

@@ -30,6 +30,7 @@ import { UserLessonsContentComponent } from './features/user/lessons/user-lesson
 import { VirtualTutorComponent } from './features/user/virtual-tutor/virtual-tutor.component';
 import { UserExamComponent } from './features/user/exam/user-exam/user-exam.component';
 import { ExamContentComponent } from './features/teacher/teacher-exam/exam-content/exam-content.component';
+import { GamesScenaComponent } from './features/user/games/components/games-scena/games-scena.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -46,9 +47,11 @@ export const routes: Routes = [
               { path: 'dashboard', component: DashboardComponent },
               { path: 'lessons', component: LessonsComponent },
               { path: 'lessons-content', component: UserLessonsContentComponent },
-              { path: 'games', component: GamesComponent, children: [
-                { path: 'abc', component: AbcComponent }
-              ]},
+              { path: 'games', component: GamesComponent},
+              { path: 'games-content', children: [
+                { path: 'abc', component: AbcComponent },
+                { path: 'plantilla', component: GamesScenaComponent }
+              ] },
               { path: 'progress', component: ProgressComponent },
               { path: 'exam', component: ExamComponent },
               { path: 'exam-content', component: UserExamComponent },

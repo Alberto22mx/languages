@@ -4,4 +4,5 @@ export interface Games {
   instructions: string;
   active: string;
   image: string;
+  url: string;
 }

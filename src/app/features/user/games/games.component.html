@@ -1,3 +1,40 @@
 <div id="contenedor">
-    <app-abc></app-abc>
-</div>
+    <div id="contenedor-title">
+        <div>
+        <h1 class="mat-h1">Juegos</h1>
+        </div>
+        <div>
+        </div>
+    </div>
+    <div>
+        <mat-stepper orientation="vertical" *ngIf="grupos">
+        <!-- Paso fijo (solo aparece si no hay grupos) -->
+        <mat-step *ngIf="!grupos || grupos.length === 0">
+            <ng-template matStepLabel>Cargando datos..</ng-template>
+            <ng-template matStepContent>
+            </ng-template>
+        </mat-step>
+        
+        <!-- Pasos dinámicos (aparecen cuando hay grupos) -->
+        <mat-step *ngFor="let grupo of grupos">
+            <ng-template matStepLabel>
+            {{ grupo.nameGroup + ' ' + grupo.level + ' ' + grupo.course }}
+            </ng-template>
+            <ng-template matStepContent>
+            <p>{{ grupo.description }}</p>
+            <mat-list role="list">
+                <mat-list-item 
+                role="listitem" 
+                *ngFor="let game of grupo.games" 
+                class="hoverable"
+                (click)="openEdit(game.url)">
+                {{ game.title }}
+                </mat-list-item>
+            </mat-list>
+            <button mat-button matStepperNext>Next</button>
+            </ng-template>
+        </mat-step>
+        </mat-stepper>
+            
+    </div>
+</div>  
