@@ -8,6 +8,7 @@ export class MainScene extends Phaser.Scene {
   teclas: any;
   cursor: any;
   drop: any;
+  tuki: any;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -18,11 +19,31 @@ export class MainScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.path = './assets/cubix/';
-    const images = ['cubix', 'cubix_fondo', 'drop'];
-    images.forEach(imageName => {
-      this.load.image(imageName, `${imageName}.png`);
+    this.load.path = './assets/animate/';
+    // Carga el spritesheet con la clave 'tuki_tex'
+    this.load.spritesheet('tuki_tex', 'tuki_tex.png', {
+      frameWidth: 800, // Tamaño de cada cuadro
+      frameHeight: 450 // Tamaño de cada cuadro
     });
+  }
+
+  create(): void {
+    // Crear una animación para el spritesheet
+    this.tuki = this.add.sprite(100, 100, 'tuki_tex').setScale(0.2);
+  }
+
+  preload2() {
+    this.load.path = './assets/animate/';
+    const images = 'tuki_tex';
+    // this.load.image(images, `${images}.png`);
+    this.load.spritesheet(images, `${images}.png`, {
+      frameWidth: 106,
+      frameHeight: 106
+    });
+    // const images = ['cubix', 'cubix_fondo', 'drop'];
+    // images.forEach(imageName => {
+    //   this.load.image(imageName, `${imageName}.png`);
+    // });
     // this.load.image(['cubix', 'cubix_fondo']);
     // this.load.image('drop', 'drop.png');
     // this.load.path = 'assets/cubix/';
@@ -32,56 +53,10 @@ export class MainScene extends Phaser.Scene {
     // });
   }
 
-  create(): void {
+  create2(): void {
     console.log('create');
-    this.cubix = this.add.image(100, 100, 'cubix').setInteractive();
-    this.input.setDraggable(this.cubix);
-
-    this.drop = this.add.image(100, 250, 'drop').setDepth(-1).setInteractive();
-    this.drop.input.dropZone = true;
-
-    const eventos = Phaser.Input.Events;
-
-    this.input.on(
-      eventos.DRAG_START,
-      (pointer: Phaser.Input.Pointer, obj: Phaser.GameObjects.GameObject) => {
-        // Convertimos obj al tipo Sprite, que tiene el método setScale
-        const sprite = obj as Phaser.GameObjects.Sprite;
-        sprite.setScale(0.9); // Reducir escala al comenzar a arrastrar
-      }
-    );
-
-    this.input.on(
-      eventos.DRAG,
-      (pointer: Phaser.Input.Pointer, obj: Phaser.GameObjects.GameObject, dragX: number, dragY: number) => {
-        const sprite = obj as Phaser.GameObjects.Image; // Convertimos obj a tipo Image
-        sprite.x = dragX;
-        sprite.y = dragY;
-      }
-    );
-
-    this.input.on(
-      eventos.DRAG_END,
-      (
-        pointer: Phaser.Input.Pointer, // Tipo explícito para pointer
-        obj: Phaser.GameObjects.GameObject, // Tipo explícito para obj
-        dropzone: Phaser.GameObjects.Zone // Tipo explícito para dropzone
-      ) => {
-        // Convertimos obj a Image (o Sprite, dependiendo del caso)
-        const sprite = obj as Phaser.GameObjects.Image;
-    
-        if (!dropzone && sprite.input != null)  {
-          // Si no hay zona de drop, regresa al punto inicial
-          console.log("Entro en la zona")
-          sprite.x = sprite.input.dragStartX;
-          sprite.y = sprite.input.dragStartY;
-        }
-    
-        // Restaurar el tamaño del objeto
-        sprite.setScale(1);
-      }
-    );
-    
+    this.tuki = this.add.sprite(100, 100, 'tuki_tex');
+  
 
     // this.input.on(eventos.DRAG_ENTER, (pointer, obj, dropzone) => {
     //     dropzone.setTint(0xff0000);

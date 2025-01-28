@@ -27,6 +27,7 @@ export class GamesScenaComponent extends Phaser.Scene implements OnInit {
       pixelArt: true,
       // Aquí defines las escenas
       scene: [MainScene],
+      zoom: 2,
     };
 
     new Phaser.Game(config);
