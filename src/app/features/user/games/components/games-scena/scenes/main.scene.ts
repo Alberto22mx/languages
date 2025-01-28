@@ -7,6 +7,7 @@ export class MainScene extends Phaser.Scene {
   teclaA: any;
   teclas: any;
   cursor: any;
+  drop: any;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -17,18 +18,84 @@ export class MainScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.path = 'assets/cubix/';
-    const images = ['cubix', 'cubix_fondo'];
+    this.load.path = './assets/cubix/';
+    const images = ['cubix', 'cubix_fondo', 'drop'];
     images.forEach(imageName => {
       this.load.image(imageName, `${imageName}.png`);
     });
+    // this.load.image(['cubix', 'cubix_fondo']);
+    // this.load.image('drop', 'drop.png');
+    // this.load.path = 'assets/cubix/';
+    // const images = ['cubix', 'cubix_fondo'];
+    // images.forEach(imageName => {
+    //   this.load.image(imageName, `${imageName}.png`);
+    // });
   }
 
   create(): void {
-    console.log('create')
+    console.log('create');
+    this.cubix = this.add.image(100, 100, 'cubix').setInteractive();
+    this.input.setDraggable(this.cubix);
+
+    this.drop = this.add.image(100, 250, 'drop').setDepth(-1).setInteractive();
+    this.drop.input.dropZone = true;
+
+    const eventos = Phaser.Input.Events;
+
+    this.input.on(
+      eventos.DRAG_START,
+      (pointer: Phaser.Input.Pointer, obj: Phaser.GameObjects.GameObject) => {
+        // Convertimos obj al tipo Sprite, que tiene el método setScale
+        const sprite = obj as Phaser.GameObjects.Sprite;
+        sprite.setScale(0.9); // Reducir escala al comenzar a arrastrar
+      }
+    );
+
+    this.input.on(
+      eventos.DRAG,
+      (pointer: Phaser.Input.Pointer, obj: Phaser.GameObjects.GameObject, dragX: number, dragY: number) => {
+        const sprite = obj as Phaser.GameObjects.Image; // Convertimos obj a tipo Image
+        sprite.x = dragX;
+        sprite.y = dragY;
+      }
+    );
+
+    this.input.on(
+      eventos.DRAG_END,
+      (
+        pointer: Phaser.Input.Pointer, // Tipo explícito para pointer
+        obj: Phaser.GameObjects.GameObject, // Tipo explícito para obj
+        dropzone: Phaser.GameObjects.Zone // Tipo explícito para dropzone
+      ) => {
+        // Convertimos obj a Image (o Sprite, dependiendo del caso)
+        const sprite = obj as Phaser.GameObjects.Image;
+    
+        if (!dropzone && sprite.input != null)  {
+          // Si no hay zona de drop, regresa al punto inicial
+          console.log("Entro en la zona")
+          sprite.x = sprite.input.dragStartX;
+          sprite.y = sprite.input.dragStartY;
+        }
+    
+        // Restaurar el tamaño del objeto
+        sprite.setScale(1);
+      }
+    );
+    
+
+    // this.input.on(eventos.DRAG_ENTER, (pointer, obj, dropzone) => {
+    //     dropzone.setTint(0xff0000);
+    // });
+    // this.input.on(eventos.DRAG_LEAVE, (pointer, obj, dropzone) => {
+    //     dropzone.clearTint();
+    // });
+    // this.input.on(eventos.DROP, (pointer, obj, dropzone) => {
+    //     obj.x = dropzone.x;
+    //     obj.y = dropzone.y;
+    // });
     // this.cubix_fondo = this.add.image(100, 100, 'cubix_fondo');
-    this.cubix = this.add.image(200, 100, 'cubix');
-    this.cursor = this.input.keyboard?.createCursorKeys();
+    // this.cubix = this.add.image(200, 100, 'cubix');
+    // this.cursor = this.input.keyboard?.createCursorKeys();
     // const eventos = Phaser.Input.Events;
     //     this.input.on(eventos.POINTER_DOWN, (evento: any) => {
     //         console.log("Se ha clicado en el CANVAS");

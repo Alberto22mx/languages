@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { MainScene } from './scenes/main.scene';
 
 @Component({
   selector: 'app-games-scena',
@@ -23,8 +24,9 @@ export class GamesScenaComponent extends Phaser.Scene implements OnInit {
       width: 640,
       height: 360,
       backgroundColor: '#002058',
-      scene: this,
       pixelArt: true,
+      // Aquí defines las escenas
+      scene: [MainScene],
     };
 
     new Phaser.Game(config);
