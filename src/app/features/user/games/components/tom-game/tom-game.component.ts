@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Bootloader } from './scenes/Bootloader';
-import { Tablero } from './scenes/tablero';
+import { Tablero } from './scenes/Tablero';
 
 @Component({
   selector: 'app-tom-game',
@@ -11,7 +10,7 @@ import { Tablero } from './scenes/tablero';
 })
 export class TomGameComponent extends Phaser.Scene implements OnInit {
 constructor() {
-    super({ key: 'GamesScenaComponent' });
+    super({ key: 'TomGameComponent' });
   }
 
   ngOnInit(): void {
