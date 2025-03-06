@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Tablero } from './scenes/Tablero';
+import { Mappeo } from './scenes/Mappeo';
 
 @Component({
   selector: 'app-tom-game',
@@ -19,11 +20,11 @@ constructor() {
       parent: 'game-container',
       version: '1.0.0',
       width: 400,
-      height: 300,
+      height: 250,
       backgroundColor: '#002058',
       pixelArt: true,
       // Aquí defines las escenas
-      scene: [Tablero],
+      scene: [ Tablero],
       zoom: 2,
       physics: {
         default: 'arcade',
