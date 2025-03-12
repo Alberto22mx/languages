@@ -32,6 +32,7 @@ import { UserExamComponent } from './features/user/exam/user-exam/user-exam.comp
 import { ExamContentComponent } from './features/teacher/teacher-exam/exam-content/exam-content.component';
 import { GamesScenaComponent } from './features/user/games/components/games-scena/games-scena.component';
 import { TomGameComponent } from './features/user/games/components/tom-game/tom-game.component';
+import { WordSearchComponent } from './features/user/games/word-search/word-search.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -52,6 +53,7 @@ export const routes: Routes = [
               { path: 'games-content', children: [
                 { path: 'abc', component: AbcComponent },
                 { path: 'plantilla', component: GamesScenaComponent },
+                { path: 'word-search', component: WordSearchComponent },
                 { path: 'tom', component: TomGameComponent }
               ] },
               { path: 'progress', component: ProgressComponent },
