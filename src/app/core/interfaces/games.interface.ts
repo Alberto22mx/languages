@@ -1,3 +1,7 @@
+export enum GameType {
+  WORDSEARCH = 'WordSearch'
+}
+
 export interface Games {
   id: string;
   title: string;
@@ -5,4 +9,6 @@ export interface Games {
   active: string;
   image: string;
   url: string;
+  data?: any[];
+  type: GameType;
 }

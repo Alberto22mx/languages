@@ -43,7 +43,8 @@ export class GamesComponent implements OnInit {
     }
   }
 
-  openEdit(game: string): void {
-    this.router.navigate(['/modulos/i/games-content/' + game]);
-  }
-}
+  openEdit(game: any): void {
+    this.router.navigate(['/modulos/i/games-content/' + game.url], {
+      state: { datos: game }
+    });
+  }}

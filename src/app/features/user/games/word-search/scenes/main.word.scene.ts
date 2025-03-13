@@ -1,11 +1,13 @@
 import Phaser from 'phaser';
+import { Games } from '../../../../../core/interfaces/games.interface';
 
 export class MainWordScene extends Phaser.Scene {
     private gridSize: number = 10; // 10 x 10
-    private words: string[] = ["APPLE", "BANANA", "ORANGE", "GRAPE", "LEMON"];
+    private words: string[] = [];
     private puzzle: string[][] = [];
     private textGrid: Phaser.GameObjects.Text[][] = [];
     private foundWords: Set<string> = new Set();
+    private games!: Games;
   
     // Margen y tamaño de celda configurables
     private offsetX: number = 10;
@@ -30,55 +32,62 @@ export class MainWordScene extends Phaser.Scene {
     }
   
     create(): void {
-      // Generar puzzle y crear letras en pantalla
-      this.puzzle = this.createPuzzle(this.gridSize, this.words);
-      this.createTextGrid();
-  
-      // Eventos de puntero
-      this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-        const cell = this.getCellFromPointer(pointer);
-        if (cell) {
-          this.startCell = cell;
-        }
-      });
-  
-      this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-        if (this.startCell && pointer.isDown) {
-          this.clearTempHighlights();
-          const currentCell = this.getCellFromPointer(pointer);
-          if (currentCell) {
-            const cellsInLine = this.getLineCells(this.startCell, currentCell);
-            if (cellsInLine.length > 0) {
-              this.tempHighlightRects = this.highlightCells(cellsInLine, 0xff0000, 0.3);
-            }
+      this.events.once('scene-awake', () => {
+        this.games = this.data.get('gamesData');
+        console.log(this.games, 'teste0');
+        // Generar puzzle y crear letras en pantalla
+        this.words = this.games.data!.map((wordObj: { english: string; spanish: string }) => wordObj.english);
+        this.puzzle = this.createPuzzle(this.gridSize, this.words);
+        this.createTextGrid();
+    
+        // Eventos de puntero
+        this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+          const cell = this.getCellFromPointer(pointer);
+          if (cell) {
+            this.startCell = cell;
           }
-        }
-      });
-  
-      this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
-        if (this.startCell) {
-          const endCell = this.getCellFromPointer(pointer);
-          if (endCell) {
-            const cellsInLine = this.getLineCells(this.startCell, endCell);
-            if (cellsInLine.length > 0) {
-              const selectedWord = cellsInLine
-                .map(cell => this.puzzle[cell.row][cell.col])
-                .join('');
-              const reversed = selectedWord.split('').reverse().join('');
-              if (this.words.includes(selectedWord) || this.words.includes(reversed)) {
-                // Resaltado permanente (verde)
-                const permanentRects = this.highlightCells(cellsInLine, 0x00ff00, 0.5);
-                this.permanentHighlightRects.push(...permanentRects);
-                this.foundWords.add(selectedWord);
-                console.log("Word found:", selectedWord);
-                // Aquí puedes llamar a tu servicio para guardar progreso
+        });
+    
+        this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+          if (this.startCell && pointer.isDown) {
+            this.clearTempHighlights();
+            const currentCell = this.getCellFromPointer(pointer);
+            if (currentCell) {
+              const cellsInLine = this.getLineCells(this.startCell, currentCell);
+              if (cellsInLine.length > 0) {
+                this.tempHighlightRects = this.highlightCells(cellsInLine, 0xff0000, 0.3);
               }
             }
           }
-        }
-        this.clearTempHighlights();
-        this.startCell = null;
+        });
+    
+        this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+          if (this.startCell) {
+            const endCell = this.getCellFromPointer(pointer);
+            if (endCell) {
+              const cellsInLine = this.getLineCells(this.startCell, endCell);
+              if (cellsInLine.length > 0) {
+                const selectedWord = cellsInLine
+                  .map(cell => this.puzzle[cell.row][cell.col])
+                  .join('');
+                const reversed = selectedWord.split('').reverse().join('');
+                if (this.words.includes(selectedWord) || this.words.includes(reversed)) {
+                  // Resaltado permanente (verde)
+                  const permanentRects = this.highlightCells(cellsInLine, 0x00ff00, 0.5);
+                  this.permanentHighlightRects.push(...permanentRects);
+                  this.foundWords.add(selectedWord);
+                  console.log("Word found:", selectedWord);
+                  // Aquí puedes llamar a tu servicio para guardar progreso
+                  this.events.emit('word-found', selectedWord);
+                }
+              }
+            }
+          }
+          this.clearTempHighlights();
+          this.startCell = null;
+        });
       });
+      
     }
   
     // Generar el puzzle y colocar palabras aleatoriamente
