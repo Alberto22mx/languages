@@ -1,0 +1,15 @@
+<div *ngFor="let phrase of phrases">
+    <p>{{ phrase.text.split('______')[0] }} 
+      <span *ngIf="phrase.type === 'multiple'">
+        <select [(ngModel)]="phrase.userAnswer">
+          <option *ngFor="let option of phrase.options" [value]="option">{{ option }}</option>
+        </select>
+      </span>
+      <span *ngIf="phrase.type === 'free'">
+        <input type="text" [(ngModel)]="phrase.userAnswer" placeholder="Escribe tu respuesta">
+      </span>
+      {{ phrase.text.split('______')[1] }}
+    </p>
+  </div>
+  
+  <button (click)="submitAllAnswers()">Enviar Respuestas</button>
