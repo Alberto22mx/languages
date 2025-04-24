@@ -5,9 +5,13 @@
 
   <mat-sidenav-content>
     <app-header (toggleSidenav)="sidenav.toggle()"></app-header>
-    <main class="content">
-      <router-outlet></router-outlet>
+    <main class="content" style="display: flex; flex-direction: column; height: 100vh;">
+      <div id="contenedor" style="flex-grow: 1;">
+        <div>
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      <app-footer class="footer"></app-footer>
     </main>
-    <app-footer class="footer"></app-footer>
   </mat-sidenav-content>
 </mat-sidenav-container>

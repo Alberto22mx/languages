@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ZoomService } from '../../../core/services/zoom/zoom.service';
 
 @Component({
   selector: 'app-footer',
@@ -9,9 +8,6 @@ import { ZoomService } from '../../../core/services/zoom/zoom.service';
   styleUrl: './footer.component.css'
 })
 export class FooterComponent {
-  constructor(private zoomService: ZoomService) {}
+  constructor() {}
   
-  setZoom(className: string) {
-    this.zoomService.setZoom(className);
-  }
 }

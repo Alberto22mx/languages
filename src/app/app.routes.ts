@@ -50,14 +50,14 @@ export const routes: Routes = [
               { path: 'dashboard', component: DashboardComponent },
               { path: 'lessons', component: LessonsComponent },
               { path: 'lessons-content', component: UserLessonsContentComponent },
-              { path: 'games', component: GamesComponent},
+              /*{ path: 'games', component: GamesComponent},
               { path: 'games-content', children: [
                 { path: 'abc', component: AbcComponent },
                 { path: 'plantilla', component: GamesScenaComponent },
                 { path: 'word-search', component: WordSearchComponent },
                 { path: 'phrases', component: PhrasesGamesComponent },
                 { path: 'tom', component: TomGameComponent }
-              ] },
+              ] },*/
               { path: 'progress', component: ProgressComponent },
               { path: 'exam', component: ExamComponent },
               { path: 'exam-content', component: UserExamComponent },
@@ -71,7 +71,7 @@ export const routes: Routes = [
               { path: 'dashboard', component: DashboardComponent },
               { path: 'teacher-lessons', component: TeacherLessonsComponent },
               { path: 'teacher-lessons-content', component: LessonsContentComponent },
-              { path: 'teacher-games', component: TeacherGamesComponent },
+              //{ path: 'teacher-games', component: TeacherGamesComponent },
               { path: 'teacher-groups', component: TeacherGroupsComponent },
               { path: 'teacher-users', component: TeacherUsersComponent },
               { path: 'teacher-progress', component: TeacherProgressComponent },

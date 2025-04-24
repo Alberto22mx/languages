@@ -17,20 +17,18 @@
   
   mat-card-header {
     justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    margin-bottom: 16px;
   }
   
   mat-form-field {
     width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .logo {
+    margin-bottom: 16px;
   }
   
   button[type="submit"] {
     margin-top: 16px;
   }
-  

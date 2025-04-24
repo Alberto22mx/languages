@@ -6,10 +6,13 @@ mat-sidenav {
   border-right: 1px solid rgba(0, 0, 0, 0.12);
   background-color: #002058;
   color: white;
+  width: 250px;
 }
 
 .content {
   padding: 20px;
+  background-color: #f5f5f5;
+  min-height: calc(100vh - 64px - 50px); /* Altura total - header - footer */
 }
 
 /* Asegúrate de que el contenedor principal ocupe toda la altura de la página */
@@ -44,4 +47,32 @@ mat-sidenav-content {
   background-color: #f8f9fa; /* Color de fondo del pie de página */
   padding: 10px;
   box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1); /* Sombra superior */
+  height: 50px;
+}
+
+#contenedor {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.w-50 {
+  width: 50%;
+}
+
+#contenedor-title {
+  margin-bottom: 20px;
+}
+
+.mat-h1 {
+  margin: 0;
+  font-weight: 500;
 }

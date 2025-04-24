@@ -10,17 +10,19 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
 import { ProgressService } from '../../../../core/services/progress/progress.service';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-user-exam',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatRadioModule, MatInputModule, MatCheckboxModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatRadioModule, MatInputModule, MatCheckboxModule, MatButtonModule, MatIconModule, MatCardModule],
   templateUrl: './user-exam.component.html',
   styleUrl: './user-exam.component.css'
 })
 export class UserExamComponent implements OnInit {
   form!: FormGroup;
   questions?: any[] = [];
+  currentIndex = 0;
 
   constructor(private fb: FormBuilder, private examsService: ExamsService, private authService: AuthService,
     private progressService: ProgressService, private router: Router,
@@ -103,5 +105,21 @@ export class UserExamComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/modulos/i/games']); // Redirige a la ruta anterior
+  }
+
+  get currentQuestion() {
+    return this.questions![this.currentIndex];
+  }
+  
+  nextQuestion() {
+    if (this.currentIndex < this.questions!.length - 1) {
+      this.currentIndex++;
+    }
+  }
+  
+  prevQuestion() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
   }
 }
