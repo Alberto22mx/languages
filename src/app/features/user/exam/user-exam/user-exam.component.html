@@ -1,26 +1,33 @@
-<mat-card *ngIf="currentQuestion" class="mb-4">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div formArrayName="answers">
-      <div [formGroupName]="currentIndex">
+<h1>Examen</h1>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h3>Pregunta {{currentIndex + 1}}</h3>
+  <div formArrayName="answers">
+    <ng-container *ngIf="questions!.length">
+      <div [formGroup]="getAnswerFormGroup(currentIndex)">
         <p class="mat-body-1">{{ (currentIndex + 1) + '. ' + currentQuestion.questionText }}</p>
 
-        <!-- Selección única -->
+        <!-- Pregunta de selección única -->
         <div *ngIf="currentQuestion.type === 'single'">
           <mat-radio-group formControlName="answer">
-            <mat-radio-button *ngFor="let option of currentQuestion.options" [value]="option">
-              {{ option }}
-            </mat-radio-button>
+            <div *ngFor="let option of currentQuestion.options; let j = index">
+              <mat-radio-button [value]="option">
+                <strong>{{ getOptionLetter(j) }})</strong> {{ option }}
+              </mat-radio-button>
+            </div>
           </mat-radio-group>
           <div *ngIf="answers.at(currentIndex).get('answer')?.invalid && answers.at(currentIndex).get('answer')?.touched">
             <span style="color: red;">Selecciona una opción.</span>
           </div>
         </div>
 
-        <!-- Selección múltiple -->
+        <!-- Pregunta de selección múltiple -->
         <div *ngIf="currentQuestion.type === 'multiple'">
-          <div *ngFor="let option of currentQuestion.options">
-            <mat-checkbox [value]="option" (change)="onCheckboxChange($event, currentIndex)">
-              {{ option }}
+          <div *ngFor="let option of currentQuestion.options; let j = index">
+            <mat-checkbox
+              [value]="option"
+              (change)="onCheckboxChange($event, currentIndex)"
+              [checked]="answers.at(currentIndex).get('answers')?.value?.includes(option)">
+              <strong>{{ getOptionLetter(j) }})</strong> {{ option }}
             </mat-checkbox>
           </div>
           <div *ngIf="answers.at(currentIndex).get('answers')?.invalid && answers.at(currentIndex).get('answers')?.touched">
@@ -28,9 +35,9 @@
           </div>
         </div>
 
-        <!-- Abierta -->
+        <!-- Pregunta abierta -->
         <div *ngIf="currentQuestion.type === 'open'">
-          <mat-form-field appearance="fill">
+          <mat-form-field appearance="fill" style="width: 100%;">
             <mat-label>Respuesta</mat-label>
             <input matInput formControlName="answer" />
           </mat-form-field>
@@ -39,15 +46,28 @@
           </div>
         </div>
       </div>
-    </div>
+    </ng-container>
+  </div>
 
-    <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
-      <button mat-button type="button" (click)="prevQuestion()" [disabled]="currentIndex === 0">Anterior</button>
-      <button mat-button type="button" (click)="nextQuestion()" [disabled]="currentIndex === questions!.length - 1">Siguiente</button>
+  <!-- Navegación -->
+  <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+    <button mat-button type="button" (click)="prevQuestion()" [disabled]="currentIndex === 0">Anterior</button>
+    <div class="paginador">
+      <button *ngFor="let q of questions; let i = index"
+              [ngClass]="{'activo': currentIndex === i}"
+              (click)="currentIndex = i">
+        {{ i + 1 }}
+      </button>
+      <button class="fin-btn" (click)="onSubmit()">FIN</button>
     </div>
+    <button mat-button type="button" (click)="nextQuestion()" [disabled]="currentIndex === questions!.length - 1">Siguiente</button>
+  </div>
 
-    <div *ngIf="currentIndex === questions!.length - 1" style="text-align: right; margin-top: 1rem;">
-      <button mat-raised-button color="primary" type="submit">Enviar</button>
-    </div>
-  </form>
-</mat-card>
+  <!-- Botón de envío en la última -->
+  <div *ngIf="currentIndex === questions!.length - 1" style="text-align: right; margin-top: 1rem;">
+    <button mat-raised-button color="primary" type="submit">Enviar</button>
+  </div>
+  
+</form>
+
+

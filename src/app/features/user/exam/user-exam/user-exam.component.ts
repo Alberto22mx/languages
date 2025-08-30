@@ -24,79 +24,81 @@ export class UserExamComponent implements OnInit {
   questions?: any[] = [];
   currentIndex = 0;
 
-  constructor(private fb: FormBuilder, private examsService: ExamsService, private authService: AuthService,
-    private progressService: ProgressService, private router: Router,
+  constructor(
+    private fb: FormBuilder,
+    private examsService: ExamsService,
+    private authService: AuthService,
+    private progressService: ProgressService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    // Obtener datos adicionales
     const userId = this.authService.getUserId();
     const userType = this.authService.getUserType();
     const examId = history.state.id;
 
-    // Crear el formulario y agregar los datos adicionales
     this.form = this.fb.group({
-      userId: [userId], // Agregar userId al formulario
-      type: ['exam'], // Agregar userType al formulario
-      referenceId: [examId], // Agregar examId al formulario
-      answers: this.fb.array([]), // Inicializar answers como un FormArray vacío
+      userId: [userId],
+      type: ['exam'],
+      referenceId: [examId],
+      answers: this.fb.array([]),
     });
-    // Obtener las preguntas del examen
+
     this.examsService.findOne(examId).subscribe((res) => {
       this.questions = res.questions;
       if (this.questions) {
         const answersArray = this.questions.map((q) => this.createAnswerGroup(q));
-        this.form.setControl('answers', this.fb.array(answersArray)); // Reemplazar el FormArray de answers
+        this.form.setControl('answers', this.fb.array(answersArray));
       }
     });
   }
 
-  // Crear grupo de respuestas según el tipo de pregunta
   createAnswerGroup(question: any): FormGroup {
-    if (question.type === 'single') {
+    if (question.type === 'single' || question.type === 'open') {
       return this.fb.group({
         questionId: [question.id],
-        answer: ['', Validators.required], // Campo obligatorio
+        answer: ['', Validators.required],
       });
     } else if (question.type === 'multiple') {
       return this.fb.group({
         questionId: [question.id],
-        answers: this.fb.array([], Validators.required), // Respuesta múltiple obligatoria
-      });
-    } else if (question.type === 'open') {
-      return this.fb.group({
-        questionId: [question.id],
-        answer: ['', Validators.required], // Campo obligatorio
+        answers: this.fb.array([], Validators.required),
       });
     }
     throw new Error('Unknown question type');
   }
 
-  // Obtener respuestas del FormArray
   get answers(): FormArray {
     return this.form.get('answers') as FormArray;
   }
 
-  // Manejar cambios en los checkboxes
+  getAnswerFormGroup(index: number): FormGroup {
+    return this.answers.at(index) as FormGroup;
+  }
+
   onCheckboxChange(event: any, index: number): void {
-    const answersArray = this.answers.at(index).get('answers') as FormArray;
+    const answersControl = this.answers.at(index).get('answers') as FormArray;
+    const value = event.source.value;
+
     if (event.checked) {
-      answersArray.push(this.fb.control(event.source.value));
+      if (!answersControl.value.includes(value)) {
+        answersControl.push(this.fb.control(value));
+      }
     } else {
-      const i = answersArray.controls.findIndex((ctrl) => ctrl.value === event.source.value);
-      if (i > -1) {
-        answersArray.removeAt(i);
+      const i = answersControl.controls.findIndex((ctrl) => ctrl.value === value);
+      if (i !== -1) {
+        answersControl.removeAt(i);
       }
     }
   }
 
-  // Enviar el formulario
   onSubmit(): void {
     if (this.form.valid) {
       console.log('Formulario enviado:', this.form.value);
-      this.progressService.createProgress(this.form.value).subscribe(res=> {
+      this.progressService.createProgress(this.form.value).subscribe((res) => {
         console.log(res);
-      })
+        this.router.navigate(['/modulos/i/exam']);
+      });
     } else {
       this.form.markAllAsTouched();
       console.error('Formulario inválido');
@@ -104,22 +106,26 @@ export class UserExamComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/modulos/i/games']); // Redirige a la ruta anterior
+    this.router.navigate(['/modulos/i/exam']);
   }
 
   get currentQuestion() {
     return this.questions![this.currentIndex];
   }
-  
-  nextQuestion() {
+
+  nextQuestion(): void {
     if (this.currentIndex < this.questions!.length - 1) {
       this.currentIndex++;
     }
   }
-  
-  prevQuestion() {
+
+  prevQuestion(): void {
     if (this.currentIndex > 0) {
       this.currentIndex--;
     }
+  }
+
+  getOptionLetter(index: number): string {
+    return String.fromCharCode(65 + index);
   }
 }

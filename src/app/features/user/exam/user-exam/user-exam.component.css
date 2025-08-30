@@ -1,0 +1,80 @@
+form {
+    max-width: 700px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+  }
+  
+  .mat-body-1 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  mat-radio-button,
+  mat-checkbox {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+  
+    strong {
+      margin-right: 0.4rem;
+    }
+  }
+  
+  mat-radio-button.mat-accent.mat-radio-checked .mat-radio-inner-circle {
+    background-color: #006aff;
+  }
+  
+  mat-checkbox.mat-accent.mat-checkbox-checked .mat-checkbox-background {
+    background-color: #006aff;
+  }
+  
+  button {
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  
+  button[disabled] {
+    opacity: 0.5;
+  }
+  
+  .navegacion {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+  }
+  
+  .paginador {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 0.5rem;
+  
+    button {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      background-color: #f0f0f0;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+  
+    .activo {
+      background-color: #006aff;
+      color: white;
+    }
+  
+    .fin-btn {
+      background-color: #d8d8d8;
+      margin-left: 1rem;
+    }
+  }
+  
