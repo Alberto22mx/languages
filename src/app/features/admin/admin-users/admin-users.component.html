@@ -56,7 +56,15 @@
               <mat-icon>edit</mat-icon>
               <span>Asignación</span>
             </button>
-            <button mat-menu-item (click)="confirmDelete(user.id)">
+            <button mat-menu-item
+                    (click)="toggleUserState(user)"
+                    [disabled]="user.registrationNumber === protectedAdminRegistration">
+              <mat-icon>{{ user.state === 'active' ? 'person_off' : 'person' }}</mat-icon>
+              <span>{{ user.state === 'active' ? 'Deshabilitar' : 'Habilitar' }}</span>
+            </button>
+            <button mat-menu-item
+                    (click)="confirmDelete(user.id)"
+                    [disabled]="user.registrationNumber === protectedAdminRegistration">
               <mat-icon>delete_forever</mat-icon>
               <span>Eliminar</span>
             </button>

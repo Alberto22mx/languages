@@ -23,6 +23,7 @@ import { AlertsService } from '../../../core/services/alerts/alerts.service';
   styleUrl: './admin-users.component.css'
 })
 export class AdminUsersComponent implements OnInit {
+  readonly protectedAdminRegistration = 'ADM000001';
   readonly dialog = inject(MatDialog);
   users: User[] = [];
 
@@ -92,6 +93,33 @@ export class AdminUsersComponent implements OnInit {
         this.getUsers();
       });
     }
+
+  async toggleUserState(user: User) {
+    if (!user.id) {
+      this.alertsService.warning('El usuario no tiene un identificador válido.');
+      return;
+    }
+    if (user.registrationNumber === this.protectedAdminRegistration) {
+      this.alertsService.warning('El administrador ADM000001 debe permanecer activo.');
+      return;
+    }
+
+    const nextState = user.state === 'active' ? 'inactive' : 'active';
+    const action = nextState === 'active' ? 'habilitar' : 'deshabilitar';
+    const confirmed = await this.alertsService.confirm(
+      `¿Seguro que deseas ${action} a ${user.registrationNumber}?`,
+      'Confirmar cambio de estado'
+    );
+    if (!confirmed) return;
+
+    this.usersService.updateUser(user.id, { state: nextState }).subscribe({
+      next: () => {
+        this.getUsers();
+        this.alertsService.success(`Usuario ${action === 'habilitar' ? 'habilitado' : 'deshabilitado'} con éxito.`);
+      },
+      error: () => this.alertsService.warning('No fue posible cambiar el estado del usuario.'),
+    });
+  }
   
     async confirmDelete(id: string) {
       const confirmed = await this.alertsService.confirm(

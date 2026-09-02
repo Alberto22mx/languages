@@ -1,4 +1,10 @@
+interface RuntimeEnvironment {
+  API_URL?: string;
+}
+
+const runtimeEnvironment = (window as Window & { __env?: RuntimeEnvironment }).__env;
+
 export const environment = {
-  baseUrl: 'http://localhost:3000'
-  // baseUrl: 'http://nest-app-env.eba-ryu8ucdp.us-east-2.elasticbeanstalk.com'
+  production: true,
+  baseUrl: runtimeEnvironment?.API_URL ?? 'https://english-forever-api.onrender.com'
 };
