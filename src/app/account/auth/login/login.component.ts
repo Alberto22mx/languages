@@ -48,7 +48,6 @@ export class LoginComponent {
         }
         this.authService.login(credentials).subscribe({
           next: (res) => {
-            this.authService.setAuthData(res);
             this.snackBar.open('Iniciando sesión...', 'Cerrar', {
               duration: 3000
             });

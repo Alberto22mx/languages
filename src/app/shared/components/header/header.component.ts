@@ -6,7 +6,6 @@ import { MatMenuModule} from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { UserType } from '../../../core/interfaces/user.interface';
 import { GroupsService } from '../../../core/services/groups/groups.service';
@@ -31,16 +30,14 @@ export class HeaderComponent {
   
   @Output() toggleSidenav = new EventEmitter<void>();
 
-  constructor(private router: Router, private authService: AuthService, private groupsService: GroupsService) {
+  constructor(private authService: AuthService, private groupsService: GroupsService) {
     this.username = authService.getUserName();
     this.matricula = authService.getRegistrationNumber();
     this.userType = authService.getUserType() || '';
   }
 
   logout() {
-    // Implementar lógica de logout
-    localStorage.removeItem('token');
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 
   getProfileRoute(): string {

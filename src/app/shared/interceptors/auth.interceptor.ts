@@ -6,14 +6,13 @@ import {
   HttpInterceptor,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, switchMap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     // Obtener el token del localStorage
@@ -28,10 +27,23 @@ export class AuthInterceptor implements HttpInterceptor {
       // Enviar la request modificada
       return next.handle(authReq).pipe(
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            // Si recibimos un 401, el token no es válido
-            localStorage.removeItem('token');
-            this.router.navigate(['/login']);
+          const isAuthenticationRequest = request.url.includes('/auth/');
+          if (error.status === 401 && !isAuthenticationRequest) {
+            return this.authService.refreshAccessToken().pipe(
+              switchMap(() => {
+                const refreshedToken = this.authService.getToken();
+                const retryRequest = refreshedToken
+                  ? request.clone({
+                      headers: request.headers.set('Authorization', `Bearer ${refreshedToken}`)
+                    })
+                  : request;
+                return next.handle(retryRequest);
+              }),
+              catchError((refreshError) => {
+                this.authService.forceLogout();
+                return throwError(() => refreshError);
+              })
+            );
           }
           return throwError(() => error);
         })
