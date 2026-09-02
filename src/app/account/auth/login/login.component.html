@@ -9,7 +9,7 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline">
           <mat-label>Matricula</mat-label>
-          <input matInput type="matricula" formControlName="matricula" placeholder="Matricula">
+          <input matInput type="text" formControlName="matricula" placeholder="Matricula" autocomplete="username">
           <mat-error *ngIf="loginForm.get('matricula')?.invalid">
             {{getErrorMessage('matricula')}}
           </mat-error>
@@ -17,7 +17,7 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Contraseña</mat-label>
-          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" autocomplete="current-password">
           <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
             <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
