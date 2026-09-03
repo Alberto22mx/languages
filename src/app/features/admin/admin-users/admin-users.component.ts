@@ -13,6 +13,7 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
+import { UserDetailsDialogComponent } from '../../../shared/components/user-details-dialog/user-details-dialog.component';
 
 @Component({
   selector: 'app-admin-users',
@@ -34,7 +35,7 @@ export class AdminUsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['name', 'registrationNumber', 'phone', 'email', 'state', 'userType', 'actions'];
+  displayedColumns: string[] = ['firstName', 'registrationNumber', 'userType', 'state', 'actions'];
   dataSource!: MatTableDataSource<User>;
 
   constructor(
@@ -93,6 +94,14 @@ export class AdminUsersComponent implements OnInit {
         this.getUsers();
       });
     }
+
+  openDetails(user: User): void {
+    this.dialog.open(UserDetailsDialogComponent, {
+      width: '650px',
+      maxWidth: '95vw',
+      data: user,
+    });
+  }
 
   async toggleUserState(user: User) {
     if (!user.id) {

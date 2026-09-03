@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
 import { UserModalComponent } from '../../admin/modals/user-modal/user-modal.component';
+import { UserDetailsDialogComponent } from '../../../shared/components/user-details-dialog/user-details-dialog.component';
 
 interface Student {
   nombre: string;
@@ -40,7 +41,7 @@ export class TeacherUsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['name', 'registrationNumber', 'phone', 'email', 'state', 'userType', 'actions'];
+  displayedColumns: string[] = ['firstName', 'registrationNumber', 'userType', 'state', 'actions'];
   dataSource!: MatTableDataSource<User>;
 
   constructor(
@@ -99,6 +100,14 @@ export class TeacherUsersComponent implements OnInit {
         this.getUsers();
       });
     }
+
+  openDetails(user: User): void {
+    this.dialog.open(UserDetailsDialogComponent, {
+      width: '650px',
+      maxWidth: '95vw',
+      data: user,
+    });
+  }
   
     async confirmDelete(id: string) {
       const confirmed = await this.alertsService.confirm(
