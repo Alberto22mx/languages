@@ -40,6 +40,22 @@ export class ProgressService {
     return this.http.get<any>(`${this.API_URL}/exam-status/${examId}`);
   }
 
+  getExamAccess(examId: string): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/exam-access/${examId}`);
+  }
+
+  requestExamAccess(examId: string, reason?: string): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}/exam-access/${examId}/request`, { reason });
+  }
+
+  getExamAccessRequests(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/exam-access-requests`);
+  }
+
+  reviewExamAccessRequest(id: string, decision: 'approved' | 'rejected'): Observable<any> {
+    return this.http.put<any>(`${this.API_URL}/exam-access-requests/${id}/${decision}`, {});
+  }
+
   getStudentExamResults(studentId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.API_URL}/student-exam-results/${studentId}`);
   }

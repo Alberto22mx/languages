@@ -5,4 +5,6 @@ export interface Exams {
   active?: boolean;
   image?: string;
   questions?: any[];
+  availableUntil?: string;
+  maxAttempts?: number;
 }

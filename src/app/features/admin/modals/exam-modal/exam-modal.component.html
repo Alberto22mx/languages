@@ -13,6 +13,14 @@
     </div>
     <div style="display: flex; gap: 20px;">
       <mat-form-field style="flex: 1;">
+        <mat-label>Fecha límite para presentar</mat-label>
+        <input matInput [matDatepicker]="deadlinePicker" formControlName="availableUntil">
+        <mat-datepicker-toggle matIconSuffix [for]="deadlinePicker"></mat-datepicker-toggle>
+        <mat-datepicker #deadlinePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 20px;">
+      <mat-form-field style="flex: 1;">
         <mat-label>Imagen</mat-label>
         <input matInput formControlName="image" cdkFocusInitial>
       </mat-form-field>

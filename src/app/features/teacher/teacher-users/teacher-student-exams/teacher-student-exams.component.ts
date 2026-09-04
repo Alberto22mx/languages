@@ -4,9 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 import { ProgressService } from '../../../../core/services/progress/progress.service';
+import { TeacherExamGradeDialogComponent } from '../../teacher-exam/teacher-exam-grades/teacher-exam-grade-dialog.component';
 
 @Component({
   selector: 'app-teacher-student-exams',
@@ -25,6 +27,7 @@ export class TeacherStudentExamsComponent implements OnInit {
     private alertsService: AlertsService,
     private router: Router,
     private location: Location,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -33,15 +36,32 @@ export class TeacherStudentExamsComponent implements OnInit {
       this.router.navigate(['/modulos/ii/teacher-users']);
       return;
     }
-    this.progressService.getStudentExamResults(this.student.id).subscribe({
-      next: (results) => this.results = results,
-      error: () => this.alertsService.warning('No fue posible cargar los exámenes del alumno.'),
-    });
+    this.loadResults();
   }
 
   review(result: any): void {
-    this.router.navigate(['/modulos/ii/teacher-exam-grades'], {
-      state: { group: { id: result.groupId }, exam: result.exam, studentId: this.student.id },
+    if (!result.submission) return;
+    const dialogRef = this.dialog.open(TeacherExamGradeDialogComponent, {
+      width: '800px',
+      maxWidth: '95vw',
+      data: { exam: result.exam, result },
+    });
+    dialogRef.afterClosed().subscribe((evaluation) => {
+      if (!evaluation) return;
+      this.progressService.gradeExamSubmission(result.submission._id, evaluation.answers, evaluation.feedback).subscribe({
+        next: () => {
+          this.alertsService.success('Calificación guardada.');
+          this.loadResults();
+        },
+        error: () => this.alertsService.warning('No fue posible guardar la calificación.'),
+      });
+    });
+  }
+
+  private loadResults(): void {
+    this.progressService.getStudentExamResults(this.student.id).subscribe({
+      next: (results) => this.results = results,
+      error: () => this.alertsService.warning('No fue posible cargar los exámenes del alumno.'),
     });
   }
 

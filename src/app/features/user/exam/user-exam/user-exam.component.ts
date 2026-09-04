@@ -11,6 +11,7 @@ import { ProgressService } from '../../../../core/services/progress/progress.ser
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
+import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
   selector: 'app-user-exam',
@@ -29,6 +30,7 @@ export class UserExamComponent implements OnInit {
     private examsService: ExamsService,
     private authService: AuthService,
     private progressService: ProgressService,
+    private alertsService: AlertsService,
     private router: Router
   ) {}
 
@@ -95,9 +97,9 @@ export class UserExamComponent implements OnInit {
   onSubmit(): void {
     if (this.form.valid) {
       console.log('Formulario enviado:', this.form.value);
-      this.progressService.createProgress(this.form.value).subscribe((res) => {
-        console.log(res);
-        this.router.navigate(['/modulos/i/exam']);
+      this.progressService.createProgress(this.form.value).subscribe({
+        next: () => this.router.navigate(['/modulos/i/exam']),
+        error: (error) => this.alertsService.warning(error.error?.message ?? 'No fue posible enviar el examen.'),
       });
     } else {
       this.form.markAllAsTouched();

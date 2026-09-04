@@ -53,6 +53,7 @@ export class ExamModalComponent implements OnInit {
       title: [this.data?.exam?.title || '', Validators.required],
       instructions: [this.data?.exam?.instructions || '', Validators.required],
       image: [this.data?.exam?.image || ''],
+      availableUntil: [this.data?.exam?.availableUntil ? new Date(this.data.exam.availableUntil) : null],
     });
   }
 
@@ -64,6 +65,11 @@ export class ExamModalComponent implements OnInit {
     if (this.groupForm.valid) {
       // Lógica para enviar el formulario
       const formData = this.groupForm.value;
+      if (formData.availableUntil) {
+        const deadline = new Date(formData.availableUntil);
+        deadline.setHours(23, 59, 59, 999);
+        formData.availableUntil = deadline.toISOString();
+      }
       if (this.isEdit) {
         // Enviar datos actualizados al componente padre
         this.examsService.update(this.data.exam.id, this.groupForm.value).subscribe({

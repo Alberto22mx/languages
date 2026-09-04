@@ -32,6 +32,7 @@ import { UserExamComponent } from './features/user/exam/user-exam/user-exam.comp
 import { ExamContentComponent } from './features/teacher/teacher-exam/exam-content/exam-content.component';
 import { TeacherExamGradesComponent } from './features/teacher/teacher-exam/teacher-exam-grades/teacher-exam-grades.component';
 import { TeacherStudentExamsComponent } from './features/teacher/teacher-users/teacher-student-exams/teacher-student-exams.component';
+import { TeacherExamRequestsComponent } from './features/teacher/teacher-exam/teacher-exam-requests/teacher-exam-requests.component';
 import { GamesScenaComponent } from './features/user/games/components/games-scena/games-scena.component';
 import { TomGameComponent } from './features/user/games/components/tom-game/tom-game.component';
 import { WordSearchComponent } from './features/user/games/word-search/word-search.component';
@@ -80,6 +81,7 @@ export const routes: Routes = [
               { path: 'teacher-exam', component: TeacherExamComponent },
               { path: 'teacher-exam-content', component: ExamContentComponent },
               { path: 'teacher-exam-grades', component: TeacherExamGradesComponent },
+              { path: 'teacher-exam-requests', component: TeacherExamRequestsComponent },
               { path: 'teacher-student-exams', component: TeacherStudentExamsComponent },
               { path: 'profil', component: ProfileComponent },
             ],

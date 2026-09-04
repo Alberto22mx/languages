@@ -13,15 +13,15 @@
       </ng-container>
       <ng-container matColumnDef="submittedAt">
         <th mat-header-cell *matHeaderCellDef>Entregado</th>
-        <td mat-cell *matCellDef="let result">{{ result.submission.createdAt | date:'short' }}</td>
+        <td mat-cell *matCellDef="let result">{{ result.submission?.createdAt | date:'short' }}</td>
       </ng-container>
       <ng-container matColumnDef="score">
         <th mat-header-cell *matHeaderCellDef>Calificación</th>
-        <td mat-cell *matCellDef="let result">{{ result.submission.score === undefined ? 'Pendiente' : result.submission.score + '/100' }}</td>
+        <td mat-cell *matCellDef="let result">{{ !result.submission ? 'Sin entrega' : (result.submission.score === undefined ? 'Pendiente' : result.submission.score + '/100') }}</td>
       </ng-container>
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let result"><button mat-raised-button color="primary" (click)="review(result)">Revisar</button></td>
+        <td mat-cell *matCellDef="let result"><button mat-raised-button color="primary" [disabled]="!result.submission" (click)="review(result)">Revisar</button></td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

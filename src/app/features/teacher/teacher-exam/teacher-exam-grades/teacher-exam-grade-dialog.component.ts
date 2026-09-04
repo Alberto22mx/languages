@@ -24,8 +24,19 @@ export class TeacherExamGradeDialogComponent {
   ) {
     this.feedback = data.result.submission.feedback ?? '';
     data.result.submission.answers.forEach((answer: any) => {
-      this.evaluations[answer.questionId] = answer.isCorrect === true;
+      const question = this.questionFor(answer.questionId);
+      this.evaluations[answer.questionId] = this.isAutomatic(question)
+        ? this.isAnswerCorrect(question, answer)
+        : answer.isCorrect === true;
     });
+  }
+
+  questionFor(questionId: string | number): any {
+    return this.data.exam.questions.find((question: any) => String(question.id) === String(questionId));
+  }
+
+  isAutomatic(question: any): boolean {
+    return question?.type === 'single' || question?.type === 'multiple';
   }
 
   answerFor(questionId: string | number): any {
@@ -44,5 +55,12 @@ export class TeacherExamGradeDialogComponent {
       isCorrect: this.evaluations[answer.questionId] === true,
     }));
     this.dialogRef.close({ answers, feedback: this.feedback });
+  }
+
+  private isAnswerCorrect(question: any, answer: any): boolean {
+    if (question.type === 'single') return answer.answer === question.correctAnswers;
+    const submitted = Array.isArray(answer.answers) ? [...answer.answers].map(String).sort() : [];
+    const expected = Array.isArray(question.correctAnswers) ? [...question.correctAnswers].map(String).sort() : [];
+    return submitted.length === expected.length && submitted.every((value, index) => value === expected[index]);
   }
 }

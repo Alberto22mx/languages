@@ -1,66 +1,93 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { GroupsService } from '../../../core/services/groups/groups.service';
-import { Group, GroupAllData } from '../../../core/interfaces/groups.interface';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MatStepperModule} from '@angular/material/stepper';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import { AuthService } from '../../../core/services/auth/auth.service';
-import {MatCardModule} from '@angular/material/card';
-import {MatListModule} from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { GroupsService } from '../../../core/services/groups/groups.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
 import { ProgressService } from '../../../core/services/progress/progress.service';
+import { AlertsService } from '../../../core/services/alerts/alerts.service';
+
+interface StudentExamRow {
+  id: string;
+  title: string;
+  instructions: string;
+  group: string;
+  access?: any;
+}
 
 @Component({
   selector: 'app-exam',
   standalone: true,
-  imports: [CommonModule, MatListModule, MatCardModule, MatStepperModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './exam.component.html',
   styleUrl: './exam.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExamComponent implements OnInit {
-readonly dialog = inject(MatDialog);
-  idUser: string | null;
-  grupos: GroupAllData[] = [];
-  examStatuses: Record<string, any> = {};
-  
-    constructor(
-      private groupsService: GroupsService, 
-      private authService: AuthService,
-      private progressService: ProgressService,
-      private router: Router,
-    ) {
-      this.idUser = this.authService.getUserId();
-    }
-  
-    ngOnInit(): void {
-      this.getLessons();
-    }
-  
-    getLessons() {
-      if (this.idUser) {
-        this.groupsService.getGroupWithRelations(this.idUser).subscribe(result => {
-          console.log(result);
-          this.grupos = result;
-          result.forEach((group) => group.exams?.forEach((exam) => this.loadExamStatus(exam.id)));
-        });
-      }
-  }
+  displayedColumns = ['title', 'instructions', 'group', 'deadline', 'status', 'grade', 'actions'];
+  dataSource = new MatTableDataSource<StudentExamRow>([]);
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  private loadExamStatus(examId?: string): void {
-    if (!examId) {
-      return;
-    }
-    this.progressService.getMyExamStatus(examId).subscribe((status) => {
-      this.examStatuses[examId] = status;
+  constructor(
+    private readonly groupsService: GroupsService,
+    private readonly authService: AuthService,
+    private readonly progressService: ProgressService,
+    private readonly alertsService: AlertsService,
+    private readonly router: Router,
+  ) {}
+
+  ngOnInit(): void {
+    const studentId = this.authService.getUserId();
+    if (!studentId) return;
+    this.groupsService.getGroupWithRelations(studentId).subscribe({
+      next: (groups) => {
+        const rows = groups.flatMap((group) => (group.exams ?? []).map((exam) => ({
+          id: exam.id ?? '', title: exam.title ?? '', instructions: exam.instructions ?? '',
+          group: `${group.nameGroup ?? ''} ${group.course ?? ''}`.trim(),
+        }))).filter((exam) => !!exam.id);
+        this.dataSource.data = rows;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        rows.forEach((row) => this.loadAccess(row));
+      },
+      error: () => this.alertsService.warning('No fue posible cargar los exámenes.'),
     });
   }
-  
-    openEdit(exam: any): void {
-      this.router.navigate(['/modulos/i/exam-content'], {
-        state: { ...exam },
-      });
+
+  applyFilter(event: Event): void { this.dataSource.filter = (event.target as HTMLInputElement).value.trim().toLowerCase(); }
+
+  present(row: StudentExamRow): void {
+    if (row.access?.canSubmit) this.router.navigate(['/modulos/i/exam-content'], { state: { id: row.id } });
+  }
+
+  requestNewAttempt(row: StudentExamRow): void {
+    this.progressService.requestExamAccess(row.id).subscribe({
+      next: () => { this.alertsService.success('Solicitud enviada a tu docente.'); this.loadAccess(row); },
+      error: (error) => this.alertsService.warning(error.error?.message ?? 'No fue posible enviar la solicitud.'),
+    });
+  }
+
+  status(row: StudentExamRow): string {
+    if (!row.access) return 'Cargando…';
+    if (row.access.deadlinePassed) return 'Fecha límite vencida';
+    if (row.access.canSubmit && row.access.additionalAttemptExpiresAt) {
+      return `Nueva oportunidad hasta ${new Date(row.access.additionalAttemptExpiresAt).toLocaleString()}`;
     }
+    if (row.access.canSubmit) return `Disponible (${row.access.submissions}/${row.access.allowedAttempts})`;
+    if (row.access.request?.status === 'pending') return 'Solicitud pendiente';
+    if (row.access.request?.status === 'rejected') return 'Solicitud rechazada';
+    return 'Intento agotado';
+  }
+
+  private loadAccess(row: StudentExamRow): void {
+    this.progressService.getExamAccess(row.id).subscribe({
+      next: (access) => { row.access = access; this.dataSource.data = [...this.dataSource.data]; },
+    });
+  }
 }

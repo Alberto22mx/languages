@@ -1,10 +1,11 @@
 <h2 mat-dialog-title>Revisar examen: {{ data.exam.title }}</h2>
 <mat-dialog-content>
-  <p>Marca cada respuesta como correcta. La calificación se calcula automáticamente sobre 100.</p>
+  <p>Las preguntas de opción se califican automáticamente. Marca únicamente las respuestas abiertas.</p>
   <section *ngFor="let question of data.exam.questions; let index = index" class="question">
     <h3>{{ index + 1 }}. {{ question.questionText }}</h3>
     <p><strong>Respuesta del alumno:</strong> {{ formatAnswer(question.id) }}</p>
-    <mat-checkbox [(ngModel)]="evaluations[question.id]">Respuesta correcta</mat-checkbox>
+    <p *ngIf="isAutomatic(question)"><strong>Resultado automático:</strong> {{ evaluations[question.id] ? 'Correcta' : 'Incorrecta' }}</p>
+    <mat-checkbox *ngIf="!isAutomatic(question)" [(ngModel)]="evaluations[question.id]">Respuesta correcta</mat-checkbox>
   </section>
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Comentarios para el alumno</mat-label>
