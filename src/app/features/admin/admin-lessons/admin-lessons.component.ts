@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,11 +14,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
 
 @Component({
-  selector: 'app-admin-lessons',
-  standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatMenuModule, MatIconModule],
-  templateUrl: './admin-lessons.component.html',
-  styleUrl: './admin-lessons.component.css'
+    selector: 'app-admin-lessons',
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatMenuModule, MatIconModule],
+    templateUrl: './admin-lessons.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './admin-lessons.component.css'
 })
 export class AdminLessonsComponent implements OnInit {
   readonly dialog = inject(MatDialog);

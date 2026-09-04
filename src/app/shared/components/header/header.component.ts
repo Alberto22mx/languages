@@ -1,27 +1,21 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule} from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { UserType } from '../../../core/interfaces/user.interface';
 import { GroupsService } from '../../../core/services/groups/groups.service';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [CommonModule,
-    RouterLink,
-    MatButtonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatMenuModule,
-    MatDividerModule],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+    selector: 'app-header',
+    imports: [RouterLink, MatButtonModule, MatToolbarModule, MatIconModule, MatMenuModule, MatDividerModule],
+    templateUrl: './header.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './header.component.css'
 })
 export class HeaderComponent {
   username: string | null;

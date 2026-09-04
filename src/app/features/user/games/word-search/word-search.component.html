@@ -1,42 +1,44 @@
 <div id="main-container" style="display: flex;">
-    <div id="container" style="flex: 1;">
-        <div id="game-container"></div>
-    </div>
+  <div id="container" style="flex: 1;">
+    <div id="game-container"></div>
+  </div>
 
-    <div style="flex: 1;">
-        <mat-card class="example-card" appearance="outlined" style="width: 100%;">
-            <mat-card-header>
-              <mat-card-title-group>
-                <mat-card-title>
-                    <!-- HTML -->
-                    <div class="flex-container">
-                        <div class="title">
-                            <p>Word Search <span class="instruction-text">Sopa de letras</span></p>
-                        </div>
-                        <div>
-                            <button mat-button color="primary" (click)="goBack()">
-                                <mat-icon>arrow_back</mat-icon> Regresar
-                            </button>
-                        </div>
-                    </div>
-                </mat-card-title>
-                <mat-card-subtitle>
-                    <span class="content-text">Instructions: <span class="instruction-text">Instrucciones</span></span>
-                    <p class="content-text">Find all the hidden words in the word search.</p>
-                    <span class="instruction-text">Encuentra todas las palabras ocultas en la sopa de letras.</span>
-                </mat-card-subtitle>
-              </mat-card-title-group>
-            </mat-card-header>
-            <mat-card-content>
-                <div *ngFor="let word of wordsList; let i = index" [id]="'word-' + i">
-                    <p>
-                      <span class="english-word">{{ word.english + ' '}}</span> 
-                      <span class="instruction-text">{{ word.spanish }}</span>
-                    </p>
-                  </div>
-            </mat-card-content>
-        </mat-card>
-    </div>
+  <div style="flex: 1;">
+    <mat-card class="example-card" appearance="outlined" style="width: 100%;">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>
+            <!-- HTML -->
+            <div class="flex-container">
+              <div class="title">
+                <p>Word Search <span class="instruction-text">Sopa de letras</span></p>
+              </div>
+              <div>
+                <button mat-button color="primary" (click)="goBack()">
+                  <mat-icon>arrow_back</mat-icon> Regresar
+                </button>
+              </div>
+            </div>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <span class="content-text">Instructions: <span class="instruction-text">Instrucciones</span></span>
+            <p class="content-text">Find all the hidden words in the word search.</p>
+            <span class="instruction-text">Encuentra todas las palabras ocultas en la sopa de letras.</span>
+          </mat-card-subtitle>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content>
+        @for (word of wordsList; track word; let i = $index) {
+          <div [id]="'word-' + i">
+            <p>
+              <span class="english-word">{{ word.english + ' '}}</span>
+              <span class="instruction-text">{{ word.spanish }}</span>
+            </p>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
 
 

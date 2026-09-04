@@ -9,9 +9,11 @@
       <mat-form-field style="flex: 1;">
         <mat-label>Curso</mat-label>
         <mat-select formControlName="course" (selectionChange)="onLevelChange($event)">
-          <mat-option *ngFor="let course of courses" [value]="course">
-            {{ course }}
-          </mat-option>
+          @for (course of courses; track course) {
+            <mat-option [value]="course">
+              {{ course }}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </div>
@@ -19,17 +21,21 @@
       <mat-form-field style="flex: 1;">
         <mat-label>Nivel</mat-label>
         <mat-select formControlName="level" (selectionChange)="onLevelChange($event)">
-          <mat-option *ngFor="let level of levelGroup" [value]="level.level">
-            {{ level.level }}
-          </mat-option>
+          @for (level of levelGroup; track level) {
+            <mat-option [value]="level.level">
+              {{ level.level }}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field style="flex: 1;">
         <mat-label>Descripción</mat-label>
         <mat-select formControlName="description">
-          <mat-option *ngFor="let level of levelGroup" [value]="level.description">
-            {{ level.code }}
-          </mat-option>
+          @for (level of levelGroup; track level) {
+            <mat-option [value]="level.description">
+              {{ level.code }}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </div>
@@ -37,9 +43,11 @@
       <mat-form-field style="flex: 1;">
         <mat-label>Hora</mat-label>
         <mat-select formControlName="schedule">
-          <mat-option *ngFor="let schedule of scheduleGroup" [value]="schedule.time">
-            {{ schedule.time }}
-          </mat-option>
+          @for (schedule of scheduleGroup; track schedule) {
+            <mat-option [value]="schedule.time">
+              {{ schedule.time }}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </div>

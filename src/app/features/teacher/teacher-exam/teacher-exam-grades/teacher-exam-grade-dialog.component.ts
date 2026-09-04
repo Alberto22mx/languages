@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -8,11 +8,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'app-teacher-exam-grade-dialog',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatInputModule],
-  templateUrl: './teacher-exam-grade-dialog.component.html',
-  styleUrl: './teacher-exam-grade-dialog.component.css',
+    selector: 'app-teacher-exam-grade-dialog',
+    imports: [FormsModule, MatButtonModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatInputModule],
+    templateUrl: './teacher-exam-grade-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './teacher-exam-grade-dialog.component.css'
 })
 export class TeacherExamGradeDialogComponent {
   evaluations: Record<string, boolean> = {};

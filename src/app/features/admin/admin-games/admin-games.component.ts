@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,11 +14,11 @@ import { Games } from '../../../core/interfaces/games.interface';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
 
 @Component({
-  selector: 'app-admin-games',
-  standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatMenuModule, MatIconModule],
-  templateUrl: './admin-games.component.html',
-  styleUrl: './admin-games.component.css'
+    selector: 'app-admin-games',
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatMenuModule, MatIconModule],
+    templateUrl: './admin-games.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './admin-games.component.css'
 })
 export class AdminGamesComponent implements OnInit {
   readonly dialog = inject(MatDialog);

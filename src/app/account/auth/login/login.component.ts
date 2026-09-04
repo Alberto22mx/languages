@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {MatCardModule} from '@angular/material/card';
@@ -9,16 +9,15 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+
 import { LoginCredentials } from '../../../core/interfaces/login.interface';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, HttpClientModule, MatCardModule, MatFormFieldModule, MatIconModule, ReactiveFormsModule, MatButtonModule, MatInputModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-login',
+    imports: [MatCardModule, MatFormFieldModule, MatIconModule, ReactiveFormsModule, MatButtonModule, MatInputModule],
+    templateUrl: './login.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './login.component.css'
 })
 export class LoginComponent {
   loginForm: FormGroup;

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AbcComponent } from './components/abc/abc.component';
-import { CommonModule } from '@angular/common';
+
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -12,11 +12,11 @@ import { Router } from '@angular/router';
 import { GroupAllData } from '../../../core/interfaces/groups.interface';
 
 @Component({
-  selector: 'app-games',
-  standalone: true,
-  imports: [CommonModule, MatListModule, MatCardModule, MatStepperModule, MatButtonModule, MatIconModule],
-  templateUrl: './games.component.html',
-  styleUrl: './games.component.css'
+    selector: 'app-games',
+    imports: [MatListModule, MatCardModule, MatStepperModule, MatButtonModule, MatIconModule],
+    templateUrl: './games.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './games.component.css'
 })
 export class GamesComponent implements OnInit { 
   idUser: string | null;

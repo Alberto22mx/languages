@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+
+import { Component, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,11 +21,11 @@ import { ExamsService } from '../../../core/services/exams/exams.service';
 import { Exams } from '../../../core/interfaces/exams.interface';
 
 @Component({
-  selector: 'app-teacher-exam',
-  standalone: true,
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatCardModule, MatIconModule, MatMenuModule],
-  templateUrl: './teacher-exam.component.html',
-  styleUrl: './teacher-exam.component.css'
+    selector: 'app-teacher-exam',
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatCardModule, MatIconModule, MatMenuModule],
+    templateUrl: './teacher-exam.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './teacher-exam.component.css'
 })
 export class TeacherExamComponent implements OnInit {
   readonly dialog = inject(MatDialog);

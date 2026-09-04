@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,11 +14,11 @@ import { Exams } from '../../../core/interfaces/exams.interface';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
 
 @Component({
-  selector: 'app-admin-exam',
-  standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatMenuModule, MatIconModule],
-  templateUrl: './admin-exam.component.html',
-  styleUrl: './admin-exam.component.css'
+    selector: 'app-admin-exam',
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatMenuModule, MatIconModule],
+    templateUrl: './admin-exam.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './admin-exam.component.css'
 })
 export class AdminExamComponent {
   readonly dialog = inject(MatDialog);

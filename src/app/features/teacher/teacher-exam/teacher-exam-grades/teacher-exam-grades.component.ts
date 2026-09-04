@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -32,11 +32,11 @@ interface ExamResult {
 }
 
 @Component({
-  selector: 'app-teacher-exam-grades',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTableModule],
-  templateUrl: './teacher-exam-grades.component.html',
-  styleUrl: './teacher-exam-grades.component.css',
+    selector: 'app-teacher-exam-grades',
+    imports: [CommonModule, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTableModule],
+    templateUrl: './teacher-exam-grades.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './teacher-exam-grades.component.css'
 })
 export class TeacherExamGradesComponent implements OnInit {
   group: any;

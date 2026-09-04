@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+
 import { RouterModule } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,12 +11,11 @@ import { FooterComponent } from '../../shared/components/footer/footer.component
 import { SidenavComponent } from './../../shared/components/sidenav/sidenav.component';
 
 @Component({
-  selector: 'app-forever',
-  templateUrl: './forever.component.html',
-  styleUrls: ['./forever.component.css'],
-  standalone: true,
-  imports: [
-    CommonModule,
+    selector: 'app-forever',
+    templateUrl: './forever.component.html',
+    styleUrls: ['./forever.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [
     RouterModule,
     MatSidenavModule,
     MatFormFieldModule,
@@ -25,7 +24,7 @@ import { SidenavComponent } from './../../shared/components/sidenav/sidenav.comp
     HeaderComponent,
     FooterComponent,
     SidenavComponent
-  ]
+]
 })
 export class ForeverComponent {
 }

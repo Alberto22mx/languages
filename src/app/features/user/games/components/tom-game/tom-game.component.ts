@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Tablero } from './scenes/Tablero';
 import { Mappeo } from './scenes/Mappeo';
 
 @Component({
-  selector: 'app-tom-game',
-  standalone: true,
-  imports: [],
-  templateUrl: './tom-game.component.html',
-  styleUrl: './tom-game.component.css'
+    selector: 'app-tom-game',
+    imports: [],
+    templateUrl: './tom-game.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './tom-game.component.css'
 })
 export class TomGameComponent extends Phaser.Scene implements OnInit {
 constructor() {

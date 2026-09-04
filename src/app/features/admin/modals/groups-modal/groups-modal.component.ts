@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
@@ -13,16 +13,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
+
 import { GroupsService } from '../../../../core/services/groups/groups.service';
 import { LevelGroup } from '../../../../shared/enums/level-group';
 import { ScheduleGroup } from '../../../../shared/enums/schedule-group';
 
 @Component({
-  selector: 'app-groups-modal',
-  standalone: true,
-  imports: [
-    CommonModule,
+    selector: 'app-groups-modal',
+    imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -30,10 +28,11 @@ import { ScheduleGroup } from '../../../../shared/enums/schedule-group';
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
-    MatSelectModule,
-  ],
-  templateUrl: './groups-modal.component.html',
-  styleUrl: './groups-modal.component.css',
+    MatSelectModule
+],
+    templateUrl: './groups-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './groups-modal.component.css'
 })
 export class GroupsModalComponent implements OnInit {
   groupForm: FormGroup;

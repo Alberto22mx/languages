@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, inject, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
@@ -25,12 +25,12 @@ interface Student {
 }
 
 @Component({
-  selector: 'app-teacher-users',
-  templateUrl: './teacher-users.component.html',
-  styleUrls: ['./teacher-users.component.css'],
-  standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatMenuModule
-  ]
+    selector: 'app-teacher-users',
+    templateUrl: './teacher-users.component.html',
+    styleUrls: ['./teacher-users.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatMenuModule
+    ]
 })
 export class TeacherUsersComponent implements OnInit {
   readonly dialog = inject(MatDialog);

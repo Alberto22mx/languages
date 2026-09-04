@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,15 +6,15 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
-  selector: 'app-sidenav',
-  standalone: true,
-  imports: [MatSidenavModule,
-    MatListModule,
-    MatIconModule,
-    RouterLink,
-    RouterLinkActive],
-  templateUrl: './sidenav.component.html',
-  styleUrl: './sidenav.component.css'
+    selector: 'app-sidenav',
+    imports: [MatSidenavModule,
+        MatListModule,
+        MatIconModule,
+        RouterLink,
+        RouterLinkActive],
+    templateUrl: './sidenav.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './sidenav.component.css'
 })
 export class SidenavComponent implements OnInit {
   isUser: boolean = false;

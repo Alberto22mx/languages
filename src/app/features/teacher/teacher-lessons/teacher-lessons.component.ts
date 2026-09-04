@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,16 +12,16 @@ import { Lessons } from '../../../core/interfaces/lessons.interface';
 import { LessonsService } from '../../../core/services/lessons/lessons.service';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
 import { LessonsModalComponent } from '../../admin/modals/lessons-modal/lessons-modal.component';
-import { CommonModule, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-teacher-lessons',
-  standalone: true,
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatMenuModule, MatIconModule],
-  templateUrl: './teacher-lessons.component.html',
-  styleUrl: './teacher-lessons.component.css'
+    selector: 'app-teacher-lessons',
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatMenuModule, MatIconModule],
+    templateUrl: './teacher-lessons.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './teacher-lessons.component.css'
 })
 export class TeacherLessonsComponent implements OnInit {
   readonly dialog = inject(MatDialog);

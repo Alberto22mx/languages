@@ -3,12 +3,11 @@
     <div id="contenedor-image">
     </div>
     <div class="profile-picture">
-      <ng-container *ngIf="user.image; else defaultIcon">
+      @if (user.image) {
         <img [src]="user.image" alt="Foto de perfil" />
-      </ng-container>
-      <ng-template #defaultIcon>
+      } @else {
         <mat-icon>account_circle</mat-icon>
-      </ng-template>
+      }
     </div>
   </div>
   <div id="contenedor-title" class="contenedor-title">

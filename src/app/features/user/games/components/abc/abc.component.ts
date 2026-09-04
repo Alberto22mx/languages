@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import Phaser from 'phaser';
 import { UsersService } from '../../../../../core/services/users/users.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,11 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-abc',
-  standalone: true,
-  imports: [MatIconModule, MatButtonModule],
-  templateUrl: './abc.component.html',
-  styleUrl: './abc.component.css'
+    selector: 'app-abc',
+    imports: [MatIconModule, MatButtonModule],
+    templateUrl: './abc.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './abc.component.css'
 })
 export class AbcComponent extends Phaser.Scene implements OnInit {
   clickedLetters: string[] = [];

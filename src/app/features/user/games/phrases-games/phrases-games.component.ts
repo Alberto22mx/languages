@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Phrase } from '../../../../core/interfaces/phrases.interface';
 import { PhrasesComponent } from '../../../../shared/components/phrases/phrases.component';
 
 @Component({
-  selector: 'app-phrases-games',
-  standalone: true,
-  imports: [PhrasesComponent],
-  templateUrl: './phrases-games.component.html',
-  styleUrl: './phrases-games.component.css'
+    selector: 'app-phrases-games',
+    imports: [PhrasesComponent],
+    templateUrl: './phrases-games.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './phrases-games.component.css'
 })
 export class PhrasesGamesComponent {
   

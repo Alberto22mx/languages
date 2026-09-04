@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AssignComponent } from "./assign/assign.component";
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,7 +6,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { GroupsService } from '../../../../core/services/groups/groups.service';
 import { UsersService } from '../../../../core/services/users/users.service';
 import { AssignableItem } from '../../../../core/interfaces/assignable-item.interce';
-import { CommonModule } from '@angular/common';
+
 import { UserType } from '../../../../core/interfaces/user.interface';
 import { ExamsService } from '../../../../core/services/exams/exams.service';
 import { LessonsService } from '../../../../core/services/lessons/lessons.service';
@@ -14,11 +14,11 @@ import { GamesService } from '../../../../core/services/games/games.service';
 import { forkJoin, map } from 'rxjs';
 
 @Component({
-  selector: 'app-groups-assign-modal',
-  standalone: true,
-  imports: [CommonModule, AssignComponent, MatDialogModule, MatButtonModule, MatTabsModule],
-  templateUrl: './groups-assign-modal.component.html',
-  styleUrl: './groups-assign-modal.component.css',
+    selector: 'app-groups-assign-modal',
+    imports: [AssignComponent, MatDialogModule, MatButtonModule, MatTabsModule],
+    templateUrl: './groups-assign-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './groups-assign-modal.component.css'
 })
 export class GroupsAssignModalComponent implements OnInit {
   selectedTabIndex: number = 0; // Siempre abre la primera pestaña

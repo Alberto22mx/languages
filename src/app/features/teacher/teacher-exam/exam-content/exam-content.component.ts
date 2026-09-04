@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {MatFormFieldControl, MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
@@ -13,10 +13,8 @@ import { Location } from '@angular/common';
 import { ExamsService } from '../../../../core/services/exams/exams.service';
 
 @Component({
-  selector: 'app-exam-content',
-  standalone: true,
-  imports: [
-    CommonModule,
+    selector: 'app-exam-content',
+    imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
@@ -25,9 +23,10 @@ import { ExamsService } from '../../../../core/services/exams/exams.service';
     MatIconModule,
     MatCheckboxModule,
     MatRadioModule
-  ],
-  templateUrl: './exam-content.component.html',
-  styleUrl: './exam-content.component.css'
+],
+    templateUrl: './exam-content.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './exam-content.component.css'
 })
 export class ExamContentComponent implements OnInit {
   examData: any = null; // Datos del examen para editar

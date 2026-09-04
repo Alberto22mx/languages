@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MainWordScene } from './scenes/main.word.scene';
 import { MatIconModule } from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import { Games } from '../../../../core/interfaces/games.interface';
-import { CommonModule } from '@angular/common';
+
 import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
-  selector: 'app-word-search',
-  standalone: true,
-  imports: [CommonModule, MatIconModule, MatCardModule],
-  templateUrl: './word-search.component.html',
-  styleUrl: './word-search.component.css'
+    selector: 'app-word-search',
+    imports: [MatIconModule, MatCardModule],
+    templateUrl: './word-search.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './word-search.component.css'
 })
 export class WordSearchComponent implements OnInit {
   private game!: Phaser.Game;

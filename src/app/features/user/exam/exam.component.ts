@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,11 +22,11 @@ interface StudentExamRow {
 }
 
 @Component({
-  selector: 'app-exam',
-  standalone: true,
-  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
-  templateUrl: './exam.component.html',
-  styleUrl: './exam.component.css',
+    selector: 'app-exam',
+    imports: [CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
+    templateUrl: './exam.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './exam.component.css'
 })
 export class ExamComponent implements OnInit {
   displayedColumns = ['title', 'instructions', 'group', 'deadline', 'status', 'grade', 'actions'];

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
@@ -13,14 +13,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
+
 import { ExamsService } from '../../../../core/services/exams/exams.service';
 
 @Component({
-  selector: 'app-exam-modal',
-  standalone: true,
-  imports: [
-    CommonModule,
+    selector: 'app-exam-modal',
+    imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -28,10 +26,11 @@ import { ExamsService } from '../../../../core/services/exams/exams.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
-    MatSelectModule,
-  ],
-  templateUrl: './exam-modal.component.html',
-  styleUrl: './exam-modal.component.css'
+    MatSelectModule
+],
+    templateUrl: './exam-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './exam-modal.component.css'
 })
 export class ExamModalComponent implements OnInit {
   groupForm!: FormGroup;

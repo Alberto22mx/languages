@@ -6,6 +6,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   CdkDragDrop,
@@ -14,7 +15,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { AssignableItem } from '../../../../../core/interfaces/assignable-item.interce';
-import { CommonModule } from '@angular/common';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -22,19 +23,18 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
-  selector: 'app-assign',
-  standalone: true,
-  imports: [
-    CommonModule,
+    selector: 'app-assign',
+    imports: [
     DragDropModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
-    MatPaginatorModule,
-  ],
-  templateUrl: './assign.component.html',
-  styleUrls: ['./assign.component.css'],
+    MatPaginatorModule
+],
+    templateUrl: './assign.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrls: ['./assign.component.css']
 })
 export class AssignComponent implements OnInit, OnChanges {
   @Input() items1: AssignableItem[] = []; // Usuarios asignados

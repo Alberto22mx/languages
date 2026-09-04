@@ -11,27 +11,34 @@
     <div><span>Fecha de nacimiento</span><strong>{{ user.birthDate ? (user.birthDate | date:'dd/MM/yyyy') : 'Sin registrar' }}</strong></div>
   </section>
 
-  <section *ngIf="isGroupMember()" class="groups-section">
-    <h3>{{ groupsTitle }}</h3>
-
-    <div *ngIf="loadingGroups" class="loading">
-      <mat-spinner diameter="28"></mat-spinner>
-    </div>
-
-    <p *ngIf="groupsError" class="message">No fue posible obtener los grupos asignados.</p>
-    <p *ngIf="!loadingGroups && !groupsError && groups.length === 0" class="message">
-      No tiene grupos asignados.
-    </p>
-
-    <mat-card *ngFor="let group of groups" class="group-card">
-      <mat-card-title>{{ group.nameGroup }}</mat-card-title>
-      <mat-card-content>
-        <p><strong>Curso:</strong> {{ group.course }}</p>
-        <p><strong>Nivel:</strong> {{ group.level }}</p>
-        <p><strong>Horario:</strong> {{ group.schedule }}</p>
-      </mat-card-content>
-    </mat-card>
-  </section>
+  @if (isGroupMember()) {
+    <section class="groups-section">
+      <h3>{{ groupsTitle }}</h3>
+      @if (loadingGroups) {
+        <div class="loading">
+          <mat-spinner diameter="28"></mat-spinner>
+        </div>
+      }
+      @if (groupsError) {
+        <p class="message">No fue posible obtener los grupos asignados.</p>
+      }
+      @if (!loadingGroups && !groupsError && groups.length === 0) {
+        <p class="message">
+          No tiene grupos asignados.
+        </p>
+      }
+      @for (group of groups; track group) {
+        <mat-card class="group-card">
+          <mat-card-title>{{ group.nameGroup }}</mat-card-title>
+          <mat-card-content>
+            <p><strong>Curso:</strong> {{ group.course }}</p>
+            <p><strong>Nivel:</strong> {{ group.level }}</p>
+            <p><strong>Horario:</strong> {{ group.schedule }}</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </section>
+  }
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

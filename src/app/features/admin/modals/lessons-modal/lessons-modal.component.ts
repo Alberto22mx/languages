@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
@@ -13,14 +13,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
+
 import { LessonsService } from '../../../../core/services/lessons/lessons.service';
 
 @Component({
-  selector: 'app-lessons-modal',
-  standalone: true,
-  imports: [
-    CommonModule,
+    selector: 'app-lessons-modal',
+    imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -28,10 +26,11 @@ import { LessonsService } from '../../../../core/services/lessons/lessons.servic
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
-    MatSelectModule,
-  ],
-  templateUrl: './lessons-modal.component.html',
-  styleUrl: './lessons-modal.component.css'
+    MatSelectModule
+],
+    templateUrl: './lessons-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './lessons-modal.component.css'
 })
 export class LessonsModalComponent implements OnInit {
   groupForm!: FormGroup;

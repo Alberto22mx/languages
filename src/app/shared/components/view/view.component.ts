@@ -1,12 +1,12 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-view',
-  standalone: true,
-  imports: [],
-  templateUrl: './view.component.html',
-  styleUrl: './view.component.css'
+    selector: 'app-view',
+    imports: [],
+    templateUrl: './view.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './view.component.css'
 })
 export class ViewComponent {
   title = 'tinyMCE-angular';

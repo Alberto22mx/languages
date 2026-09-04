@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'app-progress',
-  standalone: true,
-  imports: [],
-  templateUrl: './progress.component.html',
-  styleUrl: './progress.component.css'
+    selector: 'app-progress',
+    imports: [],
+    templateUrl: './progress.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './progress.component.css'
 })
 export class ProgressComponent {
 

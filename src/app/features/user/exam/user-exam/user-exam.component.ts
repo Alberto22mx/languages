@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ExamsService } from '../../../../core/services/exams/exams.service';
 import { CommonModule } from '@angular/common';
@@ -14,11 +14,11 @@ import { MatCardModule } from '@angular/material/card';
 import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
-  selector: 'app-user-exam',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatRadioModule, MatInputModule, MatCheckboxModule, MatButtonModule, MatIconModule, MatCardModule],
-  templateUrl: './user-exam.component.html',
-  styleUrl: './user-exam.component.css'
+    selector: 'app-user-exam',
+    imports: [CommonModule, ReactiveFormsModule, MatRadioModule, MatInputModule, MatCheckboxModule, MatButtonModule, MatIconModule, MatCardModule],
+    templateUrl: './user-exam.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './user-exam.component.css'
 })
 export class UserExamComponent implements OnInit {
   form!: FormGroup;

@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
+
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,12 +14,11 @@ import { GamesService } from '../../../core/services/games/games.service';
 import { Games } from '../../../core/interfaces/games.interface';
 
 @Component({
-  selector: 'app-teacher-games',
-  templateUrl: './teacher-games.component.html',
-  styleUrls: ['./teacher-games.component.css'],
-  standalone: true,
-  imports: [
-    CommonModule,
+    selector: 'app-teacher-games',
+    templateUrl: './teacher-games.component.html',
+    styleUrls: ['./teacher-games.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [
     MatTableModule,
     MatPaginatorModule,
     MatFormFieldModule,
@@ -27,7 +26,7 @@ import { Games } from '../../../core/interfaces/games.interface';
     MatButtonModule,
     MatIconModule,
     MatMenuModule
-  ]
+]
 })
 export class TeacherGamesComponent implements OnInit {
   displayedColumns: string[] = ['title', 'type', 'url', 'active', 'actions'];

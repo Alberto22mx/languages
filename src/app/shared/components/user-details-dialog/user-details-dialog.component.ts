@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,19 +10,19 @@ import { User } from '../../../core/interfaces/user.interface';
 import { GroupsService } from '../../../core/services/groups/groups.service';
 
 @Component({
-  selector: 'app-user-details-dialog',
-  standalone: true,
-  imports: [
-    CommonModule,
-    DatePipe,
-    MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './user-details-dialog.component.html',
-  styleUrl: './user-details-dialog.component.css',
+    selector: 'app-user-details-dialog',
+    imports: [
+        CommonModule,
+        DatePipe,
+        MatButtonModule,
+        MatCardModule,
+        MatDialogModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './user-details-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './user-details-dialog.component.css'
 })
 export class UserDetailsDialogComponent implements OnInit {
   groups: Group[] = [];

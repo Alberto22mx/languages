@@ -1,25 +1,35 @@
 <h3 style="text-align: center;">CONFIGURACIÓN DEL GRUPO</h3>
 <mat-tab-group [(selectedIndex)]="selectedTabIndex" animationDuration="1000ms">
-  <mat-tab label="Maestro" *ngIf="isDataAvailable(assignedUsersTeacher, unassignedUsersTeacher)">
-    <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
-                 (updateAssigned)="onUpdateAssigned($event)"></app-assign>
-  </mat-tab>
-  <mat-tab label="Alumnos" *ngIf="isDataAvailable(assignedUsers, unassignedUsers)">
-    <app-assign [items1]="assignedUsers" [items2]="unassignedUsers"
-                 (updateAssigned)="onUpdateAssigned($event)"></app-assign>
-  </mat-tab>
-  <mat-tab label="Lecciones" *ngIf="isDataAvailable(assignedLessons, unassignedLessons)">
-    <app-assign [items1]="assignedLessons" [items2]="unassignedLessons"
-                 (updateAssigned)="onUpdateAssigned($event)"></app-assign>
-  </mat-tab>
-  <mat-tab label="Juegos" *ngIf="isDataAvailable(assignedGames, unassignedGames)">
-    <app-assign [items1]="assignedGames" [items2]="unassignedGames"
-                 (updateAssigned)="onUpdateAssigned($event)"></app-assign>
-  </mat-tab>
-  <mat-tab label="Exámenes" *ngIf="isDataAvailable(assignedExams, unassignedExams)">
-    <app-assign [items1]="assignedExams" [items2]="unassignedExams"
-                 (updateAssigned)="onUpdateAssigned($event)"></app-assign>
-  </mat-tab>
+  @if (isDataAvailable(assignedUsersTeacher, unassignedUsersTeacher)) {
+    <mat-tab label="Maestro">
+      <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
+      (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+    </mat-tab>
+  }
+  @if (isDataAvailable(assignedUsers, unassignedUsers)) {
+    <mat-tab label="Alumnos">
+      <app-assign [items1]="assignedUsers" [items2]="unassignedUsers"
+      (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+    </mat-tab>
+  }
+  @if (isDataAvailable(assignedLessons, unassignedLessons)) {
+    <mat-tab label="Lecciones">
+      <app-assign [items1]="assignedLessons" [items2]="unassignedLessons"
+      (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+    </mat-tab>
+  }
+  @if (isDataAvailable(assignedGames, unassignedGames)) {
+    <mat-tab label="Juegos">
+      <app-assign [items1]="assignedGames" [items2]="unassignedGames"
+      (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+    </mat-tab>
+  }
+  @if (isDataAvailable(assignedExams, unassignedExams)) {
+    <mat-tab label="Exámenes">
+      <app-assign [items1]="assignedExams" [items2]="unassignedExams"
+      (updateAssigned)="onUpdateAssigned($event)"></app-assign>
+    </mat-tab>
+  }
 </mat-tab-group>
 
 <mat-dialog-actions align="end">

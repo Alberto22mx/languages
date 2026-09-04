@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, inject, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
@@ -16,12 +16,12 @@ import { AlertsService } from '../../../core/services/alerts/alerts.service';
 import { UserDetailsDialogComponent } from '../../../shared/components/user-details-dialog/user-details-dialog.component';
 
 @Component({
-  selector: 'app-admin-users',
-  standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatMenuModule
-  ],
-  templateUrl: './admin-users.component.html',
-  styleUrl: './admin-users.component.css'
+    selector: 'app-admin-users',
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatMenuModule
+    ],
+    templateUrl: './admin-users.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './admin-users.component.css'
 })
 export class AdminUsersComponent implements OnInit {
   readonly protectedAdminRegistration = 'ADM000001';

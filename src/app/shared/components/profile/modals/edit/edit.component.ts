@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -12,10 +12,8 @@ import { User } from '../../../../../core/interfaces/user.interface';
 import { UsersService } from '../../../../../core/services/users/users.service';
 
 @Component({
-  selector: 'app-edit',
-  standalone: true,
-  imports: [
-    CommonModule,
+    selector: 'app-edit',
+    imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -23,11 +21,11 @@ import { UsersService } from '../../../../../core/services/users/users.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
-    MatSelectModule,
-
-  ],
-  templateUrl: './edit.component.html',
-  styleUrl: './edit.component.css'
+    MatSelectModule
+],
+    templateUrl: './edit.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './edit.component.css'
 })
 export class EditComponent {
   userForm: FormGroup;

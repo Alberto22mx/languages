@@ -1,16 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { PanelComponent } from '../../../../shared/components/panel/panel.component';
-import { CommonModule } from '@angular/common';
+
 import { LessonsService } from '../../../../core/services/lessons/lessons.service';
 import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 import { Lessons } from '../../../../core/interfaces/lessons.interface';
 
 @Component({
-  selector: 'app-lessons-content',
-  standalone: true,
-  imports: [CommonModule, PanelComponent],
-  templateUrl: './lessons-content.component.html',
-  styleUrl: './lessons-content.component.css'
+    selector: 'app-lessons-content',
+    imports: [PanelComponent],
+    templateUrl: './lessons-content.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './lessons-content.component.css'
 })
 export class LessonsContentComponent implements OnInit {
   idLesson: string = '';

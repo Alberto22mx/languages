@@ -40,7 +40,9 @@
       <mat-form-field style="flex: 1;">
         <mat-label>Tipo de Usuario</mat-label>
         <mat-select formControlName="userType">
-          <mat-option *ngFor="let type of userTypes" [value]="type">{{ type }}</mat-option>
+          @for (type of userTypes; track type) {
+            <mat-option [value]="type">{{ type }}</mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </div>

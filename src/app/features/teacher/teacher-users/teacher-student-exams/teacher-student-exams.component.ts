@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,11 +11,11 @@ import { ProgressService } from '../../../../core/services/progress/progress.ser
 import { TeacherExamGradeDialogComponent } from '../../teacher-exam/teacher-exam-grades/teacher-exam-grade-dialog.component';
 
 @Component({
-  selector: 'app-teacher-student-exams',
-  standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, MatTableModule],
-  templateUrl: './teacher-student-exams.component.html',
-  styleUrl: './teacher-student-exams.component.css',
+    selector: 'app-teacher-student-exams',
+    imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, MatTableModule],
+    templateUrl: './teacher-student-exams.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './teacher-student-exams.component.css'
 })
 export class TeacherStudentExamsComponent implements OnInit {
   student: any;

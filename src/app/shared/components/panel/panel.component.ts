@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,11 +7,11 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-panel',
-  standalone: true,
-  imports: [CommonModule, EditorModule, FormsModule, MatButtonModule, MatIconModule],
-  templateUrl: './panel.component.html',
-  styleUrl: './panel.component.css'
+    selector: 'app-panel',
+    imports: [EditorModule, FormsModule, MatButtonModule, MatIconModule],
+    templateUrl: './panel.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './panel.component.css'
 })
 export class PanelComponent implements OnInit {
   @Input() title: string = 'CONTENIDO DE LA LECCIÓN';

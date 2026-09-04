@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -6,10 +6,10 @@ import { ProgressService } from '../../../../core/services/progress/progress.ser
 import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
-  selector: 'app-teacher-exam-requests',
-  standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule],
-  templateUrl: './teacher-exam-requests.component.html',
+    selector: 'app-teacher-exam-requests',
+    imports: [CommonModule, MatTableModule, MatButtonModule],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    templateUrl: './teacher-exam-requests.component.html'
 })
 export class TeacherExamRequestsComponent implements OnInit {
   displayedColumns = ['student', 'exam', 'reason', 'createdAt', 'status', 'actions'];

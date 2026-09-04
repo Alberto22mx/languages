@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,16 +8,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
+
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { UsersService } from '../../../../core/services/users/users.service';
 import { User } from '../../../../core/interfaces/user.interface';
 
 @Component({
-  selector: 'app-user-modal',
-  standalone: true,
-  imports: [
-    CommonModule,
+    selector: 'app-user-modal',
+    imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -25,11 +23,12 @@ import { User } from '../../../../core/interfaces/user.interface';
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
-    MatSelectModule,
-  ],
-  providers: [provideNativeDateAdapter()],
-  templateUrl: './user-modal.component.html',
-  styleUrl: './user-modal.component.css'
+    MatSelectModule
+],
+    providers: [provideNativeDateAdapter()],
+    templateUrl: './user-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './user-modal.component.css'
 })
 export class UserModalComponent {
   userForm: FormGroup;

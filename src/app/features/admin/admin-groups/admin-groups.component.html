@@ -12,19 +12,23 @@
       <mat-label>Filtro</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Buscar..." #input>
     </mat-form-field>
-    
+
     <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
       <!-- Columna Expandible -->
       <ng-container matColumnDef="expand">
         <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
         <td mat-cell *matCellDef="let group">
           <button mat-icon-button aria-label="expand row" (click)="expandedElement = expandedElement === group ? null : group">
-            <mat-icon *ngIf="expandedElement !== group">keyboard_arrow_down</mat-icon>
-            <mat-icon *ngIf="expandedElement === group">keyboard_arrow_up</mat-icon>
+            @if (expandedElement !== group) {
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            }
+            @if (expandedElement === group) {
+              <mat-icon>keyboard_arrow_up</mat-icon>
+            }
           </button>
         </td>
       </ng-container>
-    
+
       <!-- Columnas existentes -->
       <ng-container matColumnDef="course">
         <th mat-header-cell *matHeaderCellDef> Curso </th>
@@ -35,17 +39,17 @@
         <th mat-header-cell *matHeaderCellDef> Grupo </th>
         <td mat-cell *matCellDef="let group"> {{group.nameGroup}} </td>
       </ng-container>
-    
+
       <ng-container matColumnDef="level">
         <th mat-header-cell *matHeaderCellDef> Nivel </th>
         <td mat-cell *matCellDef="let group"> {{group.level}} </td>
       </ng-container>
-    
+
       <ng-container matColumnDef="schedule">
         <th mat-header-cell *matHeaderCellDef> Horario </th>
         <td mat-cell *matCellDef="let group"> {{group.schedule}} </td>
       </ng-container>
-    
+
       <ng-container matColumnDef="state">
         <th mat-header-cell *matHeaderCellDef> Estado </th>
         <td mat-cell *matCellDef="let group"> {{group.state}} </td>
@@ -53,7 +57,7 @@
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef > Acciones </th>
-        <td mat-cell *matCellDef="let group"> 
+        <td mat-cell *matCellDef="let group">
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" (click)="$event.stopPropagation()">
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -69,7 +73,7 @@
           </mat-menu>
         </td>
       </ng-container>
-    
+
       <!-- Columna expandible con detalles -->
       <ng-container matColumnDef="expandedDetail">
         <td mat-cell *matCellDef="let group" [attr.colspan]="displayedColumns.length">
@@ -89,16 +93,16 @@
           </div>
         </td>
       </ng-container>
-    
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let group; columns: displayedColumns;"
-          class="example-element-row"
-          [class.example-expanded-row]="expandedElement === group"
-          (click)="expandedElement = expandedElement === group ? null : group">
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === group"
+        (click)="expandedElement = expandedElement === group ? null : group">
       </tr>
       <tr mat-row *matRowDef="let group; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>
-    
+
     <mat-paginator [length]="totalGroups" [pageSize]="pageSize" (page)="onPageChange($event)">
     </mat-paginator>
   </div>

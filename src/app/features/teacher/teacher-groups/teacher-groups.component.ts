@@ -1,6 +1,6 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
-import { CommonModule } from '@angular/common';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,11 +18,11 @@ import { Group } from '../../../core/interfaces/groups.interface';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
-  selector: 'app-teacher-groups',
-  standalone: true,
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatCardModule, MatIconModule, MatMenuModule],
-  templateUrl: './teacher-groups.component.html',
-  styleUrl: './teacher-groups.component.css'
+    selector: 'app-teacher-groups',
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatCardModule, MatIconModule, MatMenuModule],
+    templateUrl: './teacher-groups.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './teacher-groups.component.css'
 })
 export class TeacherGroupsComponent implements OnInit {
 readonly dialog = inject(MatDialog);

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,23 +13,23 @@ import { MatIconModule } from '@angular/material/icon';
 import { GroupsService } from '../../../core/services/groups/groups.service';
 import { Group } from '../../../core/interfaces/groups.interface';
 import { MatMenuModule } from '@angular/material/menu';
-import { CommonModule } from '@angular/common';
+
 import { GroupsAssignModalComponent } from '../modals/groups-assign-modal/groups-assign-modal.component';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
 
 @Component({
-  selector: 'app-admin-groups',
-  standalone: true,
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatCardModule, MatIconModule, MatMenuModule],
-  templateUrl: './admin-groups.component.html',
-  styleUrl: './admin-groups.component.css',
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+    selector: 'app-admin-groups',
+    imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule, MatCardModule, MatIconModule, MatMenuModule],
+    templateUrl: './admin-groups.component.html',
+    styleUrl: './admin-groups.component.css',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed', style({ height: '0px', minHeight: '0' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ]
 })
 export class AdminGroupsComponent implements OnInit {
   readonly dialog = inject(MatDialog);

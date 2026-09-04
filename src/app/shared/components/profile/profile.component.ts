@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,21 +16,21 @@ import { EditComponent } from './modals/edit/edit.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatIconModule,
-  ],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+    selector: 'app-profile',
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatIconModule,
+    ],
+    templateUrl: './profile.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
   readonly dialog = inject(MatDialog);

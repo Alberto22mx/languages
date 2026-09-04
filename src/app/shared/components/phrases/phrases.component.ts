@@ -1,14 +1,14 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Phrase } from '../../../core/interfaces/phrases.interface';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-phrases',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './phrases.component.html',
-  styleUrl: './phrases.component.css'
+    selector: 'app-phrases',
+    imports: [FormsModule],
+    templateUrl: './phrases.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './phrases.component.css'
 })
 export class PhrasesComponent {
   @Input() phrases: Phrase[] = []; // Recibe el grupo de frases
