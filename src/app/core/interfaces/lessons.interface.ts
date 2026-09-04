@@ -3,6 +3,6 @@ export interface Lessons {
   title?: string;
   instructions?: string;
   content?: string;
-  active?: string;
+  active?: boolean;
   image?: string;
 }

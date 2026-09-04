@@ -71,8 +71,14 @@ export class AdminExamComponent {
   openDialog(): void {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
-    this.dialog.open(ExamModalComponent, {
+    const dialogRef = this.dialog.open(ExamModalComponent, {
       width: '700px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.action === 'create') {
+        this.getExams();
+      }
     });
   }
 

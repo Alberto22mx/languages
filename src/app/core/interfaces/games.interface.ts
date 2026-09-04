@@ -6,7 +6,7 @@ export interface Games {
   id: string;
   title: string;
   instructions: string;
-  active: string;
+  active: boolean;
   image: string;
   url: string;
   data?: any[];
