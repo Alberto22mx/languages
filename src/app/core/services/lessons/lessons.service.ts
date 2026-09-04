@@ -22,6 +22,10 @@ export class LessonsService {
     return this.http.get<Lessons>(`${this.baseUrl}/${id}`);
   }
 
+  findForTeacher(): Observable<Lessons[]> {
+    return this.http.get<Lessons[]>(`${this.baseUrl}/teacher`);
+  }
+
   //
   findByIds(ids: Array<string | Pick<Lessons, 'id'>>): Observable<Lessons[]> {
     const lessonIds = ids

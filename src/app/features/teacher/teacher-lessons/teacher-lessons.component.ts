@@ -13,7 +13,6 @@ import { LessonsService } from '../../../core/services/lessons/lessons.service';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
 import { LessonsModalComponent } from '../../admin/modals/lessons-modal/lessons-modal.component';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
-import { Group } from '../../../core/interfaces/groups.interface';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -27,7 +26,6 @@ import { Router } from '@angular/router';
 export class TeacherLessonsComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   lessons: Lessons[] = [];
-  data!: Group;
   totalUsers = 0;
   pageSize = 10;
   currentPage = 1;
@@ -46,14 +44,11 @@ export class TeacherLessonsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data = history.state || [];
     this.getLessons();
   }
 
   getLessons() {
-    const lessonIds = this.data?.lessons ?? [];
-
-    this.lessonsService.findByIds(lessonIds).subscribe({
+    this.lessonsService.findForTeacher().subscribe({
       next: (response) => {
         this.lessons = response;
         this.totalUsers = response.length;
