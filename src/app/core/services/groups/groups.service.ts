@@ -24,6 +24,10 @@ export class GroupsService {
     return this.http.get<GroupAllData[]>(`${this.apiUrl}/group-relation/${id}`);
   }
 
+  getTeacherStudents(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/teacher/students`);
+  }
+
   createGroup(group: Group): Observable<Group> {
     return this.http.post<Group>(this.apiUrl, group);
   }

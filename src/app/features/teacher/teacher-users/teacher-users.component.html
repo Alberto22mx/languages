@@ -1,11 +1,9 @@
 <div id="contenedor">
   <div id="contenedor-title">
     <div>
-      <h1 class="mat-h1">ADMINISTRACION DE USUARIOS</h1>
+      <h1 class="mat-h1">MIS ALUMNOS</h1>
     </div>
-    <div>
-      <button mat-flat-button color="primary" (click)="openDialog()">CREAR USUARIO</button>
-    </div>
+    <div></div>
   </div>
   <div>
     <mat-form-field class="w-100">
@@ -46,13 +44,9 @@
               <mat-icon>info</mat-icon>
               <span>Detalles</span>
             </button>
-            <button mat-menu-item (click)="openEditModal(user)">
-              <mat-icon>edit</mat-icon>
-              <span>Editar</span>
-            </button>
-            <button mat-menu-item (click)="confirmDelete(user.id)">
-              <mat-icon>delete_forever</mat-icon>
-              <span>Eliminar</span>
+            <button mat-menu-item (click)="reviewExams(user)">
+              <mat-icon>grading</mat-icon>
+              <span>Revisar exámenes</span>
             </button>
           </mat-menu>
         </td>

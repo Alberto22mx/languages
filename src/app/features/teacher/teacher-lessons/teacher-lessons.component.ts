@@ -51,13 +51,22 @@ export class TeacherLessonsComponent implements OnInit {
   }
 
   getLessons() {
-    if (this.data.lessons)
-    this.lessonsService.findByIds(this.data.lessons).subscribe((response: any) => {
-      this.lessons = response;
-      this.totalUsers = response.total;
-      this.dataSource = new MatTableDataSource(this.lessons);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+    const lessonIds = this.data?.lessons ?? [];
+
+    this.lessonsService.findByIds(lessonIds).subscribe({
+      next: (response) => {
+        this.lessons = response;
+        this.totalUsers = response.length;
+        this.dataSource = new MatTableDataSource(this.lessons);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: () => {
+        this.lessons = [];
+        this.totalUsers = 0;
+        this.dataSource = new MatTableDataSource<Lessons>([]);
+        this.alertsService.warning('No fue posible cargar las lecciones del grupo.');
+      },
     });
   }
 

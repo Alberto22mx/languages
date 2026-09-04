@@ -7,9 +7,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 import { ProgressService } from '../../../../core/services/progress/progress.service';
+import { TeacherExamGradeDialogComponent } from './teacher-exam-grade-dialog.component';
 
 interface ExamResult {
   student: {
@@ -27,8 +29,6 @@ interface ExamResult {
     gradedAt?: string;
     answers: any[];
   } | null;
-  draftScore?: number | null;
-  draftFeedback?: string;
 }
 
 @Component({
@@ -41,20 +41,23 @@ interface ExamResult {
 export class TeacherExamGradesComponent implements OnInit {
   group: any;
   exam: any;
+  studentId?: string;
   results: ExamResult[] = [];
-  displayedColumns = ['student', 'status', 'submittedAt', 'answers', 'score', 'feedback', 'actions'];
+  displayedColumns = ['student', 'status', 'submittedAt', 'score', 'feedback', 'actions'];
 
   constructor(
     private progressService: ProgressService,
     private alertsService: AlertsService,
     private router: Router,
     private location: Location,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
     const state = history.state;
     this.group = state?.group;
     this.exam = state?.exam;
+    this.studentId = state?.studentId;
     if (!this.group?.id || !this.exam?.id) {
       this.router.navigate(['/modulos/ii/teacher-groups']);
       return;
@@ -65,26 +68,28 @@ export class TeacherExamGradesComponent implements OnInit {
   loadResults(): void {
     this.progressService.getExamResults(this.group.id, this.exam.id).subscribe({
       next: (results: ExamResult[]) => {
-        this.results = results.map((result) => ({
-          ...result,
-          draftScore: result.submission?.score ?? null,
-          draftFeedback: result.submission?.feedback ?? '',
-        }));
+        this.results = this.studentId ? results.filter((result) => result.student.id === this.studentId) : results;
       },
       error: () => this.alertsService.warning('No fue posible cargar las entregas del examen.'),
     });
   }
 
-  save(result: ExamResult): void {
+  review(result: ExamResult): void {
     if (!result.submission) {
       return;
     }
-    const score = Number(result.draftScore);
-    if (!Number.isFinite(score) || score < 0 || score > 100) {
-      this.alertsService.warning('La calificación debe ser un número entre 0 y 100.');
-      return;
-    }
-    this.progressService.gradeExamSubmission(result.submission._id, score, result.draftFeedback).subscribe({
+    const dialogRef = this.dialog.open(TeacherExamGradeDialogComponent, {
+      width: '800px',
+      maxWidth: '95vw',
+      data: { exam: this.exam, result },
+    });
+    dialogRef.afterClosed().subscribe((evaluation) => {
+      if (evaluation) this.saveEvaluation(result, evaluation.answers, evaluation.feedback);
+    });
+  }
+
+  private saveEvaluation(result: ExamResult, answers: any[], feedback?: string): void {
+    this.progressService.gradeExamSubmission(result.submission!._id, answers, feedback).subscribe({
       next: () => {
         this.alertsService.success('Calificación guardada.');
         this.loadResults();

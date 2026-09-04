@@ -23,8 +23,12 @@ export class LessonsService {
   }
 
   //
-  findByIds(ids: string[]): Observable<Lessons> {
-    return this.http.post<Lessons>(`${this.baseUrl}/find-many`, {ids});
+  findByIds(ids: Array<string | Pick<Lessons, 'id'>>): Observable<Lessons[]> {
+    const lessonIds = ids
+      .map((lesson) => typeof lesson === 'string' ? lesson : lesson?.id)
+      .filter((id): id is string => typeof id === 'string' && id.trim().length > 0);
+
+    return this.http.post<Lessons[]>(`${this.baseUrl}/find-many`, { ids: lessonIds });
   }
 
   // Crear una nueva lección

@@ -40,8 +40,12 @@ export class ProgressService {
     return this.http.get<any>(`${this.API_URL}/exam-status/${examId}`);
   }
 
-  gradeExamSubmission(id: string, score: number, feedback?: string): Observable<Progress> {
-    return this.http.put<Progress>(`${this.API_URL}/${id}/grade`, { score, feedback });
+  getStudentExamResults(studentId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/student-exam-results/${studentId}`);
+  }
+
+  gradeExamSubmission(id: string, answers: any[], feedback?: string): Observable<Progress> {
+    return this.http.put<Progress>(`${this.API_URL}/${id}/grade`, { answers, feedback });
   }
 
   // Eliminar un progreso

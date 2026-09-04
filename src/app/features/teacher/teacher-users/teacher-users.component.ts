@@ -14,6 +14,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
 import { UserModalComponent } from '../../admin/modals/user-modal/user-modal.component';
 import { UserDetailsDialogComponent } from '../../../shared/components/user-details-dialog/user-details-dialog.component';
+import { GroupsService } from '../../../core/services/groups/groups.service';
+import { Router } from '@angular/router';
 
 interface Student {
   nombre: string;
@@ -48,6 +50,8 @@ export class TeacherUsersComponent implements OnInit {
     private usersService: UsersService,
     private authService: AuthService,
     private alertsService: AlertsService,
+    private groupsService: GroupsService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -55,13 +59,17 @@ export class TeacherUsersComponent implements OnInit {
   }
 
   getUsers() {
-    this.usersService.getUsersPaginated(this.currentPage, this.pageSize).subscribe((response: any) => {
-      this.users = response.data;
-      this.totalUsers = response.total;
+    this.groupsService.getTeacherStudents().subscribe((response: any) => {
+      this.users = response;
+      this.totalUsers = response.length;
       this.dataSource = new MatTableDataSource(this.users);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
+  }
+
+  reviewExams(user: User): void {
+    this.router.navigate(['/modulos/ii/teacher-student-exams'], { state: { student: user } });
   }
 
   applyFilter(event: Event) {

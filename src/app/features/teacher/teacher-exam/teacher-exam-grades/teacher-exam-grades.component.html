@@ -27,37 +27,24 @@
         <td mat-cell *matCellDef="let result">{{ result.submission?.createdAt | date:'short' }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="answers">
-        <th mat-header-cell *matHeaderCellDef>Respuestas</th>
-        <td mat-cell *matCellDef="let result">
-          <pre *ngIf="result.submission">{{ result.submission.answers | json }}</pre>
-          <span *ngIf="!result.submission">—</span>
-        </td>
-      </ng-container>
-
       <ng-container matColumnDef="score">
         <th mat-header-cell *matHeaderCellDef>Calificación</th>
         <td mat-cell *matCellDef="let result">
-          <mat-form-field *ngIf="result.submission" appearance="outline">
-            <input matInput type="number" min="0" max="100" [(ngModel)]="result.draftScore" aria-label="Calificación">
-          </mat-form-field>
-          <span *ngIf="!result.submission">—</span>
+          {{ result.submission?.score === undefined ? 'Pendiente' : result.submission?.score + '/100' }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="feedback">
         <th mat-header-cell *matHeaderCellDef>Comentarios</th>
         <td mat-cell *matCellDef="let result">
-          <mat-form-field *ngIf="result.submission" appearance="outline">
-            <input matInput [(ngModel)]="result.draftFeedback" aria-label="Comentarios">
-          </mat-form-field>
+          {{ result.submission?.feedback || '—' }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let result">
-          <button mat-raised-button color="primary" [disabled]="!result.submission" (click)="save(result)">Guardar</button>
+          <button mat-raised-button color="primary" [disabled]="!result.submission" (click)="review(result)">Revisar</button>
         </td>
       </ng-container>
 
