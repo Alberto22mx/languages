@@ -28,6 +28,12 @@
               class="hoverable"
               (click)="openEdit(exam)">
               {{ exam.title }}
+              <small *ngIf="examStatuses[exam.id || '']?.score !== undefined">
+                · Calificación: {{ examStatuses[exam.id || ''].score }}/100
+              </small>
+              <small *ngIf="examStatuses[exam.id || '']?.createdAt && examStatuses[exam.id || '']?.score === undefined">
+                · Entregado, pendiente de calificación
+              </small>
             </mat-list-item>
           </mat-list>
           <button mat-button matStepperNext>Next</button>

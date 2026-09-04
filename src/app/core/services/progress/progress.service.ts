@@ -32,6 +32,18 @@ export class ProgressService {
     return this.http.put<Progress>(`${this.API_URL}/${id}`, progress);
   }
 
+  getExamResults(groupId: string, examId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/exam-results/${groupId}/${examId}`);
+  }
+
+  getMyExamStatus(examId: string): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/exam-status/${examId}`);
+  }
+
+  gradeExamSubmission(id: string, score: number, feedback?: string): Observable<Progress> {
+    return this.http.put<Progress>(`${this.API_URL}/${id}/grade`, { score, feedback });
+  }
+
   // Eliminar un progreso
   deleteProgress(id: string): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`);

@@ -1,0 +1,5 @@
+table { width: 100%; }
+small { display: block; color: #666; }
+mat-form-field { width: 100%; min-width: 120px; }
+pre { white-space: pre-wrap; max-width: 280px; margin: 0; }
+#contenedor-title { display: flex; justify-content: space-between; align-items: center; }

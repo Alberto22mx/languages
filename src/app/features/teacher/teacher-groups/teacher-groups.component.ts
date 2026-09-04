@@ -15,6 +15,7 @@ import { GamesModalComponent } from '../../admin/modals/games-modal/games-modal.
 import { GroupsService } from '../../../core/services/groups/groups.service';
 import { Router } from '@angular/router';
 import { Group } from '../../../core/interfaces/groups.interface';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-teacher-groups',
@@ -40,6 +41,7 @@ readonly dialog = inject(MatDialog);
   constructor(
     private alertsService: AlertsService,
     private groupsService: GroupsService,
+    private authService: AuthService,
     private router: Router,
   ) {}
 
@@ -48,10 +50,13 @@ readonly dialog = inject(MatDialog);
   }
 
   getGames() {
-    this.groupsService.getGroups().subscribe((response: any) => {
-      console.log(response);
+    const teacherId = this.authService.getUserId();
+    if (!teacherId) {
+      return;
+    }
+    this.groupsService.getGroupWithRelations(teacherId).subscribe((response: any) => {
       this.group = response;
-      this.totalUsers = response.total;
+      this.totalUsers = response.length;
       this.dataSource = new MatTableDataSource(this.group);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

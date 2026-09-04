@@ -51,7 +51,11 @@ export class TeacherExamComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data = history.state || [];
+    this.data = history.state;
+    if (!this.data?.id) {
+      this.router.navigate(['/modulos/ii/teacher-groups']);
+      return;
+    }
     this.getLessons();
   }
 
@@ -65,15 +69,16 @@ export class TeacherExamComponent implements OnInit {
     //   this.dataSource.paginator = this.paginator;
     //   this.dataSource.sort = this.sort;
     // });
-    if (this.data.exams)
-    this.examsService.findByIds(this.data.exams).subscribe(response => {
-  console.log(response);
+    if (this.data.exams) {
+    const examIds = this.data.exams.map((exam: any) => typeof exam === 'string' ? exam : exam.id);
+    this.examsService.findByIds(examIds).subscribe(response => {
       this.exams = response;
       this.totalUsers = response.length;
       this.dataSource = new MatTableDataSource(this.exams);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    })
+    });
+    }
     
   }
 
@@ -144,6 +149,12 @@ export class TeacherExamComponent implements OnInit {
   openEdit(exam: any): void {
     this.router.navigate(['/modulos/ii/teacher-exam-content'], {
       state: { ...exam },
+    });
+  }
+
+  openGrades(exam: any): void {
+    this.router.navigate(['/modulos/ii/teacher-exam-grades'], {
+      state: { group: this.data, exam },
     });
   }
 }

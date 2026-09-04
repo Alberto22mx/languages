@@ -30,6 +30,7 @@ import { UserLessonsContentComponent } from './features/user/lessons/user-lesson
 import { VirtualTutorComponent } from './features/user/virtual-tutor/virtual-tutor.component';
 import { UserExamComponent } from './features/user/exam/user-exam/user-exam.component';
 import { ExamContentComponent } from './features/teacher/teacher-exam/exam-content/exam-content.component';
+import { TeacherExamGradesComponent } from './features/teacher/teacher-exam/teacher-exam-grades/teacher-exam-grades.component';
 import { GamesScenaComponent } from './features/user/games/components/games-scena/games-scena.component';
 import { TomGameComponent } from './features/user/games/components/tom-game/tom-game.component';
 import { WordSearchComponent } from './features/user/games/word-search/word-search.component';
@@ -77,6 +78,7 @@ export const routes: Routes = [
               { path: 'teacher-progress', component: TeacherProgressComponent },
               { path: 'teacher-exam', component: TeacherExamComponent },
               { path: 'teacher-exam-content', component: ExamContentComponent },
+              { path: 'teacher-exam-grades', component: TeacherExamGradesComponent },
               { path: 'profil', component: ProfileComponent },
             ],
             canActivate: [authGuard, roleGuard(['teacher'])]

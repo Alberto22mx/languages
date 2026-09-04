@@ -10,6 +10,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { ProgressService } from '../../../core/services/progress/progress.service';
 
 @Component({
   selector: 'app-exam',
@@ -22,11 +23,13 @@ import { MatDialog } from '@angular/material/dialog';
 export class ExamComponent implements OnInit {
 readonly dialog = inject(MatDialog);
   idUser: string | null;
-    grupos: GroupAllData[] = [];
+  grupos: GroupAllData[] = [];
+  examStatuses: Record<string, any> = {};
   
     constructor(
       private groupsService: GroupsService, 
       private authService: AuthService,
+      private progressService: ProgressService,
       private router: Router,
     ) {
       this.idUser = this.authService.getUserId();
@@ -41,9 +44,19 @@ readonly dialog = inject(MatDialog);
         this.groupsService.getGroupWithRelations(this.idUser).subscribe(result => {
           console.log(result);
           this.grupos = result;
+          result.forEach((group) => group.exams?.forEach((exam) => this.loadExamStatus(exam.id)));
         });
       }
+  }
+
+  private loadExamStatus(examId?: string): void {
+    if (!examId) {
+      return;
     }
+    this.progressService.getMyExamStatus(examId).subscribe((status) => {
+      this.examStatuses[examId] = status;
+    });
+  }
   
     openEdit(exam: any): void {
       this.router.navigate(['/modulos/i/exam-content'], {
