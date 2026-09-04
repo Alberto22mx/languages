@@ -6,7 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { LoginCredentials } from '../../interfaces/login.interface';
 import { AuthResponse } from '../../interfaces/auth.interfece';
 
-const DEVELOPMENT_MODE = true;
+const DEVELOPMENT_MODE = !environment.production;
 const AUTH_STORAGE_KEY = 'dev_auth_data';
 const LAST_ACTIVITY_KEY = 'last_activity_at';
 const INACTIVITY_LIMIT_MS = 20 * 60 * 1000;

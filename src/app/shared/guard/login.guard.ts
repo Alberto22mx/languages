@@ -6,9 +6,7 @@ export const loginGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const authService = inject(AuthService);
   
-  const token = localStorage.getItem('token');
-  
-  if (!token) {
+  if (!authService.isAuthenticated()) {
     return true;
   }
 
