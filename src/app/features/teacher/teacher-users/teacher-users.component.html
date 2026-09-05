@@ -48,6 +48,14 @@
               <mat-icon>grading</mat-icon>
               <span>Revisar exámenes</span>
             </button>
+            <button mat-menu-item (click)="completeStudent(user)">
+              <mat-icon>task_alt</mat-icon>
+              <span>Finalizar curso</span>
+            </button>
+            <button mat-menu-item (click)="withdrawStudent(user)">
+              <mat-icon>person_off</mat-icon>
+              <span>Dar de baja</span>
+            </button>
           </mat-menu>
         </td>
       </ng-container>

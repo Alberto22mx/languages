@@ -63,6 +63,38 @@ export class TeacherUsersComponent implements OnInit {
     this.router.navigate(['/modulos/ii/teacher-student-exams'], { state: { student: user } });
   }
 
+  async completeStudent(user: User): Promise<void> {
+    if (!user.id || !user.currentGroupId) return;
+    const confirmed = await this.alertsService.confirm(
+      `¿Finalizar el curso de ${user.firstName}? Esta acción conservará su historial.`,
+      'Finalizar alumno',
+    );
+    if (!confirmed) return;
+    this.groupsService.completeStudent(user.currentGroupId, user.id).subscribe({
+      next: () => {
+        this.alertsService.success('El alumno fue finalizado.');
+        this.getUsers();
+      },
+      error: () => this.alertsService.warning('No fue posible finalizar al alumno.'),
+    });
+  }
+
+  async withdrawStudent(user: User): Promise<void> {
+    if (!user.id || !user.currentGroupId) return;
+    const confirmed = await this.alertsService.confirm(
+      `¿Dar de baja a ${user.firstName}? Podrá conservar su historial, pero dejará de estar en curso.`,
+      'Dar de baja alumno',
+    );
+    if (!confirmed) return;
+    this.groupsService.withdrawStudent(user.currentGroupId, user.id).subscribe({
+      next: () => {
+        this.alertsService.success('El alumno fue dado de baja.');
+        this.getUsers();
+      },
+      error: () => this.alertsService.warning('No fue posible dar de baja al alumno.'),
+    });
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

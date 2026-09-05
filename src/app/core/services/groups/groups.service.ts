@@ -28,6 +28,18 @@ export class GroupsService {
     return this.http.get<any[]>(`${this.apiUrl}/teacher/students`);
   }
 
+  getActiveStudentIds(groupId: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/${groupId}/students`);
+  }
+
+  completeStudent(groupId: string, studentId: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${groupId}/students/${studentId}/complete`, {});
+  }
+
+  withdrawStudent(groupId: string, studentId: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${groupId}/students/${studentId}/withdraw`, {});
+  }
+
   createGroup(group: Group): Observable<Group> {
     return this.http.post<Group>(this.apiUrl, group);
   }

@@ -12,6 +12,7 @@ export interface User {
   termsAccepted?: string;
   userType?: string;
   image?: string;
+  currentGroupId?: string;
 }
 
 export enum UserType {

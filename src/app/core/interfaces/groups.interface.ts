@@ -13,6 +13,10 @@ export interface Group {
   course?: string;
   templateId?: string;
   templateVersion?: number;
+  teacherId?: string;
+  enrollmentStatus?: 'in_progress' | 'completed' | 'withdrawn';
+  enrollmentUpdatedAt?: string;
+  studentIds?: string[];
   exams?: string[];
   lessons?: string[];
   games?: string[];
@@ -30,6 +34,9 @@ export interface GroupAllData {
   course?: string;
   templateId?: string;
   templateVersion?: number;
+  teacherId?: string;
+  enrollmentStatus?: 'in_progress' | 'completed' | 'withdrawn';
+  enrollmentUpdatedAt?: string;
   exams?: Exams[];
   lessons?: Lessons[];
   games?: Games[];

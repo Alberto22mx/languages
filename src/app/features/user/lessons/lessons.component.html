@@ -18,6 +18,8 @@
             <mat-expansion-panel-header>
               <mat-panel-title>
                 {{ grupo.nameGroup + ' ' + grupo.level + ' ' + grupo.course }}
+                @if (grupo.enrollmentStatus === 'completed') { · Finalizado }
+                @if (grupo.enrollmentStatus === 'withdrawn') { · Baja }
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div>

@@ -9,7 +9,7 @@ import { AssignableItem } from '../../../../core/interfaces/assignable-item.inte
 
 import { UserType } from '../../../../core/interfaces/user.interface';
 import { CourseTemplatesService } from '../../../../core/services/course-templates/course-templates.service';
-import { forkJoin, map } from 'rxjs';
+import { forkJoin, map, switchMap } from 'rxjs';
 import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
@@ -45,24 +45,29 @@ export class GroupsAssignModalComponent implements OnInit {
   }
   
   initializeData() {
-    this.getGroups().subscribe((groupData) => {
-      forkJoin({
+    this.getGroups().pipe(
+      switchMap((groupData) => forkJoin({
         teachers: this.getUsersTeachers(),
         students: this.getUsersStudent(),
         templates: this.getCourseTemplates(),
-      }).subscribe(({ teachers, students, templates }) => {
-        const assignedUserIds = new Set(groupData.users ?? []);
+        activeStudentIds: this.groupsService.getActiveStudentIds(this.id),
+      }).pipe(map(({ teachers, students, templates, activeStudentIds }) => ({
+        groupData, teachers, students, templates, activeStudentIds,
+      })))),
+    ).subscribe(({ groupData, teachers, students, templates, activeStudentIds }) => {
+        const assignedTeacherIds = new Set(groupData.teacherId ? [groupData.teacherId] : (groupData.users ?? []));
         this.assignedUsersTeacher = teachers.filter((teacher) =>
-          assignedUserIds.has(teacher.id)
+          assignedTeacherIds.has(teacher.id)
         );
         this.unassignedUsersTeacher = teachers.filter(
-          (teacher) => !assignedUserIds.has(teacher.id)
+          (teacher) => !assignedTeacherIds.has(teacher.id)
         );
+        const assignedStudentIds = new Set(activeStudentIds.length > 0 ? activeStudentIds : (groupData.users ?? []).filter((id: string) => !assignedTeacherIds.has(id)));
         this.assignedUsers = students.filter((student) =>
-          assignedUserIds.has(student.id)
+          assignedStudentIds.has(student.id)
         );
         this.unassignedUsers = students.filter(
-          (student) => !assignedUserIds.has(student.id)
+          (student) => !assignedStudentIds.has(student.id)
         );
 
         const eligibleTemplates = templates.filter((template) =>
@@ -71,7 +76,6 @@ export class GroupsAssignModalComponent implements OnInit {
         );
         this.assignedTemplates = eligibleTemplates.filter((template) => template.id === groupData.templateId);
         this.unassignedTemplates = eligibleTemplates.filter((template) => template.id !== groupData.templateId);
-      });
     });
   }  
   
@@ -113,15 +117,17 @@ export class GroupsAssignModalComponent implements OnInit {
 
   onSubmit(): void {
     const updatedGroup = {
-      users: [
-        ...this.assignedUsers.map((user) => user.id),
-        ...this.assignedUsersTeacher.map((user) => user.id),
-      ],
+      teacherId: this.assignedUsersTeacher[0]?.id,
+      studentIds: this.assignedUsers.map((user) => user.id),
       templateId: this.assignedTemplates[0]?.id,
     };
 
     if (!updatedGroup.templateId) {
       this.alertsService.warning('Selecciona una plantilla activa para el grupo.');
+      return;
+    }
+    if (!updatedGroup.teacherId) {
+      this.alertsService.warning('Asigna un profesor activo al grupo.');
       return;
     }
     

@@ -18,6 +18,7 @@ interface StudentExamRow {
   title: string;
   instructions: string;
   group: string;
+  enrollmentStatus?: 'in_progress' | 'completed' | 'withdrawn';
   access?: any;
 }
 
@@ -47,14 +48,21 @@ export class ExamComponent implements OnInit {
     if (!studentId) return;
     this.groupsService.getGroupWithRelations(studentId).subscribe({
       next: (groups) => {
-        const rows = groups.flatMap((group) => (group.exams ?? []).map((exam) => ({
+        const rows: StudentExamRow[] = groups.flatMap((group) => (group.exams ?? []).map((exam) => ({
           id: exam.id ?? '', title: exam.title ?? '', instructions: exam.instructions ?? '',
           group: `${group.nameGroup ?? ''} ${group.course ?? ''}`.trim(),
+          enrollmentStatus: group.enrollmentStatus,
         }))).filter((exam) => !!exam.id);
         this.dataSource.data = rows;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        rows.forEach((row) => this.loadAccess(row));
+        rows.forEach((row) => {
+          if (row.enrollmentStatus && row.enrollmentStatus !== 'in_progress') {
+            row.access = { canSubmit: false, historical: true };
+          } else {
+            this.loadAccess(row);
+          }
+        });
       },
       error: () => this.alertsService.warning('No fue posible cargar los exámenes.'),
     });
@@ -75,6 +83,7 @@ export class ExamComponent implements OnInit {
 
   status(row: StudentExamRow): string {
     if (!row.access) return 'Cargando…';
+    if (row.access.historical) return row.enrollmentStatus === 'completed' ? 'Curso finalizado' : 'Baja del curso';
     if (row.access.deadlinePassed) return 'Fecha límite vencida';
     if (row.access.canSubmit && row.access.additionalAttemptExpiresAt) {
       return `Nueva oportunidad hasta ${new Date(row.access.additionalAttemptExpiresAt).toLocaleString()}`;

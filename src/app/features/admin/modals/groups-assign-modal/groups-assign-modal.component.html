@@ -1,7 +1,7 @@
 <h3 style="text-align: center;">CONFIGURACIÓN DEL GRUPO</h3>
 <mat-tab-group [(selectedIndex)]="selectedTabIndex" animationDuration="1000ms">
     <mat-tab label="Profesores">
-      <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher"
+      <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher" [maxAssigned]="1"
       (assignmentChanged)="updateTeachers($event)"></app-assign>
     </mat-tab>
     <mat-tab label="Estudiantes">
