@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 
 import { ExamsService } from '../../../../core/services/exams/exams.service';
+import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
     selector: 'app-exam-modal',
@@ -42,6 +43,7 @@ export class ExamModalComponent implements OnInit {
     public dialogRef: MatDialogRef<ExamModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private examsService: ExamsService,
+    private alertsService: AlertsService,
   ) { }
 
   ngOnInit(): void {
@@ -77,7 +79,7 @@ export class ExamModalComponent implements OnInit {
             this.dialogRef.close({ status: 'success', data: response, action: 'edit' });
           },
           error: (error) => {
-            this.dialogRef.close({ status: 'error', message: error.message });
+            this.alertsService.warning(error.error?.message ?? 'No fue posible guardar el examen.');
           },
         });
       } else {
@@ -87,7 +89,7 @@ export class ExamModalComponent implements OnInit {
             this.dialogRef.close({ status: 'success', data: response, action: 'create' });
           },
           error: (error) => {
-            this.dialogRef.close({ status: 'error', message: error.message });
+            this.alertsService.warning(error.error?.message ?? 'No fue posible crear el examen.');
           },
         });
       }

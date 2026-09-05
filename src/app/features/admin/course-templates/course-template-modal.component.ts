@@ -13,6 +13,7 @@ import { CourseTemplatesService } from '../../../core/services/course-templates/
 import { ExamsService } from '../../../core/services/exams/exams.service';
 import { LessonsService } from '../../../core/services/lessons/lessons.service';
 import { LevelGroup } from '../../../shared/enums/level-group';
+import { AlertsService } from '../../../core/services/alerts/alerts.service';
 
 interface CourseTemplateModalData {
   template?: CourseTemplate;
@@ -57,6 +58,7 @@ export class CourseTemplateModalComponent implements OnInit {
     private readonly courseTemplatesService: CourseTemplatesService,
     private readonly lessonsService: LessonsService,
     private readonly examsService: ExamsService,
+    private readonly alertsService: AlertsService,
   ) {
     this.isEdit = !!data?.template;
   }
@@ -103,7 +105,7 @@ export class CourseTemplateModalComponent implements OnInit {
 
     request.subscribe({
       next: (savedTemplate) => this.dialogRef.close({ status: 'success', template: savedTemplate }),
-      error: (error) => this.dialogRef.close({ status: 'error', message: error.error?.message ?? 'No fue posible guardar la plantilla.' }),
+      error: (error) => this.alertsService.warning(error.error?.message ?? 'No fue posible guardar la plantilla.'),
     });
   }
 

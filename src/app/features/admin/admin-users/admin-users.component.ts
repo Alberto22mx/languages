@@ -51,7 +51,6 @@ export class AdminUsersComponent implements OnInit {
       this.users = response.data;
       this.totalUsers = response.total;
       this.dataSource = new MatTableDataSource(this.users);
-      this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
@@ -77,9 +76,9 @@ export class AdminUsersComponent implements OnInit {
     const dialogRef = this.dialog.open(UserModalComponent, {
       width: '750px',
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.getUsers();
-    });  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.status === 'success') this.getUsers();
+    });
   }
 
   openEditModal(data: any): void {
@@ -88,8 +87,8 @@ export class AdminUsersComponent implements OnInit {
         data, // Pasamos los datos del juego a editar
       });
   
-      dialogRef.afterClosed().subscribe(() => {
-        this.getUsers();
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result?.status === 'success') this.getUsers();
       });
     }
 

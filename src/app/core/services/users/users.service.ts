@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User, UserType } from '../../interfaces/user.interface';
+import { CreateUserResponse, User, UserType } from '../../interfaces/user.interface';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -31,8 +31,8 @@ export class UsersService {
   }
 
   // Crear nuevo usuario
-  createUser(user: Omit<User, 'id'>): Observable<User> {
-    return this.http.post<User>(this.API_URL, user);
+  createUser(user: Omit<User, 'id'>): Observable<CreateUserResponse> {
+    return this.http.post<CreateUserResponse>(this.API_URL, user);
   }
 
   // Actualizar usuario

@@ -46,7 +46,7 @@ export class AdminExamComponent {
   getExams() {
     this.examsService.findAll().subscribe((response: any) => {
       this.exams = response;
-      this.totalUsers = response.total;
+      this.totalUsers = response.length;
       this.dataSource = new MatTableDataSource(this.exams);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -65,7 +65,6 @@ export class AdminExamComponent {
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    this.getExams();
   }
 
   openDialog(): void {

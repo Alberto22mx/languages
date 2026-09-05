@@ -24,7 +24,7 @@ export class LessonsContentComponent implements OnInit {
 
   ngOnInit(): void {
     this.idLesson = history.state.id;
-    this.title = 'CONTENIDO DE LA LECCIÓN | ' + history.state.title || '';
+    this.title = `CONTENIDO DE LA LECCIÓN | ${history.state.title ?? ''}`;
     this.lessonContent = history.state.content;
   }
 
@@ -32,10 +32,10 @@ export class LessonsContentComponent implements OnInit {
     const lesson: Lessons = {content: updatedContent};
     this.lessonsService.update(this.idLesson, lesson).subscribe({
       next: () => {
-        this.alertsService.success('Elemento eliminado con éxito.');
+        this.alertsService.success('Contenido de la lección guardado con éxito.');
       },
       error: () => {
-        this.alertsService.warning('Eliminación cancelada.');
+        this.alertsService.warning('No fue posible guardar el contenido de la lección.');
       },
     });
   }

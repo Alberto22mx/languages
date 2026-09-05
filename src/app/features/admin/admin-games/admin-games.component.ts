@@ -46,7 +46,7 @@ export class AdminGamesComponent implements OnInit {
   getGames() {
     this.gamesService.findAll().subscribe((response: any) => {
       this.games = response;
-      this.totalUsers = response.total;
+      this.totalUsers = response.length;
       this.dataSource = new MatTableDataSource(this.games);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -65,7 +65,6 @@ export class AdminGamesComponent implements OnInit {
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    this.getGames();
   }
 
   openDialog(): void {

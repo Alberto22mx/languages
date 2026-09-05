@@ -19,6 +19,7 @@ import { CourseTemplatesService } from '../../../../core/services/course-templat
 import { CourseTemplate } from '../../../../core/interfaces/course-template.interface';
 import { LevelGroup } from '../../../../shared/enums/level-group';
 import { ScheduleGroup } from '../../../../shared/enums/schedule-group';
+import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
     selector: 'app-groups-modal',
@@ -51,6 +52,7 @@ export class GroupsModalComponent implements OnInit {
     public dialogRef: MatDialogRef<GroupsModalComponent>,
     private groupsService: GroupsService,
     private courseTemplatesService: CourseTemplatesService,
+    private alertsService: AlertsService,
   ) {
     this.groupForm = this.fb.group({
       nameGroup: ['', Validators.required],
@@ -74,7 +76,7 @@ export class GroupsModalComponent implements OnInit {
           this.dialogRef.close({ status: 'success', data: response });
         },
         error: (error) => {
-          this.dialogRef.close({ status: 'error', message: error.message });
+          this.alertsService.warning(error.error?.message ?? 'No fue posible crear el grupo.');
         },
       });
     }

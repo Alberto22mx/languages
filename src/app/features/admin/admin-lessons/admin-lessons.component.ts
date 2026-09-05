@@ -46,7 +46,7 @@ export class AdminLessonsComponent implements OnInit {
   getLessons() {
     this.lessonsService.findAll().subscribe((response: any) => {
       this.lessons = response;
-      this.totalUsers = response.total;
+      this.totalUsers = response.length;
       this.dataSource = new MatTableDataSource(this.lessons);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -65,7 +65,6 @@ export class AdminLessonsComponent implements OnInit {
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    this.getLessons();
   }
 
   openDialog(): void {

@@ -116,9 +116,9 @@ export class TeacherUsersComponent implements OnInit {
     const dialogRef = this.dialog.open(UserModalComponent, {
       width: '750px',
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.getUsers();
-    });  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.status === 'success') this.getUsers();
+    });
   }
 
   openEditModal(data: any): void {
@@ -127,8 +127,8 @@ export class TeacherUsersComponent implements OnInit {
         data, // Pasamos los datos del juego a editar
       });
   
-      dialogRef.afterClosed().subscribe(() => {
-        this.getUsers();
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result?.status === 'success') this.getUsers();
       });
     }
 

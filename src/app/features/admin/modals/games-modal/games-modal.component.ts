@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 
 import { GamesService } from '../../../../core/services/games/games.service';
+import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
     selector: 'app-games-modal',
@@ -41,6 +42,7 @@ export class GamesModalComponent implements OnInit {
     public dialogRef: MatDialogRef<GamesModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private gamesService: GamesService,
+    private alertsService: AlertsService,
   ) {}
 
   ngOnInit(): void {
@@ -69,7 +71,7 @@ export class GamesModalComponent implements OnInit {
             this.dialogRef.close({ status: 'success', data: response, action: 'edit' });
           },
           error: (error) => {
-            this.dialogRef.close({ status: 'error', message: error.message });
+            this.alertsService.warning(error.error?.message ?? 'No fue posible guardar el juego.');
           },
         });
       } else {
@@ -79,7 +81,7 @@ export class GamesModalComponent implements OnInit {
             this.dialogRef.close({ status: 'success', data: response, action: 'create' });
           },
           error: (error) => {
-            this.dialogRef.close({ status: 'error', message: error.message });
+            this.alertsService.warning(error.error?.message ?? 'No fue posible crear el juego.');
           },
         });
       }

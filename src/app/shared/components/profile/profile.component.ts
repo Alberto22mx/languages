@@ -60,8 +60,8 @@ export class ProfileComponent implements OnInit {
       data, // Pasamos los datos del juego a editar
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.getPerfil();
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.status === 'success') this.getPerfil();
     });
   }
 }

@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
 import { Location } from '@angular/common';
 import { ExamsService } from '../../../../core/services/exams/exams.service';
+import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
     selector: 'app-exam-content',
@@ -37,7 +38,12 @@ export class ExamContentComponent implements OnInit {
 
   questionTypeControl = new FormControl('single'); // Control para seleccionar el tipo de pregunta
 
-  constructor(private fb: FormBuilder, private location: Location, private examsService: ExamsService) {}
+  constructor(
+    private fb: FormBuilder,
+    private location: Location,
+    private examsService: ExamsService,
+    private alertsService: AlertsService,
+  ) {}
 
   // Obtener el FormArray de preguntas
   get questions(): FormArray {
@@ -144,7 +150,15 @@ export class ExamContentComponent implements OnInit {
 
   // Guardar el examen editado
   saveExam(): void {
-    this.examsService.update(this.examData.id, this.examForm.value).subscribe();
+    if (this.examForm.invalid) {
+      this.examForm.markAllAsTouched();
+      return;
+    }
+
+    this.examsService.update(this.examData.id, this.examForm.value).subscribe({
+      next: () => this.alertsService.success('Examen guardado con éxito.'),
+      error: (error) => this.alertsService.warning(error.error?.message ?? 'No fue posible guardar el examen.'),
+    });
   }
 
   goBack(): void {

@@ -9,10 +9,15 @@ export interface User {
   email?: string;
   birthDate?: Date;
   state?: string;
-  termsAccepted?: string;
+  termsAccepted?: boolean;
   userType?: string;
   image?: string;
   currentGroupId?: string;
+}
+
+export interface CreateUserResponse {
+  user: User;
+  setupToken?: string;
 }
 
 export enum UserType {

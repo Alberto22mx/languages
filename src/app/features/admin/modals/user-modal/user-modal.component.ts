@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { UsersService } from '../../../../core/services/users/users.service';
 import { User } from '../../../../core/interfaces/user.interface';
+import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
     selector: 'app-user-modal',
@@ -35,19 +36,21 @@ export class UserModalComponent {
   userTypes: string[] = ['admin', 'student', 'teacher'];
   courses: string[] = ['Ingles', 'Chino'];
   isEditMode: boolean;
+  isSaving = false;
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<UserModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: User | null,
     private usersService: UsersService,
+    private alertsService: AlertsService,
   ) {
     this.isEditMode = !!this.data; // Detectamos si estamos en modo edición
     this.userForm = this.fb.group({
       firstName: ['', Validators.required],
       lastNameFather: ['', Validators.required],
       lastNameMother: ['', Validators.required],
-      phone: ['', Validators.required],
+      phone: ['', [Validators.required, Validators.pattern(/^\+?[1-9]\d{1,14}$/)]],
       email: ['', [Validators.required, Validators.email]],
       birthDate: ['', Validators.required],
       userType: ['', Validators.required], // Deshabilitado si es edición
@@ -76,17 +79,41 @@ export class UserModalComponent {
   }
 
   onSubmit(): void {
-    if (this.userForm.valid) {
-      const formData = this.isEditMode
-        ? { ...this.data, ...this.userForm.getRawValue() } // Combinar datos en modo edición
-        : this.userForm.value;
-
-      if (this.isEditMode) {
-        this.usersService.updateUser(formData.id, formData).subscribe(); // Método para actualizar
-      } else {
-        this.usersService.createUser(formData).subscribe(); // Método para crear
-      }
-      this.dialogRef.close(formData);
+    if (this.userForm.invalid || this.isSaving) {
+      this.userForm.markAllAsTouched();
+      return;
     }
+
+    const formData = this.isEditMode
+      ? { ...this.data, ...this.userForm.getRawValue() }
+      : this.userForm.getRawValue();
+
+    this.isSaving = true;
+    if (this.isEditMode) {
+      this.usersService.updateUser(formData.id!, formData).subscribe({
+        next: (response) => this.closeAfterSave(response),
+        error: (error) => this.handleSaveError(error),
+      });
+      return;
+    }
+
+    this.usersService.createUser(formData).subscribe({
+      next: (response) => this.closeAfterSave(response),
+      error: (error) => this.handleSaveError(error),
+    });
+  }
+
+  private closeAfterSave(data: unknown): void {
+    this.isSaving = false;
+    this.dialogRef.close({
+      status: 'success',
+      action: this.isEditMode ? 'edit' : 'create',
+      data,
+    });
+  }
+
+  private handleSaveError(error: { error?: { message?: string } }): void {
+    this.isSaving = false;
+    this.alertsService.warning(error.error?.message ?? 'No fue posible guardar el usuario.');
   }
 }

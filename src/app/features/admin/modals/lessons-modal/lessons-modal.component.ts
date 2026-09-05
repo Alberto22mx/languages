@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 
 import { LessonsService } from '../../../../core/services/lessons/lessons.service';
+import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
     selector: 'app-lessons-modal',
@@ -41,6 +42,7 @@ export class LessonsModalComponent implements OnInit {
     public dialogRef: MatDialogRef<LessonsModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private lessonsService: LessonsService,
+    private alertsService: AlertsService,
   ) {}
 
   ngOnInit() {
@@ -69,7 +71,7 @@ export class LessonsModalComponent implements OnInit {
             this.dialogRef.close({ status: 'success', data: response, action: 'edit' });
           },
           error: (error) => {
-            this.dialogRef.close({ status: 'error', message: error.message });
+            this.alertsService.warning(error.error?.message ?? 'No fue posible guardar la lección.');
           },
         });
       } else {
@@ -79,7 +81,7 @@ export class LessonsModalComponent implements OnInit {
             this.dialogRef.close({ status: 'success', data: response, action: 'create' });
           },
           error: (error) => {
-            this.dialogRef.close({ status: 'error', message: error.message });
+            this.alertsService.warning(error.error?.message ?? 'No fue posible crear la lección.');
           },
         });
       }
