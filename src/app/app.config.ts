@@ -5,6 +5,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXhr }
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { MutationRequestInterceptor } from './shared/interceptors/mutation-request.interceptor';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 export const appConfig: ApplicationConfig = {
@@ -16,6 +17,11 @@ export const appConfig: ApplicationConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MutationRequestInterceptor,
       multi: true
     }
   ]
