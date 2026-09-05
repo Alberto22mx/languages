@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
 import { LoginCredentials } from '../../../core/interfaces/login.interface';
@@ -23,6 +24,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
   errorMessage: string = '';
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
@@ -37,15 +39,25 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      const matriculalValue = this.loginForm.get('matricula')?.value;
-      const passwordValue = this.loginForm.get('password')?.value;
-      if (matriculalValue && passwordValue) {
-        const credentials: LoginCredentials = {
-          registrationNumber: matriculalValue,
-          password: passwordValue,
-        }
-        this.authService.login(credentials).subscribe({
+    if (this.isSubmitting) return;
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    const matriculalValue = this.loginForm.get('matricula')?.value;
+    const passwordValue = this.loginForm.get('password')?.value;
+    if (matriculalValue && passwordValue) {
+      const credentials: LoginCredentials = {
+        registrationNumber: matriculalValue,
+        password: passwordValue,
+      };
+
+      this.isSubmitting = true;
+      this.errorMessage = '';
+      this.authService.login(credentials).pipe(
+        finalize(() => this.isSubmitting = false),
+      ).subscribe({
           next: (res) => {
             this.snackBar.open('Iniciando sesión...', 'Cerrar', {
               duration: 3000
@@ -61,8 +73,7 @@ export class LoginComponent {
           error: () => {
             this.errorMessage = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
           },
-        });
-      }
+      });
     }
   }
 

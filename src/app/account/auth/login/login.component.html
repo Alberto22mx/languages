@@ -20,7 +20,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Contraseña</mat-label>
           <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" autocomplete="current-password">
-          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
             <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
           @if (loginForm.get('password')?.invalid) {
@@ -30,8 +30,8 @@
           }
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
-          Iniciar Sesión
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || isSubmitting">
+          {{ isSubmitting ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
         </button>
       </form>
       @if (errorMessage) {
