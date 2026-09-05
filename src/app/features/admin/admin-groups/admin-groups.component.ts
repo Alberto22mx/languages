@@ -89,7 +89,7 @@ export class AdminGroupsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.status === 'success') {
+      if (result?.status === 'success') {
         this.getGroups();
       }
     });
@@ -104,7 +104,7 @@ export class AdminGroupsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.status === 'success') {
+      if (result?.status === 'success') {
         this.getGroups();
       } 
     });

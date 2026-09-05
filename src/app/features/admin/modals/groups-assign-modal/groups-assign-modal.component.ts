@@ -10,7 +10,6 @@ import { AssignableItem } from '../../../../core/interfaces/assignable-item.inte
 import { UserType } from '../../../../core/interfaces/user.interface';
 import { CourseTemplatesService } from '../../../../core/services/course-templates/course-templates.service';
 import { forkJoin, map, switchMap } from 'rxjs';
-import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 
 @Component({
     selector: 'app-groups-assign-modal',
@@ -28,6 +27,7 @@ export class GroupsAssignModalComponent implements OnInit {
   assignedTemplates: AssignableItem[] = [];
   unassignedTemplates: AssignableItem[] = [];
   id: string = '';
+  validationMessage = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -35,7 +35,6 @@ export class GroupsAssignModalComponent implements OnInit {
     private groupsService: GroupsService,
     private usersService: UsersService,
     private courseTemplatesService: CourseTemplatesService,
-    private alertsService: AlertsService,
   ) {
     this.id = data.id;
   }
@@ -123,11 +122,13 @@ export class GroupsAssignModalComponent implements OnInit {
     };
 
     if (!updatedGroup.templateId) {
-      this.alertsService.warning('Selecciona una plantilla activa para el grupo.');
+      this.validationMessage = 'Selecciona una plantilla activa para el grupo.';
+      this.selectedTabIndex = 2;
       return;
     }
     if (!updatedGroup.teacherId) {
-      this.alertsService.warning('Asigna un profesor activo al grupo.');
+      this.validationMessage = 'Asigna un profesor activo al grupo.';
+      this.selectedTabIndex = 0;
       return;
     }
     
@@ -135,8 +136,8 @@ export class GroupsAssignModalComponent implements OnInit {
       next: () => {
         this.dialogRef.close({ status: 'success' });
       },
-      error: () => {
-        this.dialogRef.close({ status: 'error' });
+      error: (error) => {
+        this.validationMessage = error.error?.message ?? 'No fue posible guardar la configuración del grupo.';
       },
     });
     
@@ -152,16 +153,19 @@ export class GroupsAssignModalComponent implements OnInit {
   }
 
   updateTeachers(lists: { assigned: AssignableItem[]; unassigned: AssignableItem[] }): void {
+    this.validationMessage = '';
     this.assignedUsersTeacher = lists.assigned;
     this.unassignedUsersTeacher = lists.unassigned;
   }
 
   updateStudents(lists: { assigned: AssignableItem[]; unassigned: AssignableItem[] }): void {
+    this.validationMessage = '';
     this.assignedUsers = lists.assigned;
     this.unassignedUsers = lists.unassigned;
   }
 
   updateTemplates(lists: { assigned: AssignableItem[]; unassigned: AssignableItem[] }): void {
+    this.validationMessage = '';
     this.assignedTemplates = lists.assigned;
     this.unassignedTemplates = lists.unassigned;
   }

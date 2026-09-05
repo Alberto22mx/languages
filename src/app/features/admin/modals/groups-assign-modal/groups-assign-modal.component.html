@@ -1,4 +1,9 @@
 <h3 style="text-align: center;">CONFIGURACIÓN DEL GRUPO</h3>
+@if (validationMessage) {
+  <div class="validation-message" role="alert">
+    {{ validationMessage }}
+  </div>
+}
 <mat-tab-group [(selectedIndex)]="selectedTabIndex" animationDuration="1000ms">
     <mat-tab label="Profesores">
       <app-assign [items1]="assignedUsersTeacher" [items2]="unassignedUsersTeacher" [maxAssigned]="1"
