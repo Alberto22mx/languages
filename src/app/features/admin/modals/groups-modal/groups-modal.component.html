@@ -3,12 +3,30 @@
   <form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
     <div style="display: flex; gap: 20px;">
       <mat-form-field style="flex: 1;">
+        <mat-label>Plantilla de curso</mat-label>
+        <mat-select
+          formControlName="templateId"
+          [disabled]="isLoadingTemplates || courseTemplates.length === 0"
+          (selectionChange)="onTemplateChange($event.value)">
+          @for (template of courseTemplates; track template.id) {
+            <mat-option [value]="template.id">
+              {{ template.name }} · {{ template.course }} · {{ template.level }} · V{{ template.version }}
+            </mat-option>
+          }
+        </mat-select>
+        @if (!isLoadingTemplates && courseTemplates.length === 0) {
+          <mat-hint>No hay plantillas activas disponibles.</mat-hint>
+        }
+      </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 20px;">
+      <mat-form-field style="flex: 1;">
         <mat-label>Grupo</mat-label>
         <input matInput formControlName="nameGroup" cdkFocusInitial>
       </mat-form-field>
       <mat-form-field style="flex: 1;">
         <mat-label>Curso</mat-label>
-        <mat-select formControlName="course" (selectionChange)="onLevelChange($event)">
+        <mat-select formControlName="course">
           @for (course of courses; track course) {
             <mat-option [value]="course">
               {{ course }}

@@ -11,8 +11,6 @@ import {
 import {
   CdkDragDrop,
   DragDropModule,
-  moveItemInArray,
-  transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { AssignableItem } from '../../../../../core/interfaces/assignable-item.interce';
 
@@ -21,6 +19,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'app-assign',
@@ -30,7 +30,9 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatCheckboxModule,
+    MatButtonModule,
 ],
     templateUrl: './assign.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
@@ -39,7 +41,11 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 export class AssignComponent implements OnInit, OnChanges {
   @Input() items1: AssignableItem[] = []; // Usuarios asignados
   @Input() items2: AssignableItem[] = []; // Usuarios no asignados
-  @Output() updateAssigned = new EventEmitter<AssignableItem[]>();
+  @Input() maxAssigned?: number;
+  @Output() assignmentChanged = new EventEmitter<{
+    assigned: AssignableItem[];
+    unassigned: AssignableItem[];
+  }>();
 
   filteredItems1: AssignableItem[] = [];
   filteredItems2: AssignableItem[] = [];
@@ -49,6 +55,8 @@ export class AssignComponent implements OnInit, OnChanges {
   pageIndex1: number = 0;
   pageSize2: number = 5;
   pageIndex2: number = 0;
+  selectedAssignedIds = new Set<string>();
+  selectedUnassignedIds = new Set<string>();
 
   ngOnInit(): void {
     this.initializeFiltersAndPagination();
@@ -57,6 +65,8 @@ export class AssignComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['items1'] || changes['items2']) {
       this.initializeFiltersAndPagination();
+      this.selectedAssignedIds.clear();
+      this.selectedUnassignedIds.clear();
     }
   }
 
@@ -117,24 +127,59 @@ export class AssignComponent implements OnInit, OnChanges {
     }
   }
 
-  // Manejar el evento de arrastrar y soltar
-  drop(event: CdkDragDrop<AssignableItem[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  drop(event: CdkDragDrop<AssignableItem[]>, target: 'assigned' | 'unassigned'): void {
+    const item = event.item.data as AssignableItem;
+    const isAssigned = this.items1.some((assignedItem) => assignedItem.id === item.id);
+
+    if ((target === 'assigned' && isAssigned) || (target === 'unassigned' && !isAssigned)) return;
+    this.moveItems([item.id], target === 'assigned');
+  }
+
+  toggleSelection(id: string, list: 'assigned' | 'unassigned', selected: boolean): void {
+    const selection = list === 'assigned' ? this.selectedAssignedIds : this.selectedUnassignedIds;
+    if (selected) selection.add(id);
+    else selection.delete(id);
+  }
+
+  moveSelectedToAssigned(): void {
+    this.moveItems([...this.selectedUnassignedIds], true);
+  }
+
+  moveSelectedToUnassigned(): void {
+    this.moveItems([...this.selectedAssignedIds], false);
+  }
+
+  canAssignMore(): boolean {
+    return this.maxAssigned === undefined || this.items1.length < this.maxAssigned;
+  }
+
+  private moveItems(ids: string[], toAssigned: boolean): void {
+    if (ids.length === 0 || (toAssigned && !this.canAssignMore())) return;
+
+    const source = toAssigned ? this.items2 : this.items1;
+    const destination = toAssigned ? this.items1 : this.items2;
+    const limit = toAssigned && this.maxAssigned !== undefined
+      ? this.maxAssigned - this.items1.length
+      : ids.length;
+    const movedItems = source.filter((item) => ids.includes(item.id)).slice(0, limit);
+    if (movedItems.length === 0) return;
+
+    const movedIds = new Set(movedItems.map((item) => item.id));
+    if (toAssigned) {
+      this.items1 = [...destination, ...movedItems];
+      this.items2 = source.filter((item) => !movedIds.has(item.id));
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-  
-      // Emitir ambos arreglos actualizados
-      this.updateAssigned.emit([...this.items1]);
+      this.items1 = source.filter((item) => !movedIds.has(item.id));
+      this.items2 = [...destination, ...movedItems];
     }
-  
-    // Sincronizar filtros y paginación después del cambio
+
+    this.assignmentChanged.emit({
+      assigned: [...this.items1],
+      unassigned: [...this.items2],
+    });
     this.initializeFiltersAndPagination();
+    this.selectedAssignedIds.clear();
+    this.selectedUnassignedIds.clear();
   }
   
 }

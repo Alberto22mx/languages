@@ -1,0 +1,13 @@
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-row mat-form-field,
+.full-width {
+  flex: 1;
+}
+
+.full-width {
+  width: 100%;
+}

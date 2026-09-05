@@ -15,6 +15,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 
 import { GroupsService } from '../../../../core/services/groups/groups.service';
+import { CourseTemplatesService } from '../../../../core/services/course-templates/course-templates.service';
+import { CourseTemplate } from '../../../../core/interfaces/course-template.interface';
 import { LevelGroup } from '../../../../shared/enums/level-group';
 import { ScheduleGroup } from '../../../../shared/enums/schedule-group';
 
@@ -41,12 +43,14 @@ export class GroupsModalComponent implements OnInit {
   courses: string[] = ['Ingles', 'Chino'];
   selectedDate: Date | null = null;
   isStudent = false;
+  courseTemplates: CourseTemplate[] = [];
+  isLoadingTemplates = true;
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<GroupsModalComponent>,
-    // @Inject(MAT_DIALOG_DATA) public data: User,
-    private groupsService: GroupsService
+    private groupsService: GroupsService,
+    private courseTemplatesService: CourseTemplatesService,
   ) {
     this.groupForm = this.fb.group({
       nameGroup: ['', Validators.required],
@@ -54,6 +58,7 @@ export class GroupsModalComponent implements OnInit {
       level: ['', Validators.required],
       description: ['', Validators.required],
       schedule: ['', Validators.required],
+      templateId: ['', Validators.required],
     });
   }
 
@@ -64,7 +69,7 @@ export class GroupsModalComponent implements OnInit {
   onSubmit(): void {
     if (this.groupForm.valid) {
       // Lógica para enviar el formulario
-      this.groupsService.createGroup(this.groupForm.value).subscribe({
+      this.groupsService.createGroup(this.groupForm.getRawValue()).subscribe({
         next: (response) => {
           this.dialogRef.close({ status: 'success', data: response });
         },
@@ -75,7 +80,30 @@ export class GroupsModalComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.courseTemplatesService.findAll().subscribe({
+      next: (templates) => {
+        this.courseTemplates = templates.filter((template) => template.status === 'active');
+        this.isLoadingTemplates = false;
+      },
+      error: () => {
+        this.courseTemplates = [];
+        this.isLoadingTemplates = false;
+      },
+    });
+  }
+
+  onTemplateChange(templateId: string): void {
+    const template = this.courseTemplates.find((item) => item.id === templateId);
+    if (!template) return;
+
+    const level = this.levelGroup.find((item) => item.level === template.level);
+    this.groupForm.patchValue({
+      course: template.course,
+      level: template.level,
+      description: level?.description ?? '',
+    });
+  }
 
   onLevelChange(event: any) {
     const selectedLevel = event.value;

@@ -16,10 +16,15 @@
           [cdkDropListData]="items1"
           [cdkDropListConnectedTo]="[listaDos]"
           class="list"
-          (cdkDropListDropped)="drop($event)"
+          (cdkDropListDropped)="drop($event, 'assigned')"
           >
-          @for (item of paginatedItems1; track item) {
-            <div class="list-item" cdkDrag>
+          @for (item of paginatedItems1; track item.id) {
+            <div class="list-item" cdkDrag [cdkDragData]="item">
+              <mat-checkbox
+                [checked]="selectedAssignedIds.has(item.id)"
+                (change)="toggleSelection(item.id, 'assigned', $event.checked)"
+                (click)="$event.stopPropagation()"
+              ></mat-checkbox>
               <span>{{ item.name || item.title }}</span>
               @if (item.registrationNumber) {
                 <span>{{ ' - ' + item.registrationNumber }}</span>
@@ -33,6 +38,15 @@
           [pageSizeOptions]="[5, 10, 20]"
           (page)="onPageChange($event, 'items1')"
         ></mat-paginator>
+      </div>
+
+      <div class="transfer-controls">
+        <button mat-stroked-button type="button" [disabled]="selectedUnassignedIds.size === 0 || !canAssignMore()" (click)="moveSelectedToAssigned()">
+          ← Asignar
+        </button>
+        <button mat-stroked-button type="button" [disabled]="selectedAssignedIds.size === 0" (click)="moveSelectedToUnassigned()">
+          Quitar →
+        </button>
       </div>
 
       <!-- Lista de no asignados -->
@@ -50,12 +64,17 @@
           [cdkDropListData]="items2"
           [cdkDropListConnectedTo]="[listaUno]"
           class="list"
-          (cdkDropListDropped)="drop($event)"
+          (cdkDropListDropped)="drop($event, 'unassigned')"
           >
           @if (items2) {
             <div>
-              @for (item of paginatedItems2; track item) {
-                <div class="list-item" cdkDrag>
+              @for (item of paginatedItems2; track item.id) {
+                <div class="list-item" cdkDrag [cdkDragData]="item">
+                  <mat-checkbox
+                    [checked]="selectedUnassignedIds.has(item.id)"
+                    (change)="toggleSelection(item.id, 'unassigned', $event.checked)"
+                    (click)="$event.stopPropagation()"
+                  ></mat-checkbox>
                   <span>{{ item.name || item.title }}</span>
                   @if (item.registrationNumber) {
                     <span>{{ ' - ' + item.registrationNumber }}</span>

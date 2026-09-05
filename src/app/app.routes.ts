@@ -30,6 +30,7 @@ import { ExamContentComponent } from './features/teacher/teacher-exam/exam-conte
 import { TeacherExamGradesComponent } from './features/teacher/teacher-exam/teacher-exam-grades/teacher-exam-grades.component';
 import { TeacherStudentExamsComponent } from './features/teacher/teacher-users/teacher-student-exams/teacher-student-exams.component';
 import { TeacherExamRequestsComponent } from './features/teacher/teacher-exam/teacher-exam-requests/teacher-exam-requests.component';
+import { CourseTemplatesComponent } from './features/admin/course-templates/course-templates.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -80,6 +81,7 @@ export const routes: Routes = [
               { path: 'admin-progress', component: AdminProgressComponent },
               { path: 'admin-exam', component: AdminExamComponent },
               { path: 'admin-groups', component: AdminGroupsComponent },
+              { path: 'course-templates', component: CourseTemplatesComponent },
               { path: 'profil', component: ProfileComponent },
             ],
             canActivate: [authGuard, roleGuard(['admin'])]

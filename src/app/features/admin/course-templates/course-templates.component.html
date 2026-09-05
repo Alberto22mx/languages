@@ -1,0 +1,75 @@
+<div id="contenedor">
+  <div id="contenedor-title">
+    <h1 class="mat-h1">PLANTILLAS DE CURSO</h1>
+    <button mat-flat-button color="primary" (click)="openCreateDialog()">CREAR PLANTILLA</button>
+  </div>
+
+  <mat-form-field class="full-width">
+    <mat-label>Filtro</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Buscar plantilla...">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Plantilla</th>
+      <td mat-cell *matCellDef="let template">{{ template.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="course">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Curso</th>
+      <td mat-cell *matCellDef="let template">{{ template.course }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="level">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nivel</th>
+      <td mat-cell *matCellDef="let template">{{ template.level }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="version">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Versión</th>
+      <td mat-cell *matCellDef="let template">V{{ template.version }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="content">
+      <th mat-header-cell *matHeaderCellDef>Contenido</th>
+      <td mat-cell *matCellDef="let template">{{ template.lessons.length }} lecciones · {{ template.exams.length }} exámenes</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+      <td mat-cell *matCellDef="let template">
+        <span [class.archived]="template.status === 'archived'">
+          {{ template.status === 'active' ? 'Activa' : 'Archivada' }}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let template">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Acciones de plantilla">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="openEditDialog(template)">
+            <mat-icon>edit</mat-icon>
+            <span>Editar</span>
+          </button>
+          <button mat-menu-item [disabled]="template.status === 'archived'" (click)="createNextVersion(template)">
+            <mat-icon>content_copy</mat-icon>
+            <span>Nueva versión</span>
+          </button>
+          <button mat-menu-item (click)="toggleStatus(template)">
+            <mat-icon>{{ template.status === 'active' ? 'archive' : 'unarchive' }}</mat-icon>
+            <span>{{ template.status === 'active' ? 'Archivar' : 'Reactivar' }}</span>
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+</div>

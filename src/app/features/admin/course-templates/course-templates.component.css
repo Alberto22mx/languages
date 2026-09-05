@@ -1,0 +1,22 @@
+#contenedor-title {
+  align-items: center;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+.archived {
+  color: #7a5b00;
+  font-weight: 600;
+}

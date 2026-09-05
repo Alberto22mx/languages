@@ -11,6 +11,8 @@ export interface Group {
   state?: 'active' | 'inactive';
   image?: string;
   course?: string;
+  templateId?: string;
+  templateVersion?: number;
   exams?: string[];
   lessons?: string[];
   games?: string[];
@@ -26,6 +28,8 @@ export interface GroupAllData {
   state?: 'active' | 'inactive';
   image?: string;
   course?: string;
+  templateId?: string;
+  templateVersion?: number;
   exams?: Exams[];
   lessons?: Lessons[];
   games?: Games[];
