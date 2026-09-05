@@ -57,7 +57,6 @@ export class EditComponent {
 
   // Llena el formulario con los datos del usuario en modo edición
   private populateForm(): void {
-    console.log(this.data)
     this.userForm.patchValue({
       firstName: this.data?.firstName,
       lastNameFather: this.data?.lastNameFather,

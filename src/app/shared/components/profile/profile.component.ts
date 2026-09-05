@@ -9,7 +9,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { User } from '../../../core/interfaces/user.interface';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { AlertsService } from '../../../core/services/alerts/alerts.service';
 import { UsersService } from '../../../core/services/users/users.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { EditComponent } from './modals/edit/edit.component';
@@ -40,7 +39,6 @@ export class ProfileComponent implements OnInit {
   constructor(
       private usersService: UsersService,
       private authService: AuthService,
-      private alertsService: AlertsService
     ) {}
   
   ngOnInit(): void {
@@ -62,7 +60,7 @@ export class ProfileComponent implements OnInit {
       data, // Pasamos los datos del juego a editar
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(() => {
       this.getPerfil();
     });
   }

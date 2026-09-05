@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LessonsService } from '../../../../core/services/lessons/lessons.service';
-import { AlertsService } from '../../../../core/services/alerts/alerts.service';
 import { Lessons } from '../../../../core/interfaces/lessons.interface';
 import { ViewComponent } from '../../../../shared/components/view/view.component';
 
@@ -22,7 +21,6 @@ export class UserLessonsContentComponent implements OnInit {
 
   constructor(
     private lessonsService: LessonsService,
-    private alertsService: AlertsService,
     private router: Router,
     ) {
     this.data = history.state || [];

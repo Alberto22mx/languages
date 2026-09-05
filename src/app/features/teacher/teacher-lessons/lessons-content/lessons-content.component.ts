@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { PanelComponent } from '../../../../shared/components/panel/panel.component';
 
 import { LessonsService } from '../../../../core/services/lessons/lessons.service';
@@ -31,10 +31,10 @@ export class LessonsContentComponent implements OnInit {
   handleContentChange(updatedContent: string): void {
     const lesson: Lessons = {content: updatedContent};
     this.lessonsService.update(this.idLesson, lesson).subscribe({
-      next: (res) => {
+      next: () => {
         this.alertsService.success('Elemento eliminado con éxito.');
       },
-      error: (err) => {
+      error: () => {
         this.alertsService.warning('Eliminación cancelada.');
       },
     });

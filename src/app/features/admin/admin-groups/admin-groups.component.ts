@@ -117,11 +117,11 @@ export class AdminGroupsComponent implements OnInit {
     );
     if (confirmed) {
       this.groupsService.deleteGroup(id).subscribe({
-        next: (res) => {
+        next: () => {
           this.getGroups();
           this.alertsService.success('Elemento guardado con éxito.');
         },
-        error: (err) => {
+        error: () => {
           this.alertsService.warning('No se guardo el cambio cancelada.');
         },
       });

@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -28,6 +28,7 @@ import { ExamsService } from '../../../../core/services/exams/exams.service';
     MatDialogModule,
     MatSelectModule
 ],
+    providers: [provideNativeDateAdapter()],
     templateUrl: './exam-modal.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './exam-modal.component.css'

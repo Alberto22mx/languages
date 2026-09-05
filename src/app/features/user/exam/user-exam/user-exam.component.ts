@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ExamsService } from '../../../../core/services/exams/exams.service';
 import { CommonModule } from '@angular/common';
 import {MatRadioModule} from '@angular/material/radio';
@@ -36,7 +36,6 @@ export class UserExamComponent implements OnInit {
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
-    const userType = this.authService.getUserType();
     const examId = history.state.id;
 
     this.form = this.fb.group({
@@ -96,14 +95,12 @@ export class UserExamComponent implements OnInit {
 
   onSubmit(): void {
     if (this.form.valid) {
-      console.log('Formulario enviado:', this.form.value);
       this.progressService.createProgress(this.form.value).subscribe({
         next: () => this.router.navigate(['/modulos/i/exam']),
         error: (error) => this.alertsService.warning(error.error?.message ?? 'No fue posible enviar el examen.'),
       });
     } else {
       this.form.markAllAsTouched();
-      console.error('Formulario inválido');
     }
   }
 

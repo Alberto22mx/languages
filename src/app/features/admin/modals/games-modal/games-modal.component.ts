@@ -62,7 +62,6 @@ export class GamesModalComponent implements OnInit {
   onSubmit(): void {
     if (this.groupForm.valid) {
       // Lógica para enviar el formulario
-      const formData = this.groupForm.value;
       if (this.isEdit) {
         // Enviar datos actualizados al componente padre
         this.gamesService.update(this.data.game.id, this.groupForm.value).subscribe({

@@ -102,11 +102,11 @@ export class AdminExamComponent {
     );
     if (confirmed) {
       this.examsService.delete(id).subscribe({
-        next: (res) => {
+        next: () => {
           this.getExams();
           this.alertsService.success('Elemento eliminado con éxito.');
         },
-        error: (err) => {
+        error: () => {
           this.alertsService.warning('Eliminación cancelada.');
         },
       });

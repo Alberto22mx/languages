@@ -5,4 +5,5 @@ export interface Lessons {
   content?: string;
   active?: boolean;
   image?: string;
+  createdAt?: string;
 }

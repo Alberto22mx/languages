@@ -1,7 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Location } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class PageNotFoundComponent implements OnInit {
 
-  constructor(private location: Location, private authService: AuthService, private router: Router) {}
+  constructor(private router: Router) {}
   ngOnInit(): void {
     this.router.navigate(['/modulos/i/dashboard']);
   }

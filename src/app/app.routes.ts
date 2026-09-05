@@ -4,9 +4,7 @@ import { LoginComponent } from './account/auth/login/login.component';
 import { LessonsComponent } from './features/user/lessons/lessons.component';
 import { DashboardComponent } from './features/user/dashboard/dashboard.component';
 import { AboutComponent } from './features/user/about/about.component';
-import { GamesComponent } from './features/user/games/games.component';
 import { ProgressComponent } from './features/user/progress/progress.component';
-import { AbcComponent } from './features/user/games/components/abc/abc.component';
 import { loginGuard } from './shared/guard/login.guard';
 import { authGuard } from './shared/guard/auth.guard';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
@@ -23,7 +21,6 @@ import { TeacherGroupsComponent } from './features/teacher/teacher-groups/teache
 import { TeacherProgressComponent } from './features/teacher/teacher-progress/teacher-progress.component';
 import { TeacherUsersComponent } from './features/teacher/teacher-users/teacher-users.component';
 import { ExamComponent } from './features/user/exam/exam.component';
-import { TeacherGamesComponent } from './features/teacher/teacher-games/teacher-games.component';
 import { TeacherLessonsComponent } from './features/teacher/teacher-lessons/teacher-lessons.component';
 import { LessonsContentComponent } from './features/teacher/teacher-lessons/lessons-content/lessons-content.component';
 import { UserLessonsContentComponent } from './features/user/lessons/user-lessons-content/user-lessons-content.component';
@@ -33,10 +30,6 @@ import { ExamContentComponent } from './features/teacher/teacher-exam/exam-conte
 import { TeacherExamGradesComponent } from './features/teacher/teacher-exam/teacher-exam-grades/teacher-exam-grades.component';
 import { TeacherStudentExamsComponent } from './features/teacher/teacher-users/teacher-student-exams/teacher-student-exams.component';
 import { TeacherExamRequestsComponent } from './features/teacher/teacher-exam/teacher-exam-requests/teacher-exam-requests.component';
-import { GamesScenaComponent } from './features/user/games/components/games-scena/games-scena.component';
-import { TomGameComponent } from './features/user/games/components/tom-game/tom-game.component';
-import { WordSearchComponent } from './features/user/games/word-search/word-search.component';
-import { PhrasesGamesComponent } from './features/user/games/phrases-games/phrases-games.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -53,14 +46,6 @@ export const routes: Routes = [
               { path: 'dashboard', component: DashboardComponent },
               { path: 'lessons', component: LessonsComponent },
               { path: 'lessons-content', component: UserLessonsContentComponent },
-              /*{ path: 'games', component: GamesComponent},
-              { path: 'games-content', children: [
-                { path: 'abc', component: AbcComponent },
-                { path: 'plantilla', component: GamesScenaComponent },
-                { path: 'word-search', component: WordSearchComponent },
-                { path: 'phrases', component: PhrasesGamesComponent },
-                { path: 'tom', component: TomGameComponent }
-              ] },*/
               { path: 'progress', component: ProgressComponent },
               { path: 'exam', component: ExamComponent },
               { path: 'exam-content', component: UserExamComponent },
@@ -74,7 +59,6 @@ export const routes: Routes = [
               { path: 'dashboard', component: DashboardComponent },
               { path: 'teacher-lessons', component: TeacherLessonsComponent },
               { path: 'teacher-lessons-content', component: LessonsContentComponent },
-              //{ path: 'teacher-games', component: TeacherGamesComponent },
               { path: 'teacher-groups', component: TeacherGroupsComponent },
               { path: 'teacher-users', component: TeacherUsersComponent },
               { path: 'teacher-progress', component: TeacherProgressComponent },

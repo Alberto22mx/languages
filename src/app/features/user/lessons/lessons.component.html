@@ -7,42 +7,35 @@
     </div>
   </div>
   <div>
-    @if (grupos) {
-      <mat-stepper orientation="vertical">
-        <!-- Paso fijo (solo aparece si no hay grupos) -->
-        @if (!grupos || grupos.length === 0) {
-          <mat-step>
-            <ng-template matStepLabel>Cargando datos..</ng-template>
-            <ng-template matStepContent>
-            </ng-template>
-          </mat-step>
-        }
-        <!-- Pasos dinámicos (aparecen cuando hay grupos) -->
-        @for (grupo of grupos; track grupo) {
-          <mat-step>
-            <ng-template matStepLabel>
-              {{ grupo.nameGroup + ' ' + grupo.level + ' ' + grupo.course }}
-            </ng-template>
-            <ng-template matStepContent>
-              <p>{{ grupo.description }}</p>
+    @if (isLoading) {
+      <p>Cargando datos...</p>
+    } @else if (grupos.length === 0) {
+      <p>No tienes lecciones asignadas por el momento.</p>
+    } @else {
+      <mat-accordion>
+        @for (grupo of grupos; track grupo.id; let isFirst = $first) {
+          <mat-expansion-panel [expanded]="isFirst">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ grupo.nameGroup + ' ' + grupo.level + ' ' + grupo.course }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
               <mat-list role="list">
-                @for (lesson of grupo.lessons; track lesson) {
+                @for (lesson of grupo.lessons; track lesson.id) {
                   <mat-list-item
                     role="listitem"
                     class="hoverable"
                     (click)="openEdit(lesson)">
-                    {{ lesson.title }}
+                    <span class="lesson-title">{{ lesson.title }}</span>
                   </mat-list-item>
                 }
               </mat-list>
-              <button mat-button matStepperNext>Next</button>
-            </ng-template>
-          </mat-step>
+            </div>
+          </mat-expansion-panel>
         }
-      </mat-stepper>
+      </mat-accordion>
     }
 
   </div>
 </div>
-
-

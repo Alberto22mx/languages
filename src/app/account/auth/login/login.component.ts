@@ -58,7 +58,7 @@ export class LoginComponent {
               this.router.navigate(['/modulos/iii/dashboard']);
             }
           },
-          error: (err) => {
+          error: () => {
             this.errorMessage = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
           },
         });

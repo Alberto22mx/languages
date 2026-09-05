@@ -33,3 +33,9 @@
 .hoverable:hover {
   background-color: rgba(0, 0, 0, 0.04); /* Efecto hover, ajusta el color si es necesario */
 }
+
+.lesson-title {
+  color: #002058;
+  font-size: 1.05rem;
+  font-weight: 700;
+}

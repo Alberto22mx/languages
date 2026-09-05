@@ -178,10 +178,10 @@ export class GroupsAssignModalComponent implements OnInit {
     };
     
     this.groupsService.updateGroup(this.id, updatedGroup).subscribe({
-      next: (res) => {
+      next: () => {
         this.dialogRef.close({ status: 'success' });
       },
-      error: (err) => {
+      error: () => {
         this.dialogRef.close({ status: 'error' });
       },
     });

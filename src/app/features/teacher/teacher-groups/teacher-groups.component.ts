@@ -111,11 +111,11 @@ readonly dialog = inject(MatDialog);
     );
     if (confirmed) {
       this.groupsService.deleteGroup(id).subscribe({
-        next: (res) => {
+        next: () => {
           this.getGames();
           this.alertsService.success('Elemento eliminado con éxito.');
         },
-        error: (err) => {
+        error: () => {
           this.alertsService.warning('Eliminación cancelada.');
         },
       });

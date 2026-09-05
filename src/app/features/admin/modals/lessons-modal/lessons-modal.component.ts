@@ -62,7 +62,6 @@ export class LessonsModalComponent implements OnInit {
   onSubmit(): void {
     if (this.groupForm.valid) {
       // Lógica para enviar el formulario
-      const formData = this.groupForm.value;
       if (this.isEdit) {
         // Enviar datos actualizados al componente padre
         this.lessonsService.update(this.data.lessons.id, this.groupForm.value).subscribe({

@@ -12,7 +12,6 @@ import { Lessons } from '../../../core/interfaces/lessons.interface';
 import { LessonsService } from '../../../core/services/lessons/lessons.service';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
 import { LessonsModalComponent } from '../../admin/modals/lessons-modal/lessons-modal.component';
-import { NgTemplateOutlet } from '@angular/common';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -108,11 +107,11 @@ export class TeacherLessonsComponent implements OnInit {
     );
     if (confirmed) {
       this.lessonsService.delete(id).subscribe({
-        next: (res) => {
+        next: () => {
           this.getLessons();
           this.alertsService.success('Elemento eliminado con éxito.');
         },
-        error: (err) => {
+        error: () => {
           this.alertsService.warning('Eliminación cancelada.');
         },
       });

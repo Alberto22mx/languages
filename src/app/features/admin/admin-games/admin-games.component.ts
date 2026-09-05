@@ -102,11 +102,11 @@ export class AdminGamesComponent implements OnInit {
     );
     if (confirmed) {
       this.gamesService.delete(id).subscribe({
-        next: (res) => {
+        next: () => {
           this.getGames();
           this.alertsService.success('Elemento eliminado con éxito.');
         },
-        error: (err) => {
+        error: () => {
           this.alertsService.warning('Eliminación cancelada.');
         },
       });

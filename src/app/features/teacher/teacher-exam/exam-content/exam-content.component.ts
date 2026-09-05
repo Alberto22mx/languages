@@ -1,14 +1,13 @@
 
-import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import {MatFormFieldControl, MatFormFieldModule} from '@angular/material/form-field';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCheckboxModule} from '@angular/material/checkbox'
 import {MatButtonModule} from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
-import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ExamsService } from '../../../../core/services/exams/exams.service';
 
@@ -38,7 +37,7 @@ export class ExamContentComponent implements OnInit {
 
   questionTypeControl = new FormControl('single'); // Control para seleccionar el tipo de pregunta
 
-  constructor(private fb: FormBuilder, private location: Location, private router: Router, private examsService: ExamsService) {}
+  constructor(private fb: FormBuilder, private location: Location, private examsService: ExamsService) {}
 
   // Obtener el FormArray de preguntas
   get questions(): FormArray {
@@ -145,11 +144,7 @@ export class ExamContentComponent implements OnInit {
 
   // Guardar el examen editado
   saveExam(): void {
-    console.log('Examen editado:', this.examForm.value);
-    // Aquí podrías enviar los datos al backend para actualizar el examen
-    this.examsService.update(this.examData.id, this.examForm.value).subscribe((res) => {
-      console.log(res);
-    });
+    this.examsService.update(this.examData.id, this.examForm.value).subscribe();
   }
 
   goBack(): void {

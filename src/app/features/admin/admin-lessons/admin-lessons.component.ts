@@ -75,7 +75,7 @@ export class AdminLessonsComponent implements OnInit {
       width: '700px',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(() => {
       this.getLessons();
     });
   }
@@ -100,11 +100,11 @@ export class AdminLessonsComponent implements OnInit {
     );
     if (confirmed) {
       this.lessonsService.delete(id).subscribe({
-        next: (res) => {
+        next: () => {
           this.getLessons();
           this.alertsService.success('Elemento eliminado con éxito.');
         },
-        error: (err) => {
+        error: () => {
           this.alertsService.warning('Eliminación cancelada.');
         },
       });

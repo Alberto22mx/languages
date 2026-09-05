@@ -3,7 +3,7 @@ import { AuthService } from '../../core/services/auth/auth.service';
 import { inject } from '@angular/core';
 
 export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
-  return (route, state) => {
+  return (_route, _state) => {
     const router = inject(Router);
     const authService = inject(AuthService);
     const userType = authService.getUserType()?.toLowerCase();

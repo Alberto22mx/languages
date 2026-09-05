@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewChild, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
@@ -8,7 +8,6 @@ import {MatButtonModule} from '@angular/material/button';
 import { User } from '../../../core/interfaces/user.interface';
 import { UsersService } from '../../../core/services/users/users.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../../core/services/auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { AlertsService } from '../../../core/services/alerts/alerts.service';
@@ -16,13 +15,6 @@ import { UserModalComponent } from '../../admin/modals/user-modal/user-modal.com
 import { UserDetailsDialogComponent } from '../../../shared/components/user-details-dialog/user-details-dialog.component';
 import { GroupsService } from '../../../core/services/groups/groups.service';
 import { Router } from '@angular/router';
-
-interface Student {
-  nombre: string;
-  email: string;
-  grupo: string;
-  estado: boolean;
-}
 
 @Component({
     selector: 'app-teacher-users',
@@ -48,7 +40,6 @@ export class TeacherUsersComponent implements OnInit {
 
   constructor(
     private usersService: UsersService,
-    private authService: AuthService,
     private alertsService: AlertsService,
     private groupsService: GroupsService,
     private router: Router,
@@ -93,7 +84,7 @@ export class TeacherUsersComponent implements OnInit {
     const dialogRef = this.dialog.open(UserModalComponent, {
       width: '750px',
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       this.getUsers();
     });  
   }
@@ -104,7 +95,7 @@ export class TeacherUsersComponent implements OnInit {
         data, // Pasamos los datos del juego a editar
       });
   
-      dialogRef.afterClosed().subscribe((result) => {
+      dialogRef.afterClosed().subscribe(() => {
         this.getUsers();
       });
     }
@@ -124,11 +115,11 @@ export class TeacherUsersComponent implements OnInit {
       );
       if (confirmed) {
         this.usersService.deleteUser(id).subscribe({
-          next: (res) => {
+        next: () => {
             this.getUsers();
             this.alertsService.success('Elemento eliminado con éxito.');
           },
-          error: (err) => {
+        error: () => {
             this.alertsService.warning('Eliminación cancelada.');
           },
         });
