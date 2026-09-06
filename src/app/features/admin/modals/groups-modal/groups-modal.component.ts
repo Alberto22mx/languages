@@ -85,7 +85,7 @@ export class GroupsModalComponent implements OnInit {
   ngOnInit(): void {
     this.courseTemplatesService.findAll().subscribe({
       next: (templates) => {
-        this.courseTemplates = templates.filter((template) => template.status === 'active');
+        this.courseTemplates = templates;
         this.isLoadingTemplates = false;
       },
       error: () => {

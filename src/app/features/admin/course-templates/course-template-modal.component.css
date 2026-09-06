@@ -11,3 +11,12 @@
 .full-width {
   width: 100%;
 }
+
+.validation-message {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border: 1px solid #ffb4ab;
+  border-radius: 4px;
+  background: #ffdad6;
+  color: #410002;
+}

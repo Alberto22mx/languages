@@ -26,14 +26,6 @@
         <mat-label>Versión</mat-label>
         <input matInput type="number" min="1" formControlName="version">
       </mat-form-field>
-      <mat-form-field>
-        <mat-label>Estado</mat-label>
-        <mat-select formControlName="status">
-          @for (status of statuses; track status) {
-            <mat-option [value]="status">{{ status === 'active' ? 'Activa' : 'Archivada' }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
     </div>
 
     <mat-form-field class="full-width">
@@ -54,11 +46,14 @@
       </mat-select>
     </mat-form-field>
   </form>
+  @if (saveError) {
+    <p class="validation-message" role="alert">{{ saveError }}</p>
+  }
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button type="button" (click)="cancel()">Cancelar</button>
-  <button mat-flat-button color="primary" type="button" [disabled]="isLoadingContent" (click)="save()">
-    {{ isEdit ? 'Guardar' : 'Crear' }}
+  <button mat-flat-button color="primary" type="button" [disabled]="isLoadingContent || isSaving" (click)="save()">
+    {{ isSaving ? 'Guardando...' : (isEdit ? 'Guardar' : 'Crear') }}
   </button>
 </mat-dialog-actions>

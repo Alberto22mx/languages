@@ -70,7 +70,7 @@ export class GroupsAssignModalComponent implements OnInit {
         );
 
         const eligibleTemplates = templates.filter((template) =>
-          (template.course === groupData.course && template.level === groupData.level && template.status === 'active') ||
+          (template.course === groupData.course && template.level === groupData.level) ||
           template.id === groupData.templateId,
         );
         this.assignedTemplates = eligibleTemplates.filter((template) => template.id === groupData.templateId);
@@ -122,7 +122,7 @@ export class GroupsAssignModalComponent implements OnInit {
     };
 
     if (!updatedGroup.templateId) {
-      this.validationMessage = 'Selecciona una plantilla activa para el grupo.';
+      this.validationMessage = 'Selecciona una plantilla para el grupo.';
       this.selectedTabIndex = 2;
       return;
     }

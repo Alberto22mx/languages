@@ -31,7 +31,7 @@ import { CourseTemplateModalComponent } from './course-template-modal.component'
 })
 export class CourseTemplatesComponent implements OnInit {
   readonly dialog = inject(MatDialog);
-  readonly displayedColumns = ['name', 'course', 'level', 'version', 'content', 'status', 'actions'];
+  readonly displayedColumns = ['name', 'course', 'level', 'version', 'content', 'actions'];
   readonly dataSource = new MatTableDataSource<CourseTemplate>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -67,37 +67,19 @@ export class CourseTemplatesComponent implements OnInit {
     this.openDialog(template);
   }
 
-  async toggleStatus(template: CourseTemplate): Promise<void> {
-    const nextStatus = template.status === 'active' ? 'archived' : 'active';
+  async deleteTemplate(template: CourseTemplate): Promise<void> {
     const confirmed = await this.alertsService.confirm(
-      `¿Deseas ${nextStatus === 'active' ? 'reactivar' : 'archivar'} la plantilla “${template.name}”?`,
-      'Confirmar cambio de estado',
+      `¿Eliminar la plantilla “${template.name}”? Los grupos relacionados conservarán su contenido, pero quedarán desvinculados de esta plantilla.`,
+      'Confirmar eliminación',
     );
     if (!confirmed) return;
 
-    this.courseTemplatesService.update(template.id, { status: nextStatus }).subscribe({
+    this.courseTemplatesService.delete(template.id).subscribe({
       next: () => {
         this.loadTemplates();
-        this.alertsService.success('Estado de la plantilla actualizado.');
+        this.alertsService.success('Plantilla eliminada y grupos desvinculados.');
       },
-      error: (error) => this.alertsService.warning(error.error?.message ?? 'No fue posible actualizar la plantilla.'),
-    });
-  }
-
-  async createNextVersion(template: CourseTemplate): Promise<void> {
-    const confirmed = await this.alertsService.confirm(
-      `Se creará una nueva versión a partir de “${template.name}”. La versión actual quedará archivada.`,
-      'Crear nueva versión',
-    );
-    if (!confirmed) return;
-
-    this.courseTemplatesService.createNextVersion(template.id).subscribe({
-      next: (nextTemplate) => {
-        this.loadTemplates();
-        this.alertsService.success(`Se creó la versión ${nextTemplate.version}.`);
-        this.openEditDialog(nextTemplate);
-      },
-      error: (error) => this.alertsService.warning(error.error?.message ?? 'No fue posible crear la nueva versión.'),
+      error: (error) => this.alertsService.warning(error.error?.message ?? 'No fue posible eliminar la plantilla.'),
     });
   }
 

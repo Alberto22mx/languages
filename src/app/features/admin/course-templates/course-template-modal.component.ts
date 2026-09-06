@@ -13,7 +13,6 @@ import { CourseTemplatesService } from '../../../core/services/course-templates/
 import { ExamsService } from '../../../core/services/exams/exams.service';
 import { LessonsService } from '../../../core/services/lessons/lessons.service';
 import { LevelGroup } from '../../../shared/enums/level-group';
-import { AlertsService } from '../../../core/services/alerts/alerts.service';
 
 interface CourseTemplateModalData {
   template?: CourseTemplate;
@@ -35,10 +34,11 @@ interface CourseTemplateModalData {
 })
 export class CourseTemplateModalComponent implements OnInit {
   readonly levels = LevelGroup;
-  readonly statuses = ['active', 'archived'] as const;
   lessons: Lessons[] = [];
   exams: Exams[] = [];
   isLoadingContent = true;
+  isSaving = false;
+  saveError = '';
   readonly isEdit: boolean;
 
   readonly form = this.formBuilder.group({
@@ -46,7 +46,6 @@ export class CourseTemplateModalComponent implements OnInit {
     course: ['', [Validators.required, Validators.maxLength(120)]],
     level: ['', Validators.required],
     version: [1, [Validators.required, Validators.min(1)]],
-    status: ['active', Validators.required],
     lessons: [[] as string[]],
     exams: [[] as string[]],
   });
@@ -58,7 +57,6 @@ export class CourseTemplateModalComponent implements OnInit {
     private readonly courseTemplatesService: CourseTemplatesService,
     private readonly lessonsService: LessonsService,
     private readonly examsService: ExamsService,
-    private readonly alertsService: AlertsService,
   ) {
     this.isEdit = !!data?.template;
   }
@@ -71,7 +69,6 @@ export class CourseTemplateModalComponent implements OnInit {
         course: template.course,
         level: template.level,
         version: template.version,
-        status: template.status,
         lessons: template.lessons,
         exams: template.exams,
       });
@@ -93,7 +90,7 @@ export class CourseTemplateModalComponent implements OnInit {
   }
 
   save(): void {
-    if (this.form.invalid || this.isLoadingContent) {
+    if (this.form.invalid || this.isLoadingContent || this.isSaving) {
       this.form.markAllAsTouched();
       return;
     }
@@ -103,9 +100,14 @@ export class CourseTemplateModalComponent implements OnInit {
       ? this.courseTemplatesService.update(this.data!.template!.id, template)
       : this.courseTemplatesService.create(template);
 
+    this.isSaving = true;
+    this.saveError = '';
     request.subscribe({
       next: (savedTemplate) => this.dialogRef.close({ status: 'success', template: savedTemplate }),
-      error: (error) => this.alertsService.warning(error.error?.message ?? 'No fue posible guardar la plantilla.'),
+      error: (error) => {
+        this.isSaving = false;
+        this.saveError = error.error?.message ?? 'No fue posible guardar la plantilla.';
+      },
     });
   }
 

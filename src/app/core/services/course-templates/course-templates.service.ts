@@ -22,7 +22,7 @@ export class CourseTemplatesService {
     return this.http.patch<CourseTemplate>(`${this.baseUrl}/${id}`, template);
   }
 
-  createNextVersion(id: string): Observable<CourseTemplate> {
-    return this.http.post<CourseTemplate>(`${this.baseUrl}/${id}/versions`, {});
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }
